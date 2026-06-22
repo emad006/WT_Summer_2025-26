@@ -4,6 +4,8 @@
 
 <head>
     <title>ElectroMart - Product Catalogue</title>
+    <meta name="author" content="Emad">
+    <meta name="description" content="ElectroMart Product Catalogue">
 </head>
 
 <body>
@@ -11,57 +13,90 @@
         <h1>ElectroMart Product Catalogue</h1>
     </center>
 
-    <form>
-        <table border="1">
-            <tr>
-                <th>Product Image</th>
-                <th>Product Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Action</th>
-            </tr>
+    <header>
+        <nav>
+            <a href="#">Home</a> |
+            <a href="#">Products</a> |
+            <a href="#">Contact Us</a>
+        </nav>
+    </header>
 
-            <tr>
-                <td><img src="images/fitBitAir.jpg" alt="Product 1" width="128" height="128"></td>
-                <td>FitBit Air</td>
-                <td>A screenless, lightweight AI-driven health tracker that focuses entirely on minimalist design. It syncs with your phone to log data 24/7, tracking heart rate, sleep metrics, and activity levels through the companion app.</td>
-                <td>$99.99</td>
-                <td><button type="button">Add to Cart</button></td>
-            </tr>
+    <main>
+        <article>
+            <fieldset>
+                <legend>Product Information</legend>
 
-            <tr>
-                <td><img src="images/libertyFiveProMax.webp" alt="Product 2" width="128" height="128"></td>
-                <td>Soundcore Liberty 5 Pro Max</td>
-                <td>These wireless earbuds feature an innovative smart charging case equipped with an integrated touchscreen display. The case lets you change settings instantly and houses an 8-microphone array capable of recording and transcribing meetings on the fly.</td>
-                <td>$229.99</td>
-                <td><button type="button">Add to Cart</button></td>
-            </tr>
+                <table border="1">
+                    <tr>
+                        <th>Product Image</th>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
 
-            <tr>
-                <td><img src="images/ankerPrime160WGaNCharger.webp" alt="Product 3" width="128" height="128"></td>
-                <td>Anker Prime 160W GaN Charger</td>
-                <td>This fast-charging adapter delivers up to 160W of power output, ensuring your devices are charged quickly and efficiently. Its compact design makes it easy to carry around, while the multiple ports allow you to charge several devices simultaneously.</td>
-                <td>$149.99</td>
-                <td><button type="button">Add to Cart</button></td>
-            </tr>
+                    <tr>
+                        <td><img src="images/fitBitAir.jpg" alt="Product 1" width="128" height="128"></td>
+                        <td>FitBit Air</td>
+                        <td>A screenless, lightweight AI-driven health tracker that focuses entirely on minimalist design.
+                            It syncs with your phone to log data 24/7, tracking heart rate, sleep metrics, and activity
+                            levels through the companion app.</td>
+                        <td>$99.99</td>
+                        <td><a href="#">Add to Cart</a></td>
+                        <!-- <td><button type="button">Add to Cart</button></td>-->
+                    </tr>
 
-            <tr>
-                <td><img src="images/polaroidGoGenThree.jpg" alt="Product 4" width="128" height="128"></td>
-                <td>Polaroid Go Generation 3</td>
-                <td>Billed as one of the smallest analog instant cameras available, this pocket-sized shooter features a dual-aperture lens, a built-in selfie mirror, and an upgraded flash unit designed for lo-fi, nostalgic physical prints.</td>
-                <td>$89.99</td>
-                <td><button type="button">Add to Cart</button></td>
-            </tr>
+                    <tr>
+                        <td><img src="images/libertyFiveProMax.webp" alt="Product 2" width="128" height="128"></td>
+                        <td>Soundcore Liberty 5 Pro Max</td>
+                        <td>These wireless earbuds feature an innovative smart charging case equipped with an integrated
+                            touchscreen display. The case lets you change settings instantly and houses an 8-microphone
+                            array capable of recording and transcribing meetings on the fly.</td>
+                        <td>$229.99</td>
+                        <td><a href="#">Add to Cart</a></td>
+                        <!-- <td><button type="button">Add to Cart</button></td>-->
+                    </tr>
 
-            <tr>
-                <td><img src="images/elgatoStreamDeckNeo.jpg" alt="Product 5" width="128" height="128"></td>
-                <td>Elgato Stream Deck Neo</td>
-                <td>A streamlined, customizable macro pad designed to simplify daily workflows, system actions, and livestream management. It features eight customizable LCD keys and an elegant minimalist desktop stand.</td>
-                <td>$99.99</td>
-                <td><button type="button">Add to Cart</button></td>
-            </tr>
-        </table>
-    </form>
+                    <tr>
+                        <td><img src="images/ankerPrime160WGaNCharger.webp" alt="Product 3" width="128" height="128"></td>
+                        <td>Anker Prime 160W GaN Charger</td>
+                        <td>This fast-charging adapter delivers up to 160W of power output, ensuring your devices are
+                            charged quickly and efficiently. Its compact design makes it easy to carry around, while the
+                            multiple ports allow you to charge several devices simultaneously.</td>
+                        <td>$149.99</td>
+                        <td><a href="#">Add to Cart</a></td>
+                        <!-- <td><button type="button">Add to Cart</button></td>-->
+                    </tr>
+
+                    <tr>
+                        <td><img src="images/polaroidGoGenThree.jpg" alt="Product 4" width="128" height="128"></td>
+                        <td>Polaroid Go Generation 3</td>
+                        <td>Billed as one of the smallest analog instant cameras available, this pocket-sized shooter
+                            features a dual-aperture lens, a built-in selfie mirror, and an upgraded flash unit designed for
+                            lo-fi, nostalgic physical prints.</td>
+                        <td>$89.99</td>
+                        <td><a href="#">Add to Cart</a></td>
+                        <!-- <td><button type="button">Add to Cart</button></td>-->
+                    </tr>
+
+                    <tr>
+                        <td><img src="images/elgatoStreamDeckNeo.jpg" alt="Product 5" width="128" height="128"></td>
+                        <td>Elgato Stream Deck Neo</td>
+                        <td>A streamlined, customizable macro pad designed to simplify daily workflows, system actions, and
+                            livestream management. It features eight customizable LCD keys and an elegant minimalist desktop
+                            stand.</td>
+                        <td>$99.99</td>
+                        <td><a href="#">Add to Cart</a></td>
+                        <!-- <td><button type="button">Add to Cart</button></td>. -->
+                    </tr>
+                </table>
+            </fieldset>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ElectroMart. All rights reserved.</p>
+    </footer>
 </body>
 
 </html>
