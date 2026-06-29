@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>AIUB Portal</title>
+        <meta name="author" content="Emad">
+        <meta name="description" content="AIUB Portal for Digital Service Requests">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+
+    <body>
+        <header>
+            <h1>AIUB Student Services Portal</h1>
+            <p id="headerDesc">Your one-stop hub for academic requests, technical support, and campus resources.</p>
+
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">Services</a>
+                <a href="#">Contacts</a>
+            </nav>
+        </header>
+
+        <main>
+            <h2>Our Available Services</h2>
+            <p>We provide a variety of support services to help you succeed. Use the form below to request academic counseling, IT support, transcript requests, or financial aid guidance. Our team will review your submission based on your specified urgency level.</p>
+
+            <h2>Service Request Form</h2>
+            <form>
+                <table>
+                    <tr>
+                        <td>Student Name:</td>
+                        <td><input type="text" required></td>
+                    </tr>
+
+                    <tr>
+                        <td>Student ID:</td>
+                        <td><input type="text" maxlength="10" required></td>
+                    </tr>
+
+                    <tr>
+                        <td>Student Email:</td>
+                        <td><input type="email" required></td>
+                    </tr>
+
+                    <tr>
+                        <td>Service Type:</td>
+                        <td>
+                            <select>
+                                <option>ID Card Issues</option>
+                                <option>Transcript Requests</option>
+                                <option>General Inquiries</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Urgency Level:</td>
+                        <td>
+                            <input type="radio" name="urgencyLevel"> Low
+                            <input type="radio" name="urgencyLevel"> Medium
+                            <input type="radio" name="urgencyLevel"> High
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Additional Details:</td>
+                        <td><textarea name="additionalDetails"></textarea></td>
+                    </tr>
+
+                    <tr>
+                        <td>Submit</td>
+                        <td><input type="submit"></td>
+                    </tr>
+                </table>
+            </form>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 AIUB Student Services Portal. All rights reserved.</p>
+        </footer>
+
+    </body>
+</html>
