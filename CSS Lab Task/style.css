@@ -38,3 +38,36 @@ table td {
 td {
     color: #334155; 
 }
+
+input[type="text"] {
+    padding: 6px;
+    border: 1px solid #cbd5e1;
+    background-color: #f8fafc;
+}
+input[type="email"] {
+    padding: 6px;
+    border: 1px solid #cbd5e1;
+    background-color: #f8fafc;
+}
+
+select {
+    padding: 6px;
+    border: 1px solid #cbd5e1;
+    background-color: #f8fafc;
+}
+textarea {
+    padding: 6px;
+    border: 1px solid #cbd5e1;
+    background-color: #f8fafc;
+}
+
+input[type="submit"] {
+    background-color: #10b981;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+}
+
+input[type="submit"]:hover {
+    background-color: #059669;
+}
