@@ -8,9 +8,11 @@
         <script src="script.js"></script>
     </head>
 
-    <body>
+    <body onload="startClock()">
         <h1>Contact Form</h1>
         <button id="switchBtn" onclick="ToggleMode()">Switch to Dark Mode</button>
+        <p id="greeting"></p>
+        <p id="clock"></p>
 
         <form onsubmit="handleSubmit()">
             <fieldset>

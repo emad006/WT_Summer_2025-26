@@ -79,3 +79,37 @@ function ToggleMode() {
         button.innerHTML = "Switch to Light Mode";
     }
 }
+
+function startClock() {
+    updateClock();
+    setInterval(updateClock, 1000);
+}
+
+function updateClock() {
+    var now = new Date();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var seconds = now.getSeconds();
+
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+
+    document.getElementById("clock").innerHTML = "Current Time: " + hours + ":" + minutes + ":" + seconds;
+
+    var greeting = "";
+    if (hours < 12) {
+        greeting = "Good Morning!";
+    }
+    else if (hours < 18) {
+        greeting = "Good Afternoon!";
+    }
+    else {
+        greeting = "Good Evening!";
+    }
+
+    document.getElementById("greeting").innerHTML = greeting;
+}

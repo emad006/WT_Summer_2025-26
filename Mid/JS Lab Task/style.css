@@ -42,3 +42,14 @@ button:hover {
     padding: 4px;
     box-sizing: border-box;
 }
+
+#switchBtn {
+    width: auto;
+    padding: 8px 16px;
+    margin: 15px 0;
+}
+
+#greeting, #clock {
+    margin: 5px 0;
+    font-weight: bold;
+}
