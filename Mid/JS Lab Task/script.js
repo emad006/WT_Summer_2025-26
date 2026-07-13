@@ -63,3 +63,19 @@ function handleSubmit() {
         "Message: " + message
     );
 }
+
+function ToggleMode() {
+    var body = document.body;
+    var button = document.getElementById("switchBtn");
+
+    if (body.style.backgroundColor == "black") {
+        body.style.backgroundColor = "";
+        body.style.color = "";
+        button.innerHTML = "Switch to Dark Mode";
+    }
+    else {
+        body.style.backgroundColor = "black";
+        body.style.color = "white";
+        button.innerHTML = "Switch to Light Mode";
+    }
+}
