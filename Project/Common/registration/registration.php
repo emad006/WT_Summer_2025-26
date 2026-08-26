@@ -90,6 +90,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // <-------- Validation End -------->
+    
+    // <-------- Query the Database -------->
+    if (count($errors) === 0) {
+
+        // Set role based on user type
+        if ($_POST["role"] === "customer") {
+            $status = "active";
+        } else if ($_POST["role"] === "restaurant" || $_POST["role"] === "rider") {
+            $status = "pending";
+        }
+
+
+    }
 }
 ?>
 
@@ -183,11 +196,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <br>
                 <select name="cusineType">
                     <option value="">Select Cusine</option>
-                    <option value="Biriyani">Biriyani</option>
-                    <option value="Fast Food">Fast Food</option>
-                    <option value="Bengali">Bengali</option>
-                    <option value="Italian">Italian</option>
-                    <option value="Chinese">Chinese</option>
+                    <?php
+                    $stmt = mysqli_prepare($conn, "SELECT DISTINCT(cuisine_name) FROM cuisines ORDER BY cuisine_name");
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<option value='" . $row["cuisine_name"] . "'>" . $row["cuisine_name"] . "</option>";
+                    }
+                    ?>
                 </select>
             </div>
 
