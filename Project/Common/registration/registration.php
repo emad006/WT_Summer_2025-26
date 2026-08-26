@@ -157,10 +157,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <form method="post">
             <div class="inputBlock">
                 <label class="inputLabel">I am registering as</label>
-                <div id="radioGroup">
-                    <input type="radio" name="role" class="radioField" id="customerRoleSelector" value="customer" onchange="toggleRoleFields()" checked><label class="radioText">Customer</label>
-                    <input type="radio" name="role" class="radioField" id="restaurantRoleSelector" value="restaurant" onchange="toggleRoleFields()"><label class="radioText">Restaurant</label>
-                    <input type="radio" name="role" class="radioField" id="riderRoleSelector" value="rider" onchange="toggleRoleFields()"><label class="radioText">Rider</label>
+                <div id="radioGroup"> <!-- FIXME: Fix fields defaulting to "Customer" on form submit. -->
+                    <input type="radio" name="role" class="radioField" id="customerRoleSelector" value="customer" onchange="toggleRoleFields()" <?php if (!isset($_POST["role"]) || $_POST["role"] === "customer") echo "checked"; ?>>
+                    <label class="radioText">Customer</label>
+
+                    <input type="radio" name="role" class="radioField" id="restaurantRoleSelector" value="restaurant" onchange="toggleRoleFields()" <?php if (isset($_POST["role"]) && $_POST["role"] === "rider") echo "checked"; ?>>
+                    <label class="radioText">Restaurant</label>
+
+                    <input type="radio" name="role" class="radioField" id="riderRoleSelector" value="rider" onchange="toggleRoleFields()" <?php if (isset($_POST["role"]) && $_POST["role"] === "rider") echo "checked"; ?>>
+                    <label class="radioText">Rider</label>
                 </div>
             </div>
 
