@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div id="mainArea">
         <h1 id="titleName">Login to FoodRush</h1>
 
-        <div id="errorArea"></div>
+        <div id="errorBlock"></div>
 
         <form method="post">
             <div class="inputBlock">
