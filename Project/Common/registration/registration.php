@@ -8,7 +8,7 @@ session_start();
 
 <head>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <title>FoodRush - Registration</title>
 </head>
 
@@ -24,48 +24,48 @@ session_start();
         <div class="inputBlock">
             <label class="inputLabel">I am registering as</label>
             <div id="radioGroup">
-                <input type="radio" name="role" class="radioField" value="Customer" onchange="toggleRoleFields()"><label class="radioText">Customer</label>
-                <input type="radio" name="role" class="radioField" value="Restaurant" onchange="toggleRoleFields()"><label class="radioText">Restaurant</label>
-                <input type="radio" name="role" class="radioField" value="Rider" onchange="toggleRoleFields()"><label class="radioText">Rider</label>
+                <input type="radio" name="role" class="radioField" id="customerRoleSelector" value="customer" onchange="toggleRoleFields()" checked><label class="radioText">Customer</label>
+                <input type="radio" name="role" class="radioField" id="restaurantRoleSelector" value="restaurant" onchange="toggleRoleFields()"><label class="radioText">Restaurant</label>
+                <input type="radio" name="role" class="radioField" id="riderRoleSelector" value="rider" onchange="toggleRoleFields()"><label class="radioText">Rider</label>
             </div>
         </div>
 
 
 
         <!-- #1: Full Name (Customer & Rider) -->
-        <div class="inputBlock">
+        <div class="inputBlock customerDiv riderDiv">
             <label class="inputLabel">Full Name</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your full name">
+            <input type="text" name="name" class="inputField" placeholder="Enter your full name">
         </div>
 
         <!-- #1: Owner Name (Restaurant) -->
-        <div class="inputBlock" style="display: none;">
+        <div class="inputBlock restaurantDiv" style="display: none;">
             <label class="inputLabel">Owner Name</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your full name">
+            <input type="text" name="name" class="inputField" placeholder="Enter your full name">
         </div>
 
 
 
 
         <!-- #2: Email (Customer) -->
-        <div class="inputBlock">
+        <div class="inputBlock customerDiv">
             <label class="inputLabel">Email</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your email">
+            <input type="text" name="email" class="inputField" placeholder="Enter your email">
         </div>
 
-        <!-- #2: Shop Name (Restuarant) -->
-        <div class="inputBlock" style="display: none;">
+        <!-- #2: Shop Name (Restaurant) -->
+        <div class="inputBlock restaurantDiv" style="display: none;">
             <label class="inputLabel">Shop Name</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your shop name">
+            <input type="text" name="shopName" class="inputField" placeholder="Enter your shop name">
         </div>
 
         <!-- #2: Vehicle Type (Rider) -->
-        <div class="inputBlock" style="display: none;">
-            <label class="inputLabel">Email</label>
+        <div class="inputBlock riderDiv" style="display: none;">
+            <label class="inputLabel">Vehicle Type</label>
             <br>
             <select name="vehicleType">
                 <option value="">Select Vehicle</option>
@@ -80,14 +80,14 @@ session_start();
 
 
         <!-- #3: Phone (Customer) -->
-        <div class="inputBlock">
+        <div class="inputBlock customerDiv">
             <label class="inputLabel">Phone</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your phone number">
+            <input type="text" name="phone" class="inputField" placeholder="Enter your phone number">
         </div>
 
         <!-- #3: Cusine (Restaurant) -->
-        <div class="inputBlock" style="display: none;">
+        <div class="inputBlock restaurantDiv" style="display: none;">
             <label class="inputLabel">Cusine</label>
             <br>
             <select name="cusineType">
@@ -101,80 +101,84 @@ session_start();
         </div>
 
         <!-- #3: NID Number (Rider) -->
-        <div class="inputBlock" style="display: none;">
+        <div class="inputBlock riderDiv" style="display: none;">
             <label class="inputLabel">Phone</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your NID number">
+            <input type="text" name="nidNum" class="inputField" placeholder="Enter your NID number">
         </div>
 
 
 
         <!-- #4: Delivery Address (Customer) -->
-        <div class="inputBlock">
+        <div class="inputBlock customerDiv">
             <label class="inputLabel">Delivery Address</label>
             <br>
-            <textarea class="inputField" id="textAreaField" placeholder="Enter your delivery address"></textarea>
+            <textarea name="addr" class="inputField" id="textAreaField" placeholder="Enter your delivery address"></textarea>
         </div>
 
         <!-- #4: Email Address (Restuarant & Rider) -->
-        <div class="inputBlock" style="display: none;">
+        <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
             <label class="inputLabel">Email</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your email">
+            <input type="text" name="email" class="inputField" placeholder="Enter your email">
         </div>
 
 
 
 
         <!-- #5: Password (Customer) -->
-        <div class="inputBlock">
+        <div class="inputBlock customerDiv">
             <label class="inputLabel">Password</label>
             <br>
-            <input type="password" class="inputField" placeholder="Enter your password">
+            <input type="password" name="password" class="inputField" placeholder="Enter your password">
         </div>
 
         <!-- #5: Phone Number (Restaurant & Rider) -->
-        <div class="inputBlock" style="display: none;">
+        <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
             <label class="inputLabel">Phone</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your phone number">
+            <input type="text" name="phone" class="inputField" placeholder="Enter your phone number">
         </div>
+
 
 
 
         <!-- #6: Confirm Password (Customer) -->
-        <div class="inputBlock">
+        <div class="inputBlock customerDiv">
             <label class="inputLabel">Confirm Password</label>
             <br>
-            <input type="password" class="inputField" placeholder="Confirm your password">
+            <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password">
         </div>
 
         <!-- #6: Shop Address (Restaurant) -->
-        <div class="inputBlock" style="display: none;">
+        <div class="inputBlock restaurantDiv" style="display: none;">
             <label class="inputLabel">Shop Address</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your shop address">
+            <textarea name="addr" class="inputField" id="textAreaField" placeholder="Enter your shop address"></textarea>
         </div>
 
         <!-- #6: Home Address (Rider) -->
-        <div class="inputBlock" style="display: none;">
+        <div class="inputBlock riderDiv" style="display: none;">
             <label class="inputLabel">Home Address</label>
             <br>
-            <input type="text" class="inputField" placeholder="Enter your home address">
+            <textarea name="addr" class="inputField" id="textAreaField" placeholder="Enter your delivery address"></textarea>
         </div>
 
+
+
+
         <!-- #7: Password (Restaurant & Rider) -->
-        <div class="inputBlock" style="display: none;">
+        <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
             <label class="inputLabel">Password</label>
             <br>
-            <input type="password" class="inputField" placeholder="Enter your password">
+            <input type="password" name="password" class="inputField" placeholder="Enter your password">
         </div>
 
         <!-- #8: Confirm Password (Restaurant & Rider) -->
-        <div class="inputBlock" style="display: none;">
+        <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
             <label class="inputLabel">Password</label>
             <br>
-            <input type="password" class="inputField" placeholder="Confirm your password">
+            <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password">
         </div>
 
         <div class="inputBlock">
