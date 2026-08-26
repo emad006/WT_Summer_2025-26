@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($_POST["password"])) {
         $errors[] = "Password is required.";
     } else if (strlen($_POST["password"]) < 8) { // Check if the password is at least 8 characters long
-        $errors[] = "Password must be at least 8 characters long."; 
+        $errors[] = "Password must be at least 8 characters long.";
     }
 
 
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($userRow["password"] !== $_POST["password"]) {
                 $errors[] = "Email or password is incorrect.";
             } else { // Password is valid, proceeding
-                switch($userRow["account_status"]) {
+                switch ($userRow["account_status"]) {
                     case "active":
                         break;
                     case "pending":
@@ -65,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
     }
-
 }
 ?>
 
