@@ -2,6 +2,7 @@ let customerDivs = Array.from(document.getElementsByClassName("customerDiv"));
 let restaurantDivs = Array.from(document.getElementsByClassName("restaurantDiv"));
 let riderDivs = Array.from(document.getElementsByClassName("riderDiv"));
 
+
 function toggleRoleFields() {
     const customer = document.getElementById("customerRoleSelector").checked;
     const restaurant = document.getElementById("restaurantRoleSelector").checked;
@@ -36,8 +37,10 @@ function showRiderFields() {
 
 function showDiv(div) {
     div.style.display = "block";
+    div.querySelectorAll("input, select, textarea").forEach(el => el.disabled = false);
 }
 
 function hideDiv(div) {
     div.style.display = "none";
+    div.querySelectorAll("input, select, textarea").forEach(el => el.disabled = true);
 }
