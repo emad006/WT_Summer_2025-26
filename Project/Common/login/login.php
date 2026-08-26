@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div id="mainArea">
         <h1 id="titleName">Login to FoodRush</h1>
 
-        <div id="errorBlock"></div>
+        <div id="errorBlock"><?php if (!empty($errors)) echo implode("<br>", $errors) ?></div>
 
         <form method="post">
             <div class="inputBlock">
@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <br>
                 <button type="submit" id="submitBtn">Login</button>
                 <br>
-                <a href="register.php" id="registerLink">Don't have an account? Register</a>
+                <a href="../registration/registration.php" id="registerLink">Don't have an account? Register</a>
             </div>
         </form>
     </div>

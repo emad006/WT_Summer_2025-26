@@ -21,6 +21,7 @@ body {
 }
 
 #errorBlock:not(:empty) {
+  color: #9B1C1C;
   background-color: #FDF2F2;
   border-radius: 8px;
   border: 2px solid #E53E3E;
