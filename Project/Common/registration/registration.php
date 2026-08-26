@@ -4,7 +4,6 @@ session_start();
 include "../lib/dbConfig.php";
 
 $errors = [];
-$errors[] = "Hello World";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -171,14 +170,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv riderDiv">
                 <label class="inputLabel">Full Name</label>
                 <br>
-                <input type="text" name="name" class="inputField" placeholder="Enter your full name" required>
+                <input type="text" name="name" class="inputField" placeholder="Enter your full name">
             </div>
 
             <!-- #1: Owner Name (Restaurant) -->
             <div class="inputBlock restaurantDiv" style="display: none;">
                 <label class="inputLabel">Owner Name</label>
                 <br>
-                <input type="text" name="name" class="inputField" placeholder="Enter your full name" required>
+                <input type="text" name="name" class="inputField" placeholder="Enter your full name">
             </div>
 
 
@@ -188,14 +187,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Email</label>
                 <br>
-                <input type="text" name="email" class="inputField" placeholder="Enter your email" required>
+                <input type="text" name="email" class="inputField" placeholder="Enter your email">
             </div>
 
             <!-- #2: Shop Name (Restaurant) -->
             <div class="inputBlock restaurantDiv" style="display: none;">
                 <label class="inputLabel">Shop Name</label>
                 <br>
-                <input type="text" name="shopName" class="inputField" placeholder="Enter your shop name" required>
+                <input type="text" name="shopName" class="inputField" placeholder="Enter your shop name">
             </div>
 
             <!-- #2: Vehicle Type (Rider) -->
@@ -218,7 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Phone</label>
                 <br>
-                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number" required>
+                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number">
             </div>
 
             <!-- #3: Cusine (Restaurant) -->
@@ -242,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock riderDiv" style="display: none;">
                 <label class="inputLabel">NID Number</label>
                 <br>
-                <input type="text" name="nidNum" class="inputField" placeholder="Enter your NID number" required>
+                <input type="text" name="nidNum" class="inputField" placeholder="Enter your NID number">
             </div>
 
 
@@ -251,14 +250,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Delivery Address</label>
                 <br>
-                <textarea name="addr" class="inputField" id="textAreaField" placeholder="Enter your delivery address"></textarea>
+                <textarea name="addr" class="inputField textAreaField" placeholder="Enter your delivery address"></textarea>
             </div>
 
             <!-- #4: Email Address (Restuarant & Rider) -->
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Email</label>
                 <br>
-                <input type="text" name="email" class="inputField" placeholder="Enter your email" required>
+                <input type="text" name="email" class="inputField" placeholder="Enter your email">
             </div>
 
 
@@ -268,14 +267,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Password</label>
                 <br>
-                <input type="password" name="password" class="inputField" placeholder="Enter your password" required>
+                <input type="password" name="password" class="inputField" placeholder="Enter your password">
             </div>
 
             <!-- #5: Phone Number (Restaurant & Rider) -->
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Phone</label>
                 <br>
-                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number" required>
+                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number">
             </div>
 
 
@@ -285,21 +284,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Confirm Password</label>
                 <br>
-                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password" required>
+                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password">
             </div>
 
             <!-- #6: Shop Address (Restaurant) -->
             <div class="inputBlock restaurantDiv" style="display: none;">
                 <label class="inputLabel">Shop Address</label>
                 <br>
-                <textarea name="addr" class="inputField" id="textAreaField" placeholder="Enter your shop address"></textarea>
+                <textarea name="addr" class="inputField textAreaField" placeholder="Enter your shop address"></textarea>
             </div>
 
             <!-- #6: Home Address (Rider) -->
             <div class="inputBlock riderDiv" style="display: none;">
                 <label class="inputLabel">Home Address</label>
                 <br>
-                <textarea name="addr" class="inputField" id="textAreaField" placeholder="Enter your delivery address"></textarea>
+                <textarea name="addr" class="inputField textAreaField" placeholder="Enter your delivery address"></textarea>
             </div>
 
 
@@ -309,14 +308,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Password</label>
                 <br>
-                <input type="password" name="password" class="inputField" placeholder="Enter your password" required>
+                <input type="password" name="password" class="inputField" placeholder="Enter your password">
             </div>
 
             <!-- #8: Confirm Password (Restaurant & Rider) -->
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
-                <label class="inputLabel">Password</label>
+                <label class="inputLabel">Confirm Password</label>
                 <br>
-                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password" required>
+                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password">
             </div>
 
             <div class="inputBlock">
