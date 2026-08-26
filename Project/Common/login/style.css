@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: grid;
+    place-items: center; 
+}
+
+#mainArea {
+    background-color: white;
+    border-radius: 8px;
+}
+
+#titleName {
+    font-size: 26px;
+    padding: 4px; 
+    margin: 10px;
+    border-bottom: 2px solid orange;
+}
+
+.inputBlock {
+    padding: 10px;
+}
