@@ -4,6 +4,7 @@ session_start();
 include "../lib/dbConfig.php";
 
 $errors = [];
+$errors[] = "Hello World";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -13,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($_POST["name"])) { // Check if name is empty
         $errors[] = "Name is required.";
     } else if (strlen($_POST["name"]) < 2) { // Check if the name is at least 2 characters long
-        $errors[] = "Name must be at least 4 characters long.";
+        $errors[] = "Name must be at least 2 characters long.";
     } else if (strlen($_POST["name"]) > 100) { // Check if the name is less than 100 characters long
         $errors[] = "Name cannot exceed more than 100 characters long.";
     }
@@ -53,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else if (strlen($_POST["addr"]) < 10) { // Check if the address is at least 10 characters long
         $errors[] = "Address must be at least 10 characters long.";
     } else if (strlen($_POST["addr"]) > 255) { // Check if the address is less than 255 characters long
-        $errors[] = "Address cannot exceed 20 characters long.";
+        $errors[] = "Address cannot exceed 255 characters long.";
     }
 
     // Selective validation based on selected role
@@ -115,13 +116,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($_POST["role"] === "customer") {
                 $stmt = mysqli_prepare($conn, "INSERT INTO customers (user_id) VALUES (?)");
                 mysqli_stmt_bind_param($stmt, "i", $newID);
-            } else if ($_POST["restaurant"]) {
+            } else if ($_POST["role"] === "restaurant") {
                 $stmt = mysqli_prepare($conn, "INSERT INTO restaurants (user_id, shop_name, cuisine_id, is_open) VALUES (?, ?, ?, 1)");
                 mysqli_stmt_bind_param($stmt, "isi", $newID, $_POST["shopName"], $_POST["cusineType"]);
-            } else if ($_POST["rider"]) {
+            } else if ($_POST["role"] === "rider") {
                 $stmt = mysqli_prepare($conn, "INSERT INTO riders (user_id, vehicle_type, nid, is_on_duty) VALUES (?, ?, ?, 1)");
                 mysqli_stmt_bind_param($stmt, "iss", $newID, $_POST["vehicleType"], $_POST["nidNum"]);
-            } else if ($_POST["admin"]) {
+            } else if ($_POST["role"] === "admin") {
                 $stmt = mysqli_prepare($conn, "INSERT INTO admins (user_id) VALUES (?)");
                 mysqli_stmt_bind_param($stmt, "i", $newID);
             } else {
@@ -134,6 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $errors[] = $e->getMessage();
             mysqli_rollback($conn);
         }
+
     }
 }
 ?>
@@ -151,10 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div id="mainArea">
         <h1 id="titleName">Create your Account</h1>
 
-        <div id="errorBlock">
-            <label>Hello World</label><br>
-            <label>Hello World</label>
-        </div>
+        <div id="errorBlock"><?php if (!empty($errors)) echo implode("<br>", $errors) ?></div>
 
         <form method="post">
             <div class="inputBlock">
@@ -327,8 +326,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <br>
                 <a href="../login/login.php" id="loginLink">Already registered? Login</a>
             </div>
+        </form>
     </div>
-    </form>
 
 </body>
 
