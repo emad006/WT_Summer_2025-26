@@ -1,0 +1,91 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  display: grid;
+  place-items: center;
+}
+
+#mainArea {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 30%;
+}
+
+#titleName {
+  font-size: 26px;
+  padding: 4px;
+  margin: 10px 20px 10px 20px;
+  display: inline-block;
+  border-bottom: 2px solid orange;
+}
+
+#errorBlock:not(:empty) {
+  background-color: #FDF2F2;
+  border-radius: 8px;
+  border: 2px solid #E53E3E;
+  padding: 12px 16px;
+  margin: 5px 20px 10px 20px;
+}
+
+.inputBlock {
+  margin: 10px 20px 10px 20px;
+}
+
+#radioGroup {
+  padding-top: 4px;
+}
+
+.inputLabel {
+  font-size: 14px;
+  font-weight: bold;
+  color: #3f4a44;
+}
+
+.radioField {
+  margin-right: 8px;
+}
+
+.radioText {
+  color: #3f4a44;
+  font-size: 14px;
+}
+
+.inputField {
+  width: 100%;
+  height: 20px;
+}
+
+#textAreaField {
+  height: 40px;
+}
+
+#submitBtn {
+  font-weight: bold;
+  color: white;
+  background-color: #ff9800;
+  padding: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 102.5%;
+  border: 1px solid #e65100;
+  border-radius: 4px;
+}
+
+#submitBtn:hover {
+  background-color: #e65100;
+}
+
+#customerAccNotice {
+  font-size: 12px;
+  color: #3f4a44;
+}
+
+#loginLink {
+  font-size: 13px;
+  color: #1a73e8;
+}
+
+#loginLink:hover {
+  color: #0d47a1;
+}
