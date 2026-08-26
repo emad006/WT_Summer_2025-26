@@ -1,13 +1,13 @@
 <?php
 session_start();
-include "config.php";
+// include "config.php";
 
 if (!empty($_SESSION["user_id"])) {
     header("Location:dashboard.php");
     exit();
 }
 
-$errors = array();
+// $errors = array();
 ?>
 
 <!DOCTYPE html>
@@ -25,22 +25,24 @@ $errors = array();
         <div id="errorArea"></div>
 
         <div class="inputBlock">
-            <label>Email:</label>
+            <label class="inputLabel">Email:</label>
             <br>
-            <input type="email" placeholder="Enter your email">
+            <input type="email" class="inputField" placeholder="Enter your email">
         </div>
 
         <div class="inputBlock">
-            <label>Password:</label>
+            <label class="inputLabel">Password:</label>
             <br>
-            <input type="password" placeholder="Enter your password">
+            <input type="password" class="inputField" placeholder="Enter your password">
         </div>
 
-        <input type="checkbox" id="rememberMe">Keep me signed in
-        <br>
-        <button type="submit">Login</button>
-        <br>
-        <a href="register.php">Don't have an account? Register</a>
+        <div class="inputBlock">
+            <input type="checkbox"><label id="rememberMeLabel">Remember me</label>
+            <br>
+            <button type="submit" id="submitBtn">Login</button>
+            <br>
+            <a href="register.php" id="registerLink">Don't have an account? Register</a>
+        </div>
     </div>
 
 </body>

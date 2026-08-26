@@ -1,22 +1,64 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    display: grid;
-    place-items: center; 
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  display: grid;
+  place-items: center;
 }
 
 #mainArea {
-    background-color: white;
-    border-radius: 8px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 20%;
 }
 
 #titleName {
-    font-size: 26px;
-    padding: 4px; 
-    margin: 10px;
-    border-bottom: 2px solid orange;
+  font-size: 26px;
+  padding: 4px;
+  margin: 10px 20px 20px 20px;
+  display: inline-block;
+  border-bottom: 2px solid orange;
 }
 
 .inputBlock {
-    padding: 10px;
+  margin: 10px 20px 10px 20px;
+}
+
+.inputLabel {
+  font-size: 14px;
+  font-weight: bold;
+  color: #3f4a44;
+}
+
+.inputField {
+  width: 100%;
+}
+
+#rememberMeLabel {
+  font-size: 14px;
+}
+
+#submitBtn {
+  font-weight: bold;
+  color: white;
+  background-color: #ff9800;
+  padding: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 102.5%;
+  border: 1px solid #e65100;
+  border-radius: 4px;
+}
+
+#submitBtn:hover {
+  background-color: #e65100;
+}
+
+#registerLink {
+  font-size: 13px;
+  color: #1a73e8;
+}
+
+#registerLink:hover {
+  color: #0d47a1;
 }
