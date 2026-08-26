@@ -1,5 +1,13 @@
 <?php
 session_start();
+
+include "../lib/dbConfig.php";
+
+$errors = [];
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -36,14 +44,14 @@ session_start();
             <div class="inputBlock customerDiv riderDiv">
                 <label class="inputLabel">Full Name</label>
                 <br>
-                <input type="text" name="name" class="inputField" placeholder="Enter your full name">
+                <input type="text" name="name" class="inputField" placeholder="Enter your full name" required>
             </div>
 
             <!-- #1: Owner Name (Restaurant) -->
             <div class="inputBlock restaurantDiv" style="display: none;">
                 <label class="inputLabel">Owner Name</label>
                 <br>
-                <input type="text" name="name" class="inputField" placeholder="Enter your full name">
+                <input type="text" name="name" class="inputField" placeholder="Enter your full name" required>
             </div>
 
 
@@ -53,14 +61,14 @@ session_start();
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Email</label>
                 <br>
-                <input type="text" name="email" class="inputField" placeholder="Enter your email">
+                <input type="text" name="email" class="inputField" placeholder="Enter your email" required>
             </div>
 
             <!-- #2: Shop Name (Restaurant) -->
             <div class="inputBlock restaurantDiv" style="display: none;">
                 <label class="inputLabel">Shop Name</label>
                 <br>
-                <input type="text" name="shopName" class="inputField" placeholder="Enter your shop name">
+                <input type="text" name="shopName" class="inputField" placeholder="Enter your shop name" required>
             </div>
 
             <!-- #2: Vehicle Type (Rider) -->
@@ -83,7 +91,7 @@ session_start();
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Phone</label>
                 <br>
-                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number">
+                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number" required>
             </div>
 
             <!-- #3: Cusine (Restaurant) -->
@@ -104,7 +112,7 @@ session_start();
             <div class="inputBlock riderDiv" style="display: none;">
                 <label class="inputLabel">Phone</label>
                 <br>
-                <input type="text" name="nidNum" class="inputField" placeholder="Enter your NID number">
+                <input type="text" name="nidNum" class="inputField" placeholder="Enter your NID number" required>
             </div>
 
 
@@ -120,7 +128,7 @@ session_start();
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Email</label>
                 <br>
-                <input type="text" name="email" class="inputField" placeholder="Enter your email">
+                <input type="text" name="email" class="inputField" placeholder="Enter your email" required>
             </div>
 
 
@@ -130,14 +138,14 @@ session_start();
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Password</label>
                 <br>
-                <input type="password" name="password" class="inputField" placeholder="Enter your password">
+                <input type="password" name="password" class="inputField" placeholder="Enter your password" required>
             </div>
 
             <!-- #5: Phone Number (Restaurant & Rider) -->
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Phone</label>
                 <br>
-                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number">
+                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number" required>
             </div>
 
 
@@ -147,7 +155,7 @@ session_start();
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Confirm Password</label>
                 <br>
-                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password">
+                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password" required>
             </div>
 
             <!-- #6: Shop Address (Restaurant) -->
@@ -171,14 +179,14 @@ session_start();
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Password</label>
                 <br>
-                <input type="password" name="password" class="inputField" placeholder="Enter your password">
+                <input type="password" name="password" class="inputField" placeholder="Enter your password" required>
             </div>
 
             <!-- #8: Confirm Password (Restaurant & Rider) -->
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Password</label>
                 <br>
-                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password">
+                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password" required>
             </div>
 
             <div class="inputBlock">
