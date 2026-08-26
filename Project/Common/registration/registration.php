@@ -7,6 +7,89 @@ $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
+    // <-------- Validation Start -------->
+
+    // Name validation
+    if (empty($_POST["name"])) { // Check if name is empty
+        $errors[] = "Name is required.";
+    } else if (strlen($_POST["name"]) < 2) { // Check if the name is at least 2 characters long
+        $errors[] = "Name must be at least 4 characters long.";
+    } else if (strlen($_POST["name"]) > 100) { // Check if the name is less than 100 characters long
+        $errors[] = "Name cannot exceed more than 100 characters long.";
+    }
+
+    // Email validation
+    if (empty($_POST["email"])) { // Check if email is empty
+        $errors[] = "Email is required.";
+    } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) { // Check if the email is valid
+        $errors[] = "Invalid email format.";
+    } else if (strlen($_POST["email"]) > 150) { // Check if the email is greater than 150 characters
+        $errors[] = "Email cannot exceed 150 characters.";
+    }
+
+    // Password validation
+    if (empty($_POST["password"])) { // Check if password is empty
+        $errors[] = "Password is required.";
+    } else if (strlen($_POST["password"]) < 8) { // Check if the password is at least 8 characters long
+        $errors[] = "Password must be at least 8 characters long.";
+    } else if (strlen($_POST["password"]) > 255) { // Check if the password is less than 255 characters long
+        $errors[] = "Password cannot exceed more than 255 characters long.";
+    } else if ($_POST["password"] !== $_POST["confPassword"]) { // Check if the passwords match
+        $errors[] = "Passwords do not match.";
+    }
+
+    // Phone validation
+    if (empty($_POST["phone"])) { // Check if phone is empty
+        $errors[] = "Phone is required.";
+    } else if (strlen($_POST["phone"]) < 10) { // Check if the phone is at least 10 characters long
+        $errors[] = "Phone must be at least 10 characters long.";
+    } else if (strlen($_POST["phone"]) > 20) { // Check if the phone is less than 20 characters long
+        $errors[] = "Phone cannot exceed 20 characters long.";
+    }
+
+    // Address validation
+    if (empty($_POST["addr"])) { // Check if address is empty
+        $errors[] = "Address is required.";
+    } else if (strlen($_POST["addr"]) < 10) { // Check if the address is at least 10 characters long
+        $errors[] = "Address must be at least 10 characters long.";
+    } else if (strlen($_POST["addr"]) > 255) { // Check if the address is less than 255 characters long
+        $errors[] = "Address cannot exceed 20 characters long.";
+    }
+
+    // Selective validation based on selected role
+    if ($_POST["role"] === "restaurant") {
+
+        // Shop name validation
+        if (empty($_POST["shopName"])) { // Check if shop name is empty
+            $errors[] = "Shop name is required.";
+        } else if (strlen($_POST["shopName"]) < 2) { // Check if the shop name is at least 2 characters long
+            $errors[] = "Shop name must be at least 2 characters long.";
+        } else if (strlen($_POST["shopName"]) > 120) { // Check if the shop name is less than 120 characters long
+            $errors[] = "Shop name cannot exceed 120 characters long.";
+        }
+
+        // Cusine type validation
+        if (empty($_POST["cusineType"])) {
+            $errors[] = "Cusine type is required.";
+        }
+    } else if ($_POST["role"] === "rider") {
+
+        // Vehicle type validation
+        if (empty($_POST["vehicleType"])) { // Check if vehicle type is empty
+            $errors[] = "Vehicle type is required.";
+        }
+
+        // NID number validation
+        if (empty($_POST["nidNum"])) { // Check if nid number is empty
+            $errors[] = "NID number is required.";
+        } else if (strlen($_POST["nidNum"]) < 10) { // Check if the nid number is at least 10 characters long
+            $errors[] = "NID number must be at least 10 characters long.";
+        } else if (strlen($_POST["nidNum"]) > 30) { // Check if the nid number is less than 30 characters long
+            $errors[] = "NID number cannot exceed 30 characters long.";
+        }
+    }
+
+    // <-------- Validation End -------->
 }
 ?>
 
@@ -110,7 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <!-- #3: NID Number (Rider) -->
             <div class="inputBlock riderDiv" style="display: none;">
-                <label class="inputLabel">Phone</label>
+                <label class="inputLabel">NID Number</label>
                 <br>
                 <input type="text" name="nidNum" class="inputField" placeholder="Enter your NID number" required>
             </div>
@@ -194,7 +277,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <br>
                 <label id="customerAccNotice">Customer accounts are activated immediately</label>
                 <br>
-                <a href="login.php" id="loginLink">Already registered? Login</a>
+                <a href="../login/login.php" id="loginLink">Already registered? Login</a>
             </div>
     </div>
     </form>
