@@ -170,14 +170,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv riderDiv">
                 <label class="inputLabel">Full Name</label>
                 <br>
-                <input type="text" name="name" class="inputField" placeholder="Enter your full name">
+                <input type="text" name="name" class="inputField" value="<?php if (!empty($_POST['name'])) echo $_POST['name']; ?>" placeholder="Enter your full name">
             </div>
 
             <!-- #1: Owner Name (Restaurant) -->
             <div class="inputBlock restaurantDiv" style="display: none;">
                 <label class="inputLabel">Owner Name</label>
                 <br>
-                <input type="text" name="name" class="inputField" placeholder="Enter your full name">
+                <input type="text" name="name" class="inputField" value="<?php if (!empty($_POST['name'])) echo $_POST['name']; ?>" placeholder="Enter your full name">
             </div>
 
 
@@ -187,14 +187,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Email</label>
                 <br>
-                <input type="text" name="email" class="inputField" placeholder="Enter your email">
+                <input type="text" name="email" class="inputField" value="<?php if (!empty($_POST['email'])) echo $_POST['email']; ?>" placeholder="Enter your email">
             </div>
 
             <!-- #2: Shop Name (Restaurant) -->
             <div class="inputBlock restaurantDiv" style="display: none;">
                 <label class="inputLabel">Shop Name</label>
                 <br>
-                <input type="text" name="shopName" class="inputField" placeholder="Enter your shop name">
+                <input type="text" name="shopName" class="inputField" value="<?php if (!empty($_POST['shopName'])) echo $_POST['shopName']; ?>" placeholder="Enter your shop name">
             </div>
 
             <!-- #2: Vehicle Type (Rider) -->
@@ -217,7 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Phone</label>
                 <br>
-                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number">
+                <input type="text" name="phone" class="inputField" value="<?php if (!empty($_POST['phone'])) echo $_POST['phone']; ?>" placeholder="Enter your phone number">
             </div>
 
             <!-- #3: Cusine (Restaurant) -->
@@ -241,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock riderDiv" style="display: none;">
                 <label class="inputLabel">NID Number</label>
                 <br>
-                <input type="text" name="nidNum" class="inputField" placeholder="Enter your NID number">
+                <input type="text" name="nidNum" class="inputField" value="<?php if (!empty($_POST['nidNum'])) echo $_POST['nidNum']; ?>" placeholder="Enter your NID number">
             </div>
 
 
@@ -250,14 +250,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Delivery Address</label>
                 <br>
-                <textarea name="addr" class="inputField textAreaField" placeholder="Enter your delivery address"></textarea>
+                <textarea name="addr" class="inputField textAreaField" value="<?php if (!empty($_POST['addr'])) echo $_POST['addr']; ?>" placeholder="Enter your delivery address"></textarea>
             </div>
 
             <!-- #4: Email Address (Restuarant & Rider) -->
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Email</label>
                 <br>
-                <input type="text" name="email" class="inputField" placeholder="Enter your email">
+                <input type="text" name="email" class="inputField" value="<?php if (!empty($_POST['email'])) echo $_POST['email']; ?>" placeholder="Enter your email">
             </div>
 
 
@@ -267,14 +267,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Password</label>
                 <br>
-                <input type="password" name="password" class="inputField" placeholder="Enter your password">
+                <input type="password" name="password" class="inputField" value="<?php if (!empty($_POST['password'])) echo $_POST['password']; ?>" placeholder="Enter your password">
             </div>
 
             <!-- #5: Phone Number (Restaurant & Rider) -->
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Phone</label>
                 <br>
-                <input type="text" name="phone" class="inputField" placeholder="Enter your phone number">
+                <input type="text" name="phone" class="inputField" value="<?php if (!empty($_POST['phone'])) echo $_POST['phone']; ?>" placeholder="Enter your phone number">
             </div>
 
 
@@ -284,21 +284,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock customerDiv">
                 <label class="inputLabel">Confirm Password</label>
                 <br>
-                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password">
+                <input type="password" name="confPassword" class="inputField" value="<?php if (!empty($_POST['confPassword'])) echo $_POST['confPassword']; ?>" placeholder="Confirm your password">
             </div>
 
             <!-- #6: Shop Address (Restaurant) -->
             <div class="inputBlock restaurantDiv" style="display: none;">
                 <label class="inputLabel">Shop Address</label>
                 <br>
-                <textarea name="addr" class="inputField textAreaField" placeholder="Enter your shop address"></textarea>
+                <textarea name="addr" class="inputField textAreaField" value="<?php if (!empty($_POST['addr'])) echo $_POST['addr']; ?>" placeholder="Enter your shop address"></textarea>
             </div>
 
             <!-- #6: Home Address (Rider) -->
             <div class="inputBlock riderDiv" style="display: none;">
                 <label class="inputLabel">Home Address</label>
                 <br>
-                <textarea name="addr" class="inputField textAreaField" placeholder="Enter your delivery address"></textarea>
+                <textarea name="addr" class="inputField textAreaField" value="<?php if (!empty($_POST['addr'])) echo $_POST['addr']; ?>" placeholder="Enter your delivery address"></textarea>
             </div>
 
 
@@ -308,14 +308,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Password</label>
                 <br>
-                <input type="password" name="password" class="inputField" placeholder="Enter your password">
+                <input type="password" name="password" class="inputField" value="<?php if (!empty($_POST['password'])) echo $_POST['password']; ?>" placeholder="Enter your password">
             </div>
 
             <!-- #8: Confirm Password (Restaurant & Rider) -->
             <div class="inputBlock restaurantDiv riderDiv" style="display: none;">
                 <label class="inputLabel">Confirm Password</label>
                 <br>
-                <input type="password" name="confPassword" class="inputField" placeholder="Confirm your password">
+                <input type="password" name="confPassword" class="inputField" value="<?php if (!empty($_POST['confPassword'])) echo $_POST['confPassword']; ?>" placeholder="Confirm your password">
             </div>
 
             <div class="inputBlock">
