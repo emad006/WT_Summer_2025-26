@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // <-------- Validation End -------->
-    
+
     // <-------- Query the Database -------->
     if (count($errors) === 0) {
 
@@ -101,7 +101,39 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $status = "pending";
         }
 
+        // Start transaction
+        mysqli_begin_transaction($conn);
 
+        try {
+            // Insert into "users"
+            $stmt = mysqli_prepare($conn, "INSERT INTO users (name, email, password, phone, address, role, account_status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            mysqli_stmt_bind_param($stmt, "sssssss", $_POST["name"], $_POST["email"], $_POST["password"], $_POST["phone"], $_POST["addr"], $_POST["role"], $status);
+            mysqli_stmt_execute($stmt);
+            $newID = mysqli_insert_id($conn);
+
+            // Check role of user and setup query
+            if ($_POST["role"] === "customer") {
+                $stmt = mysqli_prepare($conn, "INSERT INTO customers (user_id) VALUES (?)");
+                mysqli_stmt_bind_param($stmt, "i", $newID);
+            } else if ($_POST["restaurant"]) {
+                $stmt = mysqli_prepare($conn, "INSERT INTO restaurants (user_id, shop_name, cuisine_id, is_open) VALUES (?, ?, ?, 1)");
+                mysqli_stmt_bind_param($stmt, "isi", $newID, $_POST["shopName"], $_POST["cusineType"]);
+            } else if ($_POST["rider"]) {
+                $stmt = mysqli_prepare($conn, "INSERT INTO riders (user_id, vehicle_type, nid, is_on_duty) VALUES (?, ?, ?, 1)");
+                mysqli_stmt_bind_param($stmt, "iss", $newID, $_POST["vehicleType"], $_POST["nidNum"]);
+            } else if ($_POST["admin"]) {
+                $stmt = mysqli_prepare($conn, "INSERT INTO admins (user_id) VALUES (?)");
+                mysqli_stmt_bind_param($stmt, "i", $newID);
+            } else {
+                throw new Exception("Invalid role.");
+            }
+
+            mysqli_stmt_execute($stmt);
+            mysqli_commit($conn);
+        } catch (Exception $e) {
+            $errors[] = $e->getMessage();
+            mysqli_rollback($conn);
+        }
     }
 }
 ?>
@@ -197,11 +229,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <select name="cusineType">
                     <option value="">Select Cusine</option>
                     <?php
-                    $stmt = mysqli_prepare($conn, "SELECT DISTINCT(cuisine_name) FROM cuisines ORDER BY cuisine_name");
+                    $stmt = mysqli_prepare($conn, "SELECT cuisine_id, cuisine_name FROM cuisines ORDER BY cuisine_name");
                     mysqli_stmt_execute($stmt);
                     $result = mysqli_stmt_get_result($stmt);
                     while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<option value='" . $row["cuisine_name"] . "'>" . $row["cuisine_name"] . "</option>";
+                        echo "<option value='" . $row["cuisine_id"] . "'>" . $row["cuisine_name"] . "</option>";
                     }
                     ?>
                 </select>
