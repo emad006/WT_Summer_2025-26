@@ -12,13 +12,15 @@ $errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // <-------- Validation -------->
+    // <-------- Validation Start -------->
 
     // Check if email is empty
     if (empty($_POST["email"])) {
         $errors[] = "Email is required.";
     } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) { // Check if the email is valid
         $errors[] = "Invalid email format.";
+    } else if (strlen($_POST["email"] > 150)) { // Check if the email is greater than 150 characters
+        $errors[] = "Email cannot exceed 150 characters.";
     }
 
     // Check if password is empty
@@ -26,7 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors[] = "Password is required.";
     } else if (strlen($_POST["password"]) < 8) { // Check if the password is at least 8 characters long
         $errors[] = "Password must be at least 8 characters long.";
+    } else if (strlen($_POST["password"]) > 255) { // Check if the password is less than 255 characters long
+        $errors[] = "Password cannot exceed more than 255 characters long.";
     }
+
+    // <-------- Validation End -------->
 
 
     // <-------- Query the Database -------->
