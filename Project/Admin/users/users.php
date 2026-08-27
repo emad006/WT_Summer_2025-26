@@ -3,16 +3,14 @@ session_start();
 
 include "../db.php";
 
-if($_SESSION["role"] != "admin") {
+if ($_SESSION["role"] != "admin") {
     header("Location: ../../Common/login/login.php");
 }
 
-// Variables
 $pending_count = 0;
 $all_users_count = 0;
 $pending_users = [];
 
-// Get number of pending and all users (status box)
 $sql = "SELECT COUNT(*) AS 'pending_count' FROM users WHERE account_status = 'pending'";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
@@ -23,10 +21,24 @@ $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $all_users_count = $row["all_user_count"];
 
-// Get pending users (table)
-$sql = "SELECT u.name, u.role, u.email, u.phone, res.shop_name AS restaurant_name, u.address AS restaurant_address, rid.vehicle_type AS rider_vehicle, rid.nid AS rider_nid FROM users u LEFT JOIN restaurants res ON u.user_id = res.user_id LEFT JOIN riders rid ON u.user_id = rid.user_id WHERE u.account_status = 'pending'";
+$sql = "SELECT u.user_id, u.name, u.role, u.email, u.phone, res.shop_name AS restaurant_name, u.address AS restaurant_address, rid.vehicle_type AS rider_vehicle, rid.nid AS rider_nid FROM users u LEFT JOIN restaurants res ON u.user_id = res.user_id LEFT JOIN riders rid ON u.user_id = rid.user_id WHERE u.account_status = 'pending'";
 
 $pending_user_result = mysqli_query($conn, $sql);
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["action_btn"])) {
+        $user_id = $_POST["pending_user_id"];
+        
+        if ($_POST["action_btn"] == "Approve") {
+            $sql = "UPDATE users SET account_status = 'active' WHERE user_id = $user_id";
+            mysqli_query($conn, $sql);
+        } else if ($_POST["action_btn"] == "Reject") {
+            $sql = "UPDATE users SET account_status = 'rejected' WHERE user_id = $user_id";
+            mysqli_query($conn, $sql);
+        }
+    }
+}
 ?>
 
 
@@ -78,7 +90,7 @@ $pending_user_result = mysqli_query($conn, $sql);
                 </tr>
 
                 <?php
-                while($row = mysqli_fetch_assoc($pending_user_result)) {
+                while ($row = mysqli_fetch_assoc($pending_user_result)) {
                     echo "<tr>";
                     echo "<td>" . $row["name"] . "</td>";
                     echo "<td>" . ucfirst($row["role"]) . "</td>";
@@ -89,7 +101,7 @@ $pending_user_result = mysqli_query($conn, $sql);
                     } elseif ($row["role"] == "rider") {
                         if ($row["rider_vehicle"] == "on_foot") {
                             $rider_vehicle = "On Foot";
-                        }  else {
+                        } else {
                             $rider_vehicle = ucfirst($row["rider_vehicle"]);
                         }
                         echo "<td>" . $rider_vehicle . " · NID: " . $row["rider_nid"] . "</td>";
@@ -97,7 +109,14 @@ $pending_user_result = mysqli_query($conn, $sql);
                         echo "<td>N/A</td>";
                     }
 
-                    echo "<td><a href='#'>Approve</a> · <a href='#'>Reject</a></td>";
+                    echo "<td>";
+                    echo "<form method='post' style='display:inline;'>";
+                    echo "<input type='hidden' name='pending_user_id' value='" . $row['user_id'] . "'>";
+                    echo "<input type='submit' name='action_btn' value='Approve'> · ";
+                    echo "<input type='submit' name='action_btn' value='Reject'>";
+                    echo "</form>";
+                    echo "</td>";
+
                     echo "</tr>";
                 }
                 ?>
