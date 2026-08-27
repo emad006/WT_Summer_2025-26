@@ -2,6 +2,7 @@
 session_start();
 
 include "../lib/dbConfig.php";
+include "../lib/helperFunctions.php";
 
 $errors = [];
 
@@ -130,6 +131,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             mysqli_stmt_execute($stmt);
             mysqli_commit($conn);
+
+            // Redirect user to login page
+            header("Location:../login/login.php");
         } catch (Exception $e) {
             $errors[] = $e->getMessage();
             mysqli_rollback($conn);
