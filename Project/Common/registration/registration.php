@@ -206,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock riderDiv" style="display: none;">
                 <label class="inputLabel">Vehicle Type</label>
                 <br>
-                <select name="vehicleType">
+                <select name="vehicleType" class="inputField">
                     <option value="">Select Vehicle</option>
                     <option value="Car">Car</option>
                     <option value="Motorcycle">Motorcycle</option>
@@ -229,7 +229,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="inputBlock restaurantDiv" style="display: none;">
                 <label class="inputLabel">Cusine</label>
                 <br>
-                <select name="cusineType">
+                <select name="cusineType" class="inputField">
                     <option value="">Select Cusine</option>
                     <?php
                     $stmt = mysqli_prepare($conn, "SELECT cuisine_id, cuisine_name FROM cuisines ORDER BY cuisine_name");
