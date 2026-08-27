@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors[] = "Email is required.";
     } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) { // Check if the email is valid
         $errors[] = "Invalid email format.";
-    } else if (strlen($_POST["email"] > 150)) { // Check if the email is greater than 150 characters
+    } else if (strlen($_POST["email"]) > 150) { // Check if the email is greater than 150 characters
         $errors[] = "Email cannot exceed 150 characters.";
     }
 
@@ -55,6 +55,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } else { // Password is valid, proceeding
                 switch ($userRow["account_status"]) {
                     case "active":
+
+                        // Setup session
+                        $_SESSION["user_id"] = $userRow["user_id"];
+                        $_SESSION["name"] = $userRow["name"];
+                        $_SESSION["role"] = $userRow["role"];
+
+                        // Setup cookies (if checked)
+                        if (!empty($_POST["rememberMe"])) {
+                            $token = bin2hex(random_bytes(32));
+                            $stmt = mysqli_prepare($conn, "UPDATE users SET remember_token = ? WHERE user_id = ?");
+                            mysqli_stmt_bind_param($stmt, "ss", $token, $userRow["user_id"]);
+                            mysqli_stmt_execute($stmt);
+                            setcookie("remember_token", $token, time() + (86400 * 30), "/");
+                        }
+
+                        // Redirect user to dashboard
+                        redirectUser($userRow["role"]);
                         break;
                     case "pending":
                         $errors[] = "Your account is waiting for admin approval.";
