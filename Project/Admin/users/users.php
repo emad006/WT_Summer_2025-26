@@ -63,36 +63,39 @@
         </div>
 
         <div id="filter_box" class="box hide_box">
-            <div id="role_filter" class="filter">
-                Role<br>
-                <select name="roles">
-                    <option value="">All roles</option>
-                    <option value="customer">Customer</option>
-                    <option value="restaurant">Restaurant</option>
-                    <option value="rider">Rider</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
+            <form method="post">
+                <div id="role_filter" class="filter">
+                    Role<br>
+                    <select name="roles">
+                        <option value="">All roles</option>
+                        <option value="customer">Customer</option>
+                        <option value="restaurant">Restaurant</option>
+                        <option value="rider">Rider</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
 
-            <div id="status_filter" class="filter">
-                Status<br>
-                <select name="status">
-                    <option value="">All statuses</option>
-                    <option value="active">Active</option>
-                    <option value="pending">Pending</option>
-                    <option value="suspended">Suspended</option>
-                    <option value="rejected">Rejected</option>
-                </select>
-            </div>
+                <div id="status_filter" class="filter">
+                    Status<br>
+                    <select name="status">
+                        <option value="">All statuses</option>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="suspended">Suspended</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
 
-            <div id="search_filter" class="filter">
-                Search<br>
-                <input type="text" placeholder="name or email">
-            </div>
+                <div id="search_filter" class="filter">
+                    Search<br>
+                    <input type="text" name="search" placeholder="name or email">
+                </div>
 
-            <div id="filter_button" class="filter">
-                <button type="submit">Filter</button>
-            </div>
+                <div id="filter_button" class="filter">
+                    <br>
+                    <button type="submit">Filter</button>
+                </div>
+            </form>
         </div>
 
         <div id="table_box_all_users" class="box hide_box">
@@ -127,7 +130,7 @@
     function hidePendingApproval() {
         let pending_link = document.getElementById("link_pending");
         let all_users_link = document.getElementById("link_all_users");
-        
+
         let pending_table = document.getElementById("table_box_pending");
         let filter_box = document.getElementById("filter_box");
         let all_users_table = document.getElementById("table_box_all_users");
