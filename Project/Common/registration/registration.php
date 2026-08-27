@@ -148,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>FoodRush - Registration</title>
 </head>
 
-<body>
+<body onload="toggleRoleFields()">
     <div id="mainArea">
         <h1 id="titleName">Create your Account</h1>
 
@@ -161,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <input type="radio" name="role" class="radioField" id="customerRoleSelector" value="customer" onchange="toggleRoleFields()" <?php if (!isset($_POST["role"]) || $_POST["role"] === "customer") echo "checked"; ?>>
                     <label class="radioText">Customer</label>
 
-                    <input type="radio" name="role" class="radioField" id="restaurantRoleSelector" value="restaurant" onchange="toggleRoleFields()" <?php if (isset($_POST["role"]) && $_POST["role"] === "rider") echo "checked"; ?>>
+                    <input type="radio" name="role" class="radioField" id="restaurantRoleSelector" value="restaurant" onchange="toggleRoleFields()" <?php if (isset($_POST["role"]) && $_POST["role"] === "restaurant") echo "checked"; ?>>
                     <label class="radioText">Restaurant</label>
 
                     <input type="radio" name="role" class="radioField" id="riderRoleSelector" value="rider" onchange="toggleRoleFields()" <?php if (isset($_POST["role"]) && $_POST["role"] === "rider") echo "checked"; ?>>

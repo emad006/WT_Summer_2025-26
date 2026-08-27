@@ -1,35 +1,34 @@
-let customerDivs = Array.from(document.getElementsByClassName("customerDiv"));
-let restaurantDivs = Array.from(document.getElementsByClassName("restaurantDiv"));
-let riderDivs = Array.from(document.getElementsByClassName("riderDiv"));
-
-
 function toggleRoleFields() {
+    let customerDivs = Array.from(document.getElementsByClassName("customerDiv"));
+    let restaurantDivs = Array.from(document.getElementsByClassName("restaurantDiv"));
+    let riderDivs = Array.from(document.getElementsByClassName("riderDiv"));
+
     const customer = document.getElementById("customerRoleSelector").checked;
     const restaurant = document.getElementById("restaurantRoleSelector").checked;
     const rider = document.getElementById("riderRoleSelector").checked;
 
     if (customer) {
-        showCustomerFields();
+        showCustomerFields(customerDivs, restaurantDivs, riderDivs);
     } else if (restaurant) {
-        showRestaurantFields();
+        showRestaurantFields(customerDivs, restaurantDivs, riderDivs);
     } else if (rider) {
-        showRiderFields();
+        showRiderFields(customerDivs, restaurantDivs, riderDivs);
     }
 }
 
-function showCustomerFields() {
+function showCustomerFields(customerDivs, restaurantDivs, riderDivs) {
     restaurantDivs.forEach(hideDiv);
     riderDivs.forEach(hideDiv);
     customerDivs.forEach(showDiv);
 }
 
-function showRestaurantFields() {
+function showRestaurantFields(customerDivs, restaurantDivs, riderDivs) {
     customerDivs.forEach(hideDiv);
     riderDivs.forEach(hideDiv);
     restaurantDivs.forEach(showDiv);
 }
 
-function showRiderFields() {
+function showRiderFields(customerDivs, restaurantDivs, riderDivs) {
     customerDivs.forEach(hideDiv);
     restaurantDivs.forEach(hideDiv);
     riderDivs.forEach(showDiv);
@@ -44,3 +43,5 @@ function hideDiv(div) {
     div.style.display = "none";
     div.querySelectorAll("input, select, textarea").forEach(el => el.disabled = true);
 }
+
+
