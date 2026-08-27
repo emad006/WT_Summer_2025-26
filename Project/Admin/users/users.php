@@ -1,5 +1,34 @@
 <?php
+session_start();
+
+include "../db.php";
+
+if($_SESSION["role"] != "admin") {
+    header("Location: ../../Common/login/login.php");
+}
+
+// Variables
+$pending_count = 0;
+$all_users_count = 0;
+$pending_users = [];
+
+// Get number of pending and all users (status box)
+$sql = "SELECT COUNT(*) AS 'pending_count' FROM users WHERE account_status = 'pending'";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$pending_count = $row["pending_count"];
+
+$sql = "SELECT COUNT(*) AS 'all_user_count' FROM users";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$all_users_count = $row["all_user_count"];
+
+// Get pending users (table)
+$sql = "SELECT u.name, u.role, u.email, u.phone, res.shop_name AS restaurant_name, u.address AS restaurant_address, rid.vehicle_type AS rider_vehicle, rid.nid AS rider_nid FROM users u LEFT JOIN restaurants res ON u.user_id = res.user_id LEFT JOIN riders rid ON u.user_id = rid.user_id WHERE u.account_status = 'pending'";
+
+$pending_user_result = mysqli_query($conn, $sql);
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -21,7 +50,7 @@
             <a href="#" class="navigation_link">Logout</a>
         </div>
 
-        <div id="right_nav">System Admin · Admin</div>
+        <div id="right_nav"><?php echo $_SESSION["name"]; ?> · Admin</div>
     </div>
 
     <div id="main_box">
@@ -34,8 +63,8 @@
         </div>
 
         <div id="status_box" class="box">
-            <a href="#" id="link_pending" class="status_link status_active_link" onclick="showPendingApproval()">Pending Approval (<span name="pending_approval_count">4</span>)</a>
-            <a href="#" id="link_all_users" class="status_link" onclick="hidePendingApproval()">All Users (<span name="all_users_count">200</span>)</a>
+            <a href="#" id="link_pending" class="status_link status_active_link" onclick="showPendingApproval()">Pending Approval (<?php echo $pending_count; ?>)</a>
+            <a href="#" id="link_all_users" class="status_link" onclick="hidePendingApproval()">All Users (<?php echo $all_users_count; ?>)</a>
         </div>
 
         <div id="table_box_pending" class="box">
@@ -45,20 +74,33 @@
                     <th>Role</th>
                     <th>Email & phone</th>
                     <th>Details</th>
-                    <th>Applied</th>
                     <th>Action</th>
                 </tr>
 
-                <tr>
-                    <td>Shajmin</td>
-                    <td>Restaurant</td>
-                    <td>mezban@example.com<br>123-456-7890</td>
-                    <td>Bengali · Banani</td>
-                    <td>21 Aug</td>
-                    <td>
-                        <a href="#">Approve</a> · <a href="#">Reject</a>
-                    </td>
-                </tr>
+                <?php
+                while($row = mysqli_fetch_assoc($pending_user_result)) {
+                    echo "<tr>";
+                    echo "<td>" . $row["name"] . "</td>";
+                    echo "<td>" . ucfirst($row["role"]) . "</td>";
+                    echo "<td>" . $row["email"] . "<br>" . $row["phone"] . "</td>";
+
+                    if ($row["role"] == "restaurant") {
+                        echo "<td>" . $row["restaurant_name"] . " · " . $row["restaurant_address"] . "</td>";
+                    } elseif ($row["role"] == "rider") {
+                        if ($row["rider_vehicle"] == "on_foot") {
+                            $rider_vehicle = "On Foot";
+                        }  else {
+                            $rider_vehicle = ucfirst($row["rider_vehicle"]);
+                        }
+                        echo "<td>" . $rider_vehicle . " · NID: " . $row["rider_nid"] . "</td>";
+                    } else {
+                        echo "<td>N/A</td>";
+                    }
+
+                    echo "<td><a href='#'>Approve</a> · <a href='#'>Reject</a></td>";
+                    echo "</tr>";
+                }
+                ?>
             </table>
         </div>
 
@@ -105,7 +147,6 @@
                     <th>Name</th>
                     <th>Role</th>
                     <th>Email</th>
-                    <th>Joined</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -115,7 +156,6 @@
                     <td>Shajmin</td>
                     <td>Restaurant</td>
                     <td>mezban@example.com</td>
-                    <td>21 Aug</td>
                     <td>Active</td>
                     <td>
                         <a href="#">Suspend</a> · <a href="#">Reset Password</a>
@@ -125,6 +165,10 @@
         </div>
     </div>
 </body>
+
+
+
+
 
 <script>
     function hidePendingApproval() {
