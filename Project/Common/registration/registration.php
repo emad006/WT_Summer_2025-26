@@ -212,10 +212,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <br>
                 <select name="vehicleType" class="inputField">
                     <option value="">Select Vehicle</option>
-                    <option value="Car">Car</option>
-                    <option value="Motorcycle">Motorcycle</option>
-                    <option value="Cycle">Cycle</option>
-                    <option value="On Foot">On Foot</option>
+                    <option value="motorcycle">Motorcycle</option>
+                    <option value="bicycle">Bicycle</option>
+                    <option value="on_foot">On Foot</option>
                 </select>
             </div>
 
