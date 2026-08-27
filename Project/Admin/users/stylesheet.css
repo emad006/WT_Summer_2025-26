@@ -46,12 +46,16 @@ h2 {
     border-radius: 10px;
 }
 
-#error_box {
+#reset_pass_box {
     color: #1d5504;
     background-color: #dcffcd;
     padding: 10px;
     border: 3px solid rgb(200, 255, 200);
     border-radius: 5px;
+}
+
+#reset_pass_box:empty {
+    display: none;
 }
 
 .box {
@@ -109,7 +113,7 @@ td {
     color: #4a5568;
 }
 
-.filter button {
+#filter_btn {
     background-color: orange;
     color: white;
     border: none;
@@ -121,4 +125,12 @@ td {
 a {
     text-decoration: none;
     color: rgb(24, 112, 142);
+}
+
+.action_btn {
+    background-color: rgb(250, 224, 224);
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin: 5px;
 }

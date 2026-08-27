@@ -7,9 +7,12 @@ if ($_SESSION["role"] != "admin") {
     header("Location: ../../Common/login/login.php");
 }
 
+$reset_password_new_password = "";
+
 $pending_count = 0;
 $all_users_count = 0;
 $pending_users = [];
+$all_users = [];
 
 $sql = "SELECT COUNT(*) AS 'pending_count' FROM users WHERE account_status = 'pending'";
 $result = mysqli_query($conn, $sql);
@@ -22,20 +25,37 @@ $row = mysqli_fetch_assoc($result);
 $all_users_count = $row["all_user_count"];
 
 $sql = "SELECT u.user_id, u.name, u.role, u.email, u.phone, res.shop_name AS restaurant_name, u.address AS restaurant_address, rid.vehicle_type AS rider_vehicle, rid.nid AS rider_nid FROM users u LEFT JOIN restaurants res ON u.user_id = res.user_id LEFT JOIN riders rid ON u.user_id = rid.user_id WHERE u.account_status = 'pending'";
-
 $pending_user_result = mysqli_query($conn, $sql);
+
+$sql = "SELECT user_id, name, role, email, account_status FROM users";
+$all_users_result = mysqli_query($conn, $sql);
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["action_btn"])) {
-        $user_id = $_POST["pending_user_id"];
-        
+        $user_id = $_POST["row_user_id"];
+
         if ($_POST["action_btn"] == "Approve") {
             $sql = "UPDATE users SET account_status = 'active' WHERE user_id = $user_id";
             mysqli_query($conn, $sql);
         } else if ($_POST["action_btn"] == "Reject") {
             $sql = "UPDATE users SET account_status = 'rejected' WHERE user_id = $user_id";
             mysqli_query($conn, $sql);
+        } else if ($_POST["action_btn"] == "Suspend") {
+            $sql = "UPDATE users SET account_status = 'suspended' WHERE user_id = $user_id";
+            mysqli_query($conn, $sql);
+        } else if ($_POST["action_btn"] == "Reactivate") {
+            $sql = "UPDATE users SET account_status = 'active' WHERE user_id = $user_id";
+            mysqli_query($conn, $sql);
+        } else if ($_POST["action_btn"] == "Reset Password") {
+            $reset_password_new_password = uniqid();
+            $sql = "UPDATE users SET password = '$reset_password_new_password' WHERE user_id = $user_id";
+            mysqli_query($conn, $sql);
+        }
+
+        if ($_POST["action_btn"] != "Reset Password") {
+            header("Location:users.php");
+            exit();
         }
     }
 }
@@ -68,11 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div id="main_box">
         <h2>Users</h2>
 
-        <div id="error_box" class="box">
-            Password reset for Rakib Hasan (rakib@example.com).<br>
-            Temporary password: Tq7f-92Kd<br>
-            Give this to the user directly. It will not be shown again.
-        </div>
+        <div id="reset_pass_box" class="box"><?php if (!empty($reset_password_new_password)) echo "New password: " . $reset_password_new_password; ?></div>
 
         <div id="status_box" class="box">
             <a href="#" id="link_pending" class="status_link status_active_link" onclick="showPendingApproval()">Pending Approval (<?php echo $pending_count; ?>)</a>
@@ -111,9 +127,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     echo "<td>";
                     echo "<form method='post' style='display:inline;'>";
-                    echo "<input type='hidden' name='pending_user_id' value='" . $row['user_id'] . "'>";
-                    echo "<input type='submit' name='action_btn' value='Approve'> · ";
-                    echo "<input type='submit' name='action_btn' value='Reject'>";
+                    echo "<input type='hidden' name='row_user_id' value='" . $row['user_id'] . "'>";
+                    echo "<input type='submit' class='action_btn' name='action_btn' value='Approve'> · ";
+                    echo "<input type='submit' class='action_btn' name='action_btn' value='Reject'>";
                     echo "</form>";
                     echo "</td>";
 
@@ -154,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div id="filter_button" class="filter">
                     <br>
-                    <button type="submit">Filter</button>
+                    <button type="submit" id="filter_btn">Filter</button>
                 </div>
             </form>
         </div>
@@ -170,22 +186,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <th>Action</th>
                 </tr>
 
-                <tr>
-                    <td>1</td>
-                    <td>Shajmin</td>
-                    <td>Restaurant</td>
-                    <td>mezban@example.com</td>
-                    <td>Active</td>
-                    <td>
-                        <a href="#">Suspend</a> · <a href="#">Reset Password</a>
-                    </td>
-                </tr>
+                <?php
+                while ($row = mysqli_fetch_assoc($all_users_result)) {
+                    if ($row["account_status"] != "deleted") {
+                        echo "<tr>";
+                        echo "<td>" . $row['user_id'] . "</td>";
+                        echo "<td>" . $row['name'] . "</td>";
+                        echo "<td>" . ucfirst($row['role']) . "</td>";
+                        echo "<td>" . $row['email'] . "</td>";
+                        echo "<td>" . ucfirst($row['account_status']) . "</td>";
+
+                        echo "<td>";
+                        echo "<form method='post' style='display:inline;'>";
+                        echo "<input type='hidden' name='row_user_id' value='" . $row['user_id'] . "'>";
+
+                        if ($row["account_status"] != "suspended") {
+                            echo "<input type='submit' class='action_btn' name='action_btn' value='Suspend'> · ";
+                        } else {
+                            echo "<input type='submit' class='action_btn' name='action_btn' value='Reactivate'> · ";
+                        }
+
+                        echo "<input type='submit' class='action_btn' name='action_btn' value='Reset Password'>";
+                        echo "</form>";
+                        echo "</td>";
+
+                        echo "</tr>";
+                    }
+                }
+                ?>
+
             </table>
         </div>
     </div>
 </body>
-
-
 
 
 
