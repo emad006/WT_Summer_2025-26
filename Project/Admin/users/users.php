@@ -10,15 +10,32 @@
 </head>
 
 <body>
+    <div id="navigation_bar">
+        <div id="left_nav">
+            <a href="#" class="navigation_link">Dashboard</a>
+            <a href="#" class="navigation_link active_link">Users</a>
+            <a href="#" class="navigation_link">Cusines</a>
+            <a href="#" class="navigation_link">Orders</a>
+            <a href="#" class="navigation_link">Reviews</a>
+            <a href="#" class="navigation_link">Profile</a>
+            <a href="#" class="navigation_link">Logout</a>
+        </div>
+
+        <div id="right_nav">System Admin · Admin</div>
+    </div>
+
     <div id="main_box">
         <h2>Users</h2>
 
         <div id="error_box" class="box">
+            Password reset for Rakib Hasan (rakib@example.com).<br>
+            Temporary password: Tq7f-92Kd<br>
+            Give this to the user directly. It will not be shown again.
         </div>
 
         <div id="status_box" class="box">
-            <a href="#">Pending Approval (4)</a>
-            <a href="#">All Users (214)</a>
+            <a href="#">Pending Approval (<span name="pending_approval_count">4</span>)</a>
+            <a href="#">All Users (<span name="all_users_count">200</span>)</a>
         </div>
 
         <div id="table_box_pending" class="box">
