@@ -34,8 +34,8 @@
         </div>
 
         <div id="status_box" class="box">
-            <a href="#">Pending Approval (<span name="pending_approval_count">4</span>)</a>
-            <a href="#">All Users (<span name="all_users_count">200</span>)</a>
+            <a href="#" class="status_link status_active_link">Pending Approval (<span name="pending_approval_count">4</span>)</a>
+            <a href="#" class="status_link">All Users (<span name="all_users_count">200</span>)</a>
         </div>
 
         <div id="table_box_pending" class="box">
