@@ -73,7 +73,7 @@ table {
     color: orange;
 }
 
-#filter_box, #table_box_all_users {
+.hide_box {
     display: none;
 }
 

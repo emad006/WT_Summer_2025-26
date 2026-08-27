@@ -34,8 +34,8 @@
         </div>
 
         <div id="status_box" class="box">
-            <a href="#" class="status_link status_active_link">Pending Approval (<span name="pending_approval_count">4</span>)</a>
-            <a href="#" class="status_link">All Users (<span name="all_users_count">200</span>)</a>
+            <a href="#" id="link_pending" class="status_link status_active_link" onclick="showPendingApproval()">Pending Approval (<span name="pending_approval_count">4</span>)</a>
+            <a href="#" id="link_all_users" class="status_link" onclick="hidePendingApproval()">All Users (<span name="all_users_count">200</span>)</a>
         </div>
 
         <div id="table_box_pending" class="box">
@@ -62,7 +62,7 @@
             </table>
         </div>
 
-        <div id="filter_box" class="box">
+        <div id="filter_box" class="box hide_box">
             <div id="role_filter" class="filter">
                 Role<br>
                 <select name="roles">
@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <div id="table_box_all_users" class="box">
+        <div id="table_box_all_users" class="box hide_box">
             <table border="1">
                 <tr>
                     <th>ID</th>
@@ -122,5 +122,40 @@
         </div>
     </div>
 </body>
+
+<script>
+    function hidePendingApproval() {
+        let pending_link = document.getElementById("link_pending");
+        let all_users_link = document.getElementById("link_all_users");
+        
+        let pending_table = document.getElementById("table_box_pending");
+        let filter_box = document.getElementById("filter_box");
+        let all_users_table = document.getElementById("table_box_all_users");
+
+
+        pending_link.classList.remove("status_active_link");
+        all_users_link.classList.add("status_active_link");
+
+        pending_table.classList.add("hide_box");
+        filter_box.classList.remove("hide_box");
+        all_users_table.classList.remove("hide_box");
+    }
+
+    function showPendingApproval() {
+        let pending_link = document.getElementById("link_pending");
+        let all_users_link = document.getElementById("link_all_users");
+
+        let pending_table = document.getElementById("table_box_pending");
+        let filter_box = document.getElementById("filter_box");
+        let all_users_table = document.getElementById("table_box_all_users");
+
+        all_users_link.classList.remove("status_active_link");
+        pending_link.classList.add("status_active_link");
+
+        pending_table.classList.remove("hide_box");
+        filter_box.classList.add("hide_box");
+        all_users_table.classList.add("hide_box");
+    }
+</script>
 
 </html>
