@@ -172,7 +172,7 @@ td {
     border-radius: 8px;
     border: 2px solid #e53e3e;
     padding: 12px 16px;
-    margin: 5px 20px 10px 20px;
+    margin: 5px 20px 10px 0px;
 }
 
 #statusBlock:not(:empty) {
