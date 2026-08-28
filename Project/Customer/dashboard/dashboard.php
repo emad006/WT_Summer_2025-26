@@ -51,7 +51,7 @@ $allActiveOrders = mysqli_stmt_get_result($stmt);
             <a href="#" class="navLink">Browse</a>
             <a href="#" class="navLink">Cart</a>
             <a href="#" class="navLink">My Orders</a>
-            <a href="#" class="navLink">Profile</a>
+            <a href="../profile/profile.php" class="navLink">Profile</a>
             <a href="../../Common/logout.php" class="navLink">Logout</a>
         </div>
 
