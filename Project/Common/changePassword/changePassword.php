@@ -5,7 +5,7 @@ include "../lib/dbConfig.php";
 include "../lib/helperFunctions.php";
 
 if (!isset($_SESSION["user_id"])) {
-    header("../login/login.php");
+    header("Location:../../Common/logout.php");
     exit();
 }
 
