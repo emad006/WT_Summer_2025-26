@@ -37,9 +37,9 @@ $all_users_result = mysqli_query($conn, $sql);
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
+
     if (isset($_POST["filter_btn"])) {
-        if(!empty($_POST["roles_filter"])) {
+        if (!empty($_POST["roles_filter"])) {
             $selected_role = $_POST["roles_filter"];
             $where_clauses[] = "role = '$selected_role'";
         }
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST["action_btn"])) {
         $user_id = $_POST["row_user_id"];
-        
+
         if ($_POST["action_btn"] == "Approve") {
             $sql = "UPDATE users SET account_status = 'active' WHERE user_id = $user_id";
             mysqli_query($conn, $sql);
@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="#" class="navigation_link">Cusines</a>
             <a href="#" class="navigation_link">Orders</a>
             <a href="#" class="navigation_link">Reviews</a>
-            <a href="#" class="navigation_link">Profile</a>
+            <a href="../profile/profile.php" class="navigation_link">Profile</a>
             <a href="../logout.php" class="navigation_link">Logout</a>
         </div>
 
@@ -218,28 +218,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <?php
                 while ($row = mysqli_fetch_assoc($all_users_result)) {
-                        echo "<tr>";
-                        echo "<td>" . $row['user_id'] . "</td>";
-                        echo "<td>" . $row['name'] . "</td>";
-                        echo "<td>" . ucfirst($row['role']) . "</td>";
-                        echo "<td>" . $row['email'] . "</td>";
-                        echo "<td>" . ucfirst($row['account_status']) . "</td>";
+                    echo "<tr>";
+                    echo "<td>" . $row['user_id'] . "</td>";
+                    echo "<td>" . $row['name'] . "</td>";
+                    echo "<td>" . ucfirst($row['role']) . "</td>";
+                    echo "<td>" . $row['email'] . "</td>";
+                    echo "<td>" . ucfirst($row['account_status']) . "</td>";
 
-                        echo "<td>";
-                        echo "<form method='post' style='display:inline;'>";
-                        echo "<input type='hidden' name='row_user_id' value='" . $row['user_id'] . "'>";
-                        
-                        if ($row["account_status"] != "suspended") {
-                            echo "<input type='submit' class='action_btn' name='action_btn' value='Suspend'> · ";
-                        } else {
-                            echo "<input type='submit' class='action_btn' name='action_btn' value='Reactivate'> · ";
-                        }
+                    echo "<td>";
+                    echo "<form method='post' style='display:inline;'>";
+                    echo "<input type='hidden' name='row_user_id' value='" . $row['user_id'] . "'>";
 
-                        echo "<input type='submit' class='action_btn' name='action_btn' value='Reset Password'>";
-                        echo "</form>";
-                        echo "</td>";
+                    if ($row["account_status"] != "suspended") {
+                        echo "<input type='submit' class='action_btn' name='action_btn' value='Suspend'> · ";
+                    } else {
+                        echo "<input type='submit' class='action_btn' name='action_btn' value='Reactivate'> · ";
+                    }
 
-                        echo "</tr>";
+                    echo "<input type='submit' class='action_btn' name='action_btn' value='Reset Password'>";
+                    echo "</form>";
+                    echo "</td>";
+
+                    echo "</tr>";
                 }
                 ?>
 
