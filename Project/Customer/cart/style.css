@@ -164,26 +164,13 @@ td {
     font-weight: bold;
     color: #374151;
     background-color: #e5e7eb;
-    padding: 4px 8px;
+    padding: 5px 8px;
     border: 1px solid #d1d5db;
     border-radius: 4px;
 }
 
 .updateBtn:hover {
     background-color: #f3f4f6;
-}
-
-.removeBtn {
-    font-weight: bold;
-    color: rgb(230, 51, 51);
-    background-color: white;
-    padding: 4px 8px;
-    border: 1px solid #e65100;
-    border-radius: 4px;
-}
-
-.removeBtn:hover {
-    background-color: #e4c6c6;
 }
 
 #placeOrderBtn {
@@ -216,7 +203,7 @@ td {
     background-color: #bcb9b9;
 }
 
-#browseBtn {
+#browseLinkBtn {
     color: white;
     background-color: #ff9800;
     font-weight: bold;
@@ -228,6 +215,22 @@ td {
     width: 100%;
 }
 
-#browseBtn:hover {
+#browseLinkBtn:hover {
     background-color: #e65100;
+}
+
+.updateQtyBtn {
+    padding: 5px;
+    border: 1px solid #3f4a44;
+    border-radius: 4px;
+}
+
+.removeItemLink {
+    font-size: 14px;
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.removeItemLink:hover {
+    color: #0d47a1;
 }
