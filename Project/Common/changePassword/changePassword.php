@@ -4,6 +4,11 @@ session_start();
 include "../lib/dbConfig.php";
 include "../lib/helperFunctions.php";
 
+if (!isset($_SESSION["user_id"])) {
+    header("../login/login.php");
+    exit();
+}
+
 $errors = [];
 $success = "";
 
@@ -85,11 +90,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <a href="#" class="navLink">Cart</a>
             <a href="#" class="navLink">My Orders</a>
             <a href="#" class="navLink navLinkActive">Profile</a>
-            <a href="#" class="navLink">Logout</a>
+            <a href="../logout.php" class="navLink">Logout</a>
         </div>
 
-        <!-- TODO: Dynamic name + role display -->
-        <div id="navRight">Emad · Customer</div>
+        <div id="navRight"><?php echo $_SESSION["name"] . " · " . ucfirst($_SESSION["role"]); ?></div>
     </div>
 
     <div id="mainArea">
