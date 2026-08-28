@@ -9,6 +9,9 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "customer") {
     exit();
 }
 
+$errors = [];
+$success = [];
+
 // Get restaurant details
 $stmt = mysqli_prepare($conn, "SELECT r.user_id, r.shop_name, c.cuisine_name, u.address, COALESCE(ROUND(AVG(rev.rating), 1), 0.0) AS rating, COUNT(rev.review_id) AS total_ratings, r.is_open FROM restaurants r INNER JOIN cuisines c ON r.cuisine_id = c.cuisine_id INNER JOIN users u ON r.user_id = u.user_id LEFT JOIN orders o ON r.user_id = o.restaurant_id LEFT JOIN reviews rev ON o.order_id = rev.order_id AND rev.is_removed = 0 WHERE r.user_id = ? GROUP BY r.shop_name, c.cuisine_name, u.address, r.is_open");
 mysqli_stmt_bind_param($stmt, "i", $_GET["restaurant_id"]);
@@ -21,6 +24,10 @@ $stmt = mysqli_prepare($conn, "SELECT item_id, photo, item_name, description, RO
 mysqli_stmt_bind_param($stmt, "i", $_GET["restaurant_id"]);
 mysqli_stmt_execute($stmt);
 $allMenuItems = mysqli_stmt_get_result($stmt);
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["addToCartBtn"])) {
+    
+}
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +56,9 @@ $allMenuItems = mysqli_stmt_get_result($stmt);
 
     <div id="mainArea">
         <h1 id="titleName"><?php echo $restaurantDetails["shop_name"]; ?></h1>
+
+        <div id="successBlock"><?php if (!empty($success)) echo implode("<br>", $success) ?></div>
+        <div id="errorBlock"><?php if (!empty($errors)) echo implode("<br>", $errors) ?></div>
 
         <div>
             <label id="restaurantInfo">
@@ -95,12 +105,14 @@ $allMenuItems = mysqli_stmt_get_result($stmt);
                     }
 
                     if ($restaurantDetails["is_open"] === 1 && $row["is_available"] === 1) {
-                        echo "<td><input type='text' class='inputField' value='1'></td>";
-                        echo "<td><button class='addToCartBtn restaurantOpenButtonStyle'>Add</button></td>";
+                        echo "<td><input type='text' name='qty' class='inputField' value='1'></td>";
+                        echo "<td><button type='submit' name='addToCartBtn' class='addToCartBtn restaurantOpenButtonStyle'>Add</button></td>";
                     } else {
-                        echo "<td><input type='text' class='inputField' value='1' disabled></td>";
-                        echo "<td><button class='addToCartBtn restaurantClosedButtonStyle' disabled>Add</button></td>";
+                        echo "<td><input type='text' name='qty' class='inputField' value='1' disabled></td>";
+                        echo "<td><button type='submit' name='addToCartBtn' class='addToCartBtn restaurantClosedButtonStyle' disabled>Add</button></td>";
                     }
+
+                    echo "<input type='hidden' name='item_id' value='" . $row["item_id"] . "'>";
 
                     echo "</tr>";
                     echo "</form>";
