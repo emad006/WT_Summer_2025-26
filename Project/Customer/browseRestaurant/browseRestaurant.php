@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
             </form>
 
             <div>
-                <label class="labelText">Recently Viewed</label>
+                <label class="labelText">Recently Viewed</label> <!-- TODO: Add logic for recently viewed -->
             </div>
 
             <div id="tableBlock"> <!-- TODO: Hide table and show a info div when there are no results -->
