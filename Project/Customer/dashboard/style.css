@@ -38,3 +38,41 @@ body {
 .navLinkActive {
     border-bottom: 3px solid #e67e22;
 }
+
+#mainArea {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 50%;
+}
+
+#titleName {
+  font-size: 26px;
+  padding: 4px;
+  margin: 10px 20px 20px 20px;
+  display: inline-block;
+  border-bottom: 2px solid orange;
+}
+
+.tableBlock {
+  margin: 10px 20px 20px 20px;
+}
+
+table {
+    text-align: left;
+    border-collapse: collapse;
+    margin-top: 4px;
+    width: 100%;
+}
+
+th, td {
+    font-size: 14px;
+    color: #353b38;
+    padding-left: 10px;
+}
+
+#activeOrdersLabel {
+  font-size: 14px;
+  font-weight: bold;
+  color: #3f4a44;
+}
