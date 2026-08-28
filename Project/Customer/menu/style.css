@@ -94,8 +94,8 @@ td {
 }
 
 #restaurantInfo {
-  font-size: 14px;
-  color: #3f4a44;
+    font-size: 14px;
+    color: #3f4a44;
 }
 
 .restaurantStatusClass {
@@ -158,28 +158,28 @@ td {
 }
 
 #successBlock:not(:empty) {
-  color: #2a7025;
-  background-color: #a2d2b3;
-  border-radius: 8px;
-  border: 2px solid #87b496;
-  padding: 12px 16px;
-  margin: 5px 20px 10px 0px;
+    color: #2a7025;
+    background-color: #a2d2b3;
+    border-radius: 8px;
+    border: 2px solid #87b496;
+    padding: 12px 16px;
+    margin: 5px 20px 10px 0px;
 }
 
 #errorBlock:not(:empty) {
-  color: #9b1c1c;
-  background-color: #fdf2f2;
-  border-radius: 8px;
-  border: 2px solid #e53e3e;
-  padding: 12px 16px;
-  margin: 5px 20px 10px 20px;
+    color: #9b1c1c;
+    background-color: #fdf2f2;
+    border-radius: 8px;
+    border: 2px solid #e53e3e;
+    padding: 12px 16px;
+    margin: 5px 20px 10px 20px;
 }
 
 #statusBlock:not(:empty) {
-    color: #92400E;
-    background-color: #FEF3C7;
+    color: #92400e;
+    background-color: #fef3c7;
     border-radius: 8px;
-    border: 2px solid #F59E0B;
+    border: 2px solid #f59e0b;
     padding: 12px 16px;
     margin: 5px 20px 10px 0px;
 }

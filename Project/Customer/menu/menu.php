@@ -95,15 +95,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["addToCartBtn"])) {
         <div>
             <label id="restaurantInfo">
                 <?php
-                    echo $restaurantDetails["cuisine_name"] . " · ";
-                    echo $restaurantDetails["address"] . " · ";
-                    echo "Rating " . $restaurantDetails["rating"] . " from " . $restaurantDetails["total_ratings"] . " review(s)";
-                    
-                    if ($restaurantDetails["is_open"] === 1) {
-                        echo "<label id='restaurantOpenStatus' class='restaurantStatusClass'>Open</label>";
-                    } else {
-                        echo "<label id='restaurantCloseStatus' class='restaurantStatusClass'>Closed</label>";
-                    }
+                echo $restaurantDetails["cuisine_name"] . " · ";
+                echo $restaurantDetails["address"] . " · ";
+                echo "Rating " . $restaurantDetails["rating"] . " from " . $restaurantDetails["total_ratings"] . " review(s)";
+
+                if ($restaurantDetails["is_open"] === 1) {
+                    echo "<label id='restaurantOpenStatus' class='restaurantStatusClass'>Open</label>";
+                } else {
+                    echo "<label id='restaurantCloseStatus' class='restaurantStatusClass'>Closed</label>";
+                }
                 ?>
             </label>
         </div>
