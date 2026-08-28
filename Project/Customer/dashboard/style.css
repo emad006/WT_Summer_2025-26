@@ -74,10 +74,12 @@ th, td {
 
 th {
     background-color: #e2e8f0;
+    padding: 10px;
 }
 
 td {
     background-color: #f8fafc;
+    padding: 8px;
 }
 
 #activeOrdersLabel {
