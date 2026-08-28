@@ -13,6 +13,11 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "customer") {
 $stmt = mysqli_prepare($conn, "SELECT cuisine_id, cuisine_name FROM cuisines ORDER BY cuisine_name");
 mysqli_stmt_execute($stmt);
 $allCuisines = mysqli_stmt_get_result($stmt);
+
+// Get restaurants
+$stmt = mysqli_prepare($conn, "SELECT r.user_id AS restaurant_id, r.shop_name, c.cuisine_name, r.is_open, COALESCE(ROUND(AVG(rev.rating), 1), 0.0) AS rating, COUNT(rev.review_id) AS total_ratings FROM restaurants r INNER JOIN cuisines c ON r.cuisine_id = c.cuisine_id INNER JOIN users u ON r.user_id = u.user_id LEFT JOIN orders o ON r.user_id = o.restaurant_id LEFT JOIN reviews rev ON o.order_id = rev.order_id AND rev.is_removed = 0 WHERE u.account_status = 'active' GROUP BY r.user_id, r.shop_name, c.cuisine_name, r.is_open ORDER BY r.shop_name ASC");
+mysqli_stmt_execute($stmt);
+$allRestaurants = mysqli_stmt_get_result($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -44,13 +49,13 @@ $allCuisines = mysqli_stmt_get_result($stmt);
             <form method="post">
                 <div id="filterArea">
                     <div class="filterGroup">
-                        <label>Search</label>
+                        <label class="labelText">Search</label>
                         <br>
                         <input type="text" name="search" class="inputField" id="searchBox" value="<?php if (!empty($_POST['search'])) echo $_POST['search']; ?>">
                     </div>
 
                     <div class="filterGroup">
-                        <label>Cusine</label>
+                        <label class="labelText">Cusine</label>
                         <br>
                         <select name="cuisineType" class="inputField">
                             <option value="">Select Cusine</option>
@@ -63,7 +68,7 @@ $allCuisines = mysqli_stmt_get_result($stmt);
                     </div>
 
                     <div class="filterGroup">
-                        <label>Search</label>
+                        <label class="labelText">Search</label>
                         <br>
                         <select name="status" class="inputField">
                             <option value="">All</option>
@@ -73,7 +78,7 @@ $allCuisines = mysqli_stmt_get_result($stmt);
                     </div>
 
                     <div class="filterGroup">
-                        <label>Sort By</label>
+                        <label class="labelText">Sort By</label>
                         <br>
                         <select name="sortBy" class="inputField">
                             <option value="sortByName">Name (A-Z)</option>
@@ -88,7 +93,7 @@ $allCuisines = mysqli_stmt_get_result($stmt);
             </form>
 
             <div>
-                <label>Recently Viewed</label>
+                <label class="labelText">Recently Viewed</label>
             </div>
 
             <div id="tableBlock">
@@ -100,6 +105,22 @@ $allCuisines = mysqli_stmt_get_result($stmt);
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
+
+                    <?php
+                    while ($row = mysqli_fetch_assoc($allRestaurants)) {
+                        echo "<tr>";
+                        echo "<td><label class='tableLabel'>" . $row["shop_name"] . "</label></td>";
+                        echo "<td><label class='tableLabel'>" . $row["cuisine_name"] . "</label></td>";
+                        echo "<td><label class='tableLabel'>" . $row["rating"] . " (" . $row["total_ratings"] . ")</label></td>";
+                        if ($row["is_open"] === 1) {
+                            echo "<td><label class='tableLabel' style='color: green;'>Open</label></td>";
+                        } else {
+                            echo "<td><label class='tableLabel' style='color: red;'>Closed</label></td>";
+                        }
+                        echo "<td><a class='viewMenuLink' href='viewMenu.php?restaurant_id=" . $row["restaurant_id"] . "'>View Menu</a></td>";
+                        echo "</tr>";
+                    }
+                    ?>
                 </table>
             </div>
         </div>

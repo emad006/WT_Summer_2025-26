@@ -111,16 +111,23 @@ td {
 
 th {
     background-color: #e2e8f0;
+    padding: 10px;
 }
 
 td {
     background-color: #f8fafc;
+    padding: 8px;
 }
 
-label {
+.labelText {
   font-size: 14px;
   font-weight: bold;
   color: #3f4a44;
+}
+
+.tableLabel {
+    font-size: 14px;
+    color: black;
 }
 
 .viewMenuLink {
