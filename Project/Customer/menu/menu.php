@@ -9,8 +9,15 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "customer") {
     exit();
 }
 
+// Kick out user if no restaurant ID is sent
+if (empty($_GET["restaurant_id"])) {
+    header("Location:../browseRestaurant/browseRestaurant.php");
+    exit();
+}
+
 if (!isset($_SESSION["cart"])) {
     $_SESSION["cart"] = [];
+    $_SESSION["cart_restaurant_id"] = null;
 }
 
 $errors = [];
@@ -50,13 +57,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["addToCartBtn"])) {
 
     if (count($errors) === 0) { // Proceed to add to cart
 
-        if (!isset($_SESSION["cart"][$_POST["item_id"]])) {
-            $_SESSION["cart"][$_POST["item_id"]] = $_POST["qty"];
+        // Check restaurant mismatch
+        if (!empty($_SESSION["cart"]) && $_SESSION["cart_restaurant_id"] !== $_GET["restaurant_id"]) {
+            $errors[] = "Your cart already has items from another restaurant. Please clear your cart first.";
         } else {
-            $_SESSION["cart"][$_POST["item_id"]] += $_POST["qty"];
-        }
+            $_SESSION["cart_restaurant_id"] = $_GET["restaurant_id"]; // Set restaurant id
 
-        $success[] = "Item added to cart.";
+            if (!isset($_SESSION["cart"][$_POST["item_id"]])) { // Check if that item already exists
+                $_SESSION["cart"][$_POST["item_id"]] = $_POST["qty"];
+            } else { // If item already in cart, increment qty
+                $_SESSION["cart"][$_POST["item_id"]] += $_POST["qty"];
+            }
+
+            $success[] = "Item added to cart.";
+        }
     }
 }
 ?>
