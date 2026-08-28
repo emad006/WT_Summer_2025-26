@@ -27,11 +27,41 @@ $all_users_count = $row["all_user_count"];
 $sql = "SELECT u.user_id, u.name, u.role, u.email, u.phone, res.shop_name AS restaurant_name, u.address AS restaurant_address, rid.vehicle_type AS rider_vehicle, rid.nid AS rider_nid FROM users u LEFT JOIN restaurants res ON u.user_id = res.user_id LEFT JOIN riders rid ON u.user_id = rid.user_id WHERE u.account_status = 'pending'";
 $pending_user_result = mysqli_query($conn, $sql);
 
-$sql = "SELECT user_id, name, role, email, account_status FROM users";
+$selected_role = "";
+$selected_status = "";
+$search_term = "";
+$where_clauses = [];
+
+$sql = "SELECT user_id, name, role, email, account_status FROM users WHERE account_status <> 'deleted'";
 $all_users_result = mysqli_query($conn, $sql);
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (isset($_POST["filter_btn"])) {
+        if (!empty($_POST["roles_filter"])) {
+            $selected_role = $_POST["roles_filter"];
+            $where_clauses[] = "role = '$selected_role'";
+        }
+
+        if (!empty($_POST["status_filter"])) {
+            $selected_status = $_POST["status_filter"];
+            $where_clauses[] = "account_status = '$selected_status'";
+        }
+
+        if (!empty($_POST["search_filter"])) {
+            $search_term = $_POST["search_filter"];
+            $where_clauses[] = "(name LIKE '%$search_term%' OR email LIKE '%$search_term%')";
+        }
+
+        if (count($where_clauses) > 0) {
+            $conditions = implode(" AND ", $where_clauses);
+            $sql = "SELECT user_id, name, role, email, account_status FROM users";
+            $sql .= " WHERE $conditions AND account_status <> 'deleted'";
+            $all_users_result = mysqli_query($conn, $sql);
+        }
+    }
+
     if (isset($_POST["action_btn"])) {
         $user_id = $_POST["row_user_id"];
 
@@ -143,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <form method="post">
                 <div id="role_filter" class="filter">
                     Role<br>
-                    <select name="roles">
+                    <select name="roles_filter">
                         <option value="">All roles</option>
                         <option value="customer">Customer</option>
                         <option value="restaurant">Restaurant</option>
@@ -154,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div id="status_filter" class="filter">
                     Status<br>
-                    <select name="status">
+                    <select name="status_filter">
                         <option value="">All statuses</option>
                         <option value="active">Active</option>
                         <option value="pending">Pending</option>
@@ -165,12 +195,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div id="search_filter" class="filter">
                     Search<br>
-                    <input type="text" name="search" placeholder="name or email">
+                    <input type="text" name="search_filter" placeholder="name or email">
                 </div>
 
                 <div id="filter_button" class="filter">
                     <br>
-                    <button type="submit" id="filter_btn">Filter</button>
+                    <button type="submit" id="filter_btn" name="filter_btn">Filter</button>
                 </div>
             </form>
         </div>
@@ -188,30 +218,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <?php
                 while ($row = mysqli_fetch_assoc($all_users_result)) {
-                    if ($row["account_status"] != "deleted") {
-                        echo "<tr>";
-                        echo "<td>" . $row['user_id'] . "</td>";
-                        echo "<td>" . $row['name'] . "</td>";
-                        echo "<td>" . ucfirst($row['role']) . "</td>";
-                        echo "<td>" . $row['email'] . "</td>";
-                        echo "<td>" . ucfirst($row['account_status']) . "</td>";
+                    echo "<tr>";
+                    echo "<td>" . $row['user_id'] . "</td>";
+                    echo "<td>" . $row['name'] . "</td>";
+                    echo "<td>" . ucfirst($row['role']) . "</td>";
+                    echo "<td>" . $row['email'] . "</td>";
+                    echo "<td>" . ucfirst($row['account_status']) . "</td>";
 
-                        echo "<td>";
-                        echo "<form method='post' style='display:inline;'>";
-                        echo "<input type='hidden' name='row_user_id' value='" . $row['user_id'] . "'>";
+                    echo "<td>";
+                    echo "<form method='post' style='display:inline;'>";
+                    echo "<input type='hidden' name='row_user_id' value='" . $row['user_id'] . "'>";
 
-                        if ($row["account_status"] != "suspended") {
-                            echo "<input type='submit' class='action_btn' name='action_btn' value='Suspend'> · ";
-                        } else {
-                            echo "<input type='submit' class='action_btn' name='action_btn' value='Reactivate'> · ";
-                        }
-
-                        echo "<input type='submit' class='action_btn' name='action_btn' value='Reset Password'>";
-                        echo "</form>";
-                        echo "</td>";
-
-                        echo "</tr>";
+                    if ($row["account_status"] != "suspended") {
+                        echo "<input type='submit' class='action_btn' name='action_btn' value='Suspend'> · ";
+                    } else {
+                        echo "<input type='submit' class='action_btn' name='action_btn' value='Reactivate'> · ";
                     }
+
+                    echo "<input type='submit' class='action_btn' name='action_btn' value='Reset Password'>";
+                    echo "</form>";
+                    echo "</td>";
+
+                    echo "</tr>";
                 }
                 ?>
 
