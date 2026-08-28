@@ -10,49 +10,38 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "customer") {
 }
 
 // Get all orders for customer
-$stmt = mysqli_prepare($conn, "SELECT o.order_id, r.shop_name AS restaurant_name, SUM(oi.quantity) AS total_items, ROUND((o.total + o.delivery_fee), 0) AS grand_total, o.placed_at AS order_date, o.order_status FROM orders o INNER JOIN restaurants r ON o.restaurant_id = r.user_id INNER JOIN order_items oi ON o.order_id = oi.order_id WHERE o.customer_id = ? GROUP BY o.order_id, r.shop_name, o.total, o.delivery_fee, o.placed_at, o.order_status ORDER BY o.placed_at DESC;");
+$stmt = mysqli_prepare($conn, "SELECT o.order_id, r.shop_name AS restaurant_name, SUM(oi.quantity) AS total_items, ROUND((o.total + o.delivery_fee), 0) AS grand_total, o.placed_at AS order_date, o.order_status FROM orders o INNER JOIN restaurants r ON o.restaurant_id = r.user_id INNER JOIN order_items oi ON o.order_id = oi.order_id WHERE o.customer_id = ? GROUP BY o.order_id, r.shop_name, o.total, o.delivery_fee, o.placed_at, o.order_status ORDER BY o.placed_at DESC");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
 mysqli_stmt_execute($stmt);
 $allOrders = mysqli_stmt_get_result($stmt);
 
 
-
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
-    $baseQuery = "SELECT r.user_id AS restaurant_id, r.shop_name, c.cuisine_name, r.is_open, COALESCE(ROUND(AVG(rev.rating), 1), 0.0) AS rating, COUNT(rev.review_id) AS total_ratings FROM restaurants r INNER JOIN cuisines c ON r.cuisine_id = c.cuisine_id INNER JOIN users u ON r.user_id = u.user_id LEFT JOIN orders o ON r.user_id = o.restaurant_id LEFT JOIN reviews rev ON o.order_id = rev.order_id AND rev.is_removed = 0";
-    $whereClauses = ["u.account_status = 'active'"];
-    $restQuery = " GROUP BY r.user_id, r.shop_name, c.cuisine_name, r.is_open";
-    $orderBy = "";
-    
-    if (!empty($_POST["search"])) {
-        $searchToken = $_POST["search"];
-        $whereClauses[] = "r.shop_name LIKE '%$searchToken%'";
+    $baseQuery = "SELECT o.order_id, r.shop_name AS restaurant_name, SUM(oi.quantity) AS total_items, ROUND((o.total + o.delivery_fee), 0) AS grand_total, o.placed_at AS order_date, o.order_status FROM orders o INNER JOIN restaurants r ON o.restaurant_id = r.user_id INNER JOIN order_items oi ON o.order_id = oi.order_id";
+    $whereClauses[] = "o.customer_id = ?";
+    $restQuery = " GROUP BY o.order_id, r.shop_name, o.total, o.delivery_fee, o.placed_at, o.order_status ORDER BY o.placed_at DESC";
+
+    if (!empty($_POST["status"])) {
+        $orderStatus = $_POST["status"];
+        $whereClauses[] = "o.order_status = '$orderStatus'";
     }
 
-    if (!empty($_POST["cuisineType"])) {
-        $cuisineType = $_POST["cuisineType"];
-        $whereClauses[] = "c.cuisine_id = '$cuisineType'";
+    if (!empty($_POST["fromDate"])) {
+        $fromDate = $_POST["fromDate"];
+        $whereClauses[] = "o.placed_at >= '$fromDate 00:00:00'";
     }
 
-    if (isset($_POST["status"]) && $_POST["status"] !== "") {
-        $openStatus = $_POST["status"];
-        $whereClauses[] = "r.is_open = '$openStatus'";
-    }
-
-    if (!empty($_POST["sortBy"])) {
-        if ($_POST["sortBy"] === "sortByName") {
-            $orderBy = " ORDER BY r.shop_name ASC";
-        } else {
-            $orderBy = " ORDER BY rating DESC";
-        }
+    if (!empty($_POST["toDate"])) {
+        $toDate = $_POST["toDate"];
+        $whereClauses[] = "o.placed_at <= '$toDate 00:00:00'";
     }
 
     // Build final query
-    $finalQuery = $baseQuery . " WHERE " . implode(" AND ", $whereClauses) . $restQuery . $orderBy;
-    
-    // Query the database
+    $finalQuery = $baseQuery . " WHERE " . implode(" AND ", $whereClauses) . $restQuery;
     $stmt = mysqli_prepare($conn, $finalQuery);
+    mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
     mysqli_stmt_execute($stmt);
-    $allRestaurants = mysqli_stmt_get_result($stmt);
+    $allOrders = mysqli_stmt_get_result($stmt);
 }
 ?>
 
@@ -90,12 +79,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
                     <br>
                     <select name="status" class="inputField">
                         <option value="">All</option>
-                        <option value="pending" <?php if ($_POST["status"] === "1") echo "selected"; ?>>Pending</option>
-                        <option value="preparing" <?php if ($_POST["status"] === "0") echo "selected"; ?>>Preparing</option>
-                        <option value="ready" <?php if ($_POST["status"] === "0") echo "selected"; ?>>Ready</option>
-                        <option value="on_the_way" <?php if ($_POST["status"] === "0") echo "selected"; ?>>On the Way</option>
-                        <option value="delivered" <?php if ($_POST["status"] === "0") echo "selected"; ?>>Delivered</option>
-                        <option value="cancelled" <?php if ($_POST["status"] === "0") echo "selected"; ?>>Cancelled</option>
+                        <option value="pending" <?php if ($_POST["status"] === "pending") echo "selected"; ?>>Pending</option>
+                        <option value="preparing" <?php if ($_POST["status"] === "preparing") echo "selected"; ?>>Preparing</option>
+                        <option value="ready" <?php if ($_POST["status"] === "ready") echo "selected"; ?>>Ready</option>
+                        <option value="on_the_way" <?php if ($_POST["status"] === "on_the_way") echo "selected"; ?>>On the Way</option>
+                        <option value="delivered" <?php if ($_POST["status"] === "delivered") echo "selected"; ?>>Delivered</option>
+                        <option value="cancelled" <?php if ($_POST["status"] === "cancelled") echo "selected"; ?>>Cancelled</option>
                     </select>
                 </div>
 
