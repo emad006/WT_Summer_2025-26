@@ -15,6 +15,12 @@ mysqli_stmt_bind_param($stmt, "i", $_GET["restaurant_id"]);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $restaurantDetails = mysqli_fetch_assoc($result);
+
+// Get all menu items
+$stmt = mysqli_prepare($conn, "SELECT item_id, photo, item_name, description, ROUND(price, 0) AS price, is_available FROM menu_items WHERE user_id = ? AND is_deleted = 0 ORDER BY item_name ASC");
+mysqli_stmt_bind_param($stmt, "i", $_GET["restaurant_id"]);
+mysqli_stmt_execute($stmt);
+$allMenuItems = mysqli_stmt_get_result($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -67,15 +73,32 @@ $restaurantDetails = mysqli_fetch_assoc($result);
                     <th>Item</th>
                     <th>Description</th>
                     <th>Price</th>
-                    <th>Availablity</th>
+                    <th>Available</th>
                     <th>Quantity</th>
                     <th>Action</th>
                 </tr>
 
                 <?php
-                // while ($row = mysqli_fetch_assoc()) {
-                // }
+                while ($row = mysqli_fetch_assoc($allMenuItems)) {
+                    echo "<tr>";
+                    echo "<td><img src='" . $row["photo"] . "' alt='Menu Item' width='100' height='100'></td>";
+                    echo "<td><label class='tableLabel'>" . $row["item_name"] . "</label></td>";
+                    echo "<td><label class='tableLabel'>" . $row["description"] . "</label></td>";
+                    echo "<td><label class='tableLabel'>Tk " . $row["price"] . "</label></td>";
+
+                    if ($row["is_available"] === 1) {
+                        echo "<td><label class='tableLabel' style='color: green;'>Yes</label></td>";
+                    } else {
+                        echo "<td><label class='tableLabel' style='color: red;'>No</label></td>";
+                    }
+
+                    echo "<td><input type='text' class='inputField' value='1'></td>";
+                    echo "<td><button>Add to Cart</button></td>";
+                    echo "</tr>";
+                }
                 ?>
+
+                
             </table>
         </div>
     </div>
