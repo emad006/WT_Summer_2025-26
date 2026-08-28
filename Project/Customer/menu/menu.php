@@ -35,9 +35,9 @@ $allMenuItems = mysqli_stmt_get_result($stmt);
     <div id="navbar">
         <div id="navLeft">
             <a href="../dashboard/dashboard.php" class="navLink">Dashboard</a>
-            <a href="../browseRestaurant/browseRestaurant.php" class="navLink">Browse</a>
+            <a href="../browseRestaurant/browseRestaurant.php" class="navLink navLinkActive">Browse</a>
             <a href="#" class="navLink">Cart</a>
-            <a href="../orders/orders.php" class="navLink navLinkActive">My Orders</a>
+            <a href="../orders/orders.php" class="navLink">My Orders</a>
             <a href="../profile/profile.php" class="navLink">Profile</a>
             <a href="../../Common/logout.php" class="navLink">Logout</a>
         </div>
@@ -80,6 +80,8 @@ $allMenuItems = mysqli_stmt_get_result($stmt);
 
                 <?php
                 while ($row = mysqli_fetch_assoc($allMenuItems)) {
+                    echo "<form method='post'>";
+
                     echo "<tr>";
                     echo "<td><img src='" . $row["photo"] . "' alt='Menu Item' width='100' height='100'></td>";
                     echo "<td><label class='tableLabel'>" . $row["item_name"] . "</label></td>";
@@ -92,9 +94,16 @@ $allMenuItems = mysqli_stmt_get_result($stmt);
                         echo "<td><label class='tableLabel' style='color: red;'>No</label></td>";
                     }
 
-                    echo "<td><input type='text' class='inputField' value='1'></td>";
-                    echo "<td><button>Add to Cart</button></td>";
+                    if ($restaurantDetails["is_open"] === 1 && $row["is_available"] === 1) {
+                        echo "<td><input type='text' class='inputField' value='1'></td>";
+                        echo "<td><button class='addToCartBtn restaurantOpenButtonStyle'>Add</button></td>";
+                    } else {
+                        echo "<td><input type='text' class='inputField' value='1' disabled></td>";
+                        echo "<td><button class='addToCartBtn restaurantClosedButtonStyle' disabled>Add</button></td>";
+                    }
+
                     echo "</tr>";
+                    echo "</form>";
                 }
                 ?>
             </table>
