@@ -48,6 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 }
+
+// Get customer information
+$stmt = mysqli_prepare($conn, "SELECT address, phone FROM users WHERE user_id = ?");
+mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$userRow = mysqli_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
@@ -155,13 +162,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="inputBlock">
                     <label class="inputLabel">Delivery Address</label>
                     <br>
-                    <textarea name="addr" class="inputField textAreaField" placeholder="Enter your delivery address"></textarea>
+                    <textarea name="addr" class="inputField textAreaField" placeholder="Enter your delivery address"><?php echo $userRow["address"]; ?></textarea>
                 </div>
 
                 <div class="inputBlock">
                     <label class="inputLabel">Phone</label>
                     <br>
-                    <input type="text" name="phone" class="inputField" value="" placeholder="Enter your phone">
+                    <input type="text" name="phone" class="inputField" value="<?php echo $userRow["phone"]; ?>" placeholder="Enter your phone">
                 </div>
 
                 <div class="inputBlock">
