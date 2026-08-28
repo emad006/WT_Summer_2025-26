@@ -64,7 +64,7 @@ $latest_activity_result = mysqli_query($conn, $sql);
             <a href="#" class="navigation_link">Cusines</a>
             <a href="#" class="navigation_link">Orders</a>
             <a href="#" class="navigation_link">Reviews</a>
-            <a href="#" class="navigation_link">Profile</a>
+            <a href="../profile/profile.php" class="navigation_link">Profile</a>
             <a href="#" class="navigation_link">Logout</a>
         </div>
 
