@@ -1,12 +1,40 @@
 <?php
 session_start();
 
+include "../../Common/lib/dbConfig.php";
+
+// Kick out user if role isn't customer
 if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "customer") {
     header("Location:../../Common/login/login.php");
     exit();
 }
 
-$_SESSION["name"] = "Emad";
+// Fetch active order counts
+$stmt = mysqli_prepare($conn, "SELECT COUNT(*) AS active_order_count FROM orders WHERE order_status NOT IN ('delivered', 'cancelled') AND customer_id = ?");
+mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$activeOrders = mysqli_fetch_assoc($result)["active_order_count"];
+
+// Fetch orders placed this month
+$stmt = mysqli_prepare($conn, "SELECT COUNT(*) AS orders_this_month FROM orders WHERE placed_at >= DATE_FORMAT(NOW(), '%Y-%m-01') AND customer_id = ?");
+mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$ordersPlacedThisMonth = mysqli_fetch_assoc($result)["orders_this_month"];
+
+// Fetch total money spent
+$stmt = mysqli_prepare($conn, "SELECT ROUND(COALESCE(SUM(total), 0), 0) AS total_spent FROM orders WHERE order_status = 'delivered' AND customer_id = ?");
+mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$totalSpent = mysqli_fetch_assoc($result)["total_spent"];
+
+// Fetch active orders
+$stmt = mysqli_prepare($conn, "SELECT o.order_id, r.shop_name, o.total, o.order_status FROM orders o JOIN restaurants r ON o.restaurant_id = r.user_id WHERE o.order_status NOT IN ('delivered', 'cancelled') AND o.customer_id = ? ORDER BY o.placed_at DESC");
+mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
+mysqli_stmt_execute($stmt);
+$allActiveOrders = mysqli_stmt_get_result($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +70,13 @@ $_SESSION["name"] = "Emad";
                     <th>Orders this Month</th>
                     <th>Total Spent</th>
                 </tr>
+
+                <tr>
+                    <td><?php echo $activeOrders; ?></td>
+                    <td><?php echo $ordersPlacedThisMonth; ?></td>
+                    <td><?php echo $totalSpent; ?></td>
+                </tr>
+
             </table>
         </div>
 
@@ -53,7 +88,22 @@ $_SESSION["name"] = "Emad";
                     <th>Restaurant</th>
                     <th>Total</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
+                
+                <?php
+                while ($row = mysqli_fetch_assoc($allActiveOrders)) {
+                    echo "<tr>";
+
+                    echo "<td>#" . $row["order_id"] . "</td>";
+                    echo "<td>" . $row["shop_name"] . "</td>";
+                    echo "<td>" . $row["total"] . "</td>";
+                    echo "<td>" . ucfirst($row["order_status"]) . "</td>"; // TODO: Add coloring based on status
+                    echo "<td><a class='trackOrderLink' href='order_details.php?order_id=" . $row["order_id"] . "'>Track</a></td>";
+                    
+                    echo "</tr>";
+                }
+                ?>
             </table>
         </div>
     </body>

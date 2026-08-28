@@ -76,3 +76,13 @@ th, td {
   font-weight: bold;
   color: #3f4a44;
 }
+
+.trackOrderLink {
+  font-weight: bold;
+  text-decoration: none;
+  color: #1a73e8;
+}
+
+.trackOrderLink:hover {
+  color: #0d47a1;
+}
