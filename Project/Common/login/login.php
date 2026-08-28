@@ -96,9 +96,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $errors[] = "Your registration was rejected.";
                         break;
                     case "suspended":
-                        $errors[] = "";
+                        $errors[] = "Your account has been suspended.";
                         break;
                     case "deleted":
+                        $errors[] = "Email or password is incorrect.";
                         break;
                 }
             }
