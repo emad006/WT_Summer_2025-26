@@ -15,13 +15,39 @@ if (!isset($_SESSION["cart"])) {
 
 $errors = [];
 $success = [];
+$totalBill = 0;
 
-// Get restaurant name
-$stmt = mysqli_prepare($conn, "SELECT shop_name FROM restaurants WHERE user_id = ?");
-mysqli_stmt_bind_param($stmt, "i", $_SESSION["cart_restaurant_id"]);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-$restaurantName = mysqli_fetch_assoc($result)["shop_name"];
+$restaurantName = "";
+
+if (!empty($_SESSION["cart"]) && !empty($_SESSION["cart_restaurant_id"])) {
+    // Get restaurant name
+    $stmt = mysqli_prepare($conn, "SELECT shop_name FROM restaurants WHERE user_id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $_SESSION["cart_restaurant_id"]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $restaurantName = mysqli_fetch_assoc($result)["shop_name"];
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["updateQtyBtn"])) {
+
+        // Validate quantity
+        if (empty($_POST["qty"])) {
+            $errors[] = "Please specify a quantity.";
+        } else if (!is_numeric($_POST["qty"])) {
+            $errors[] = "Quantity must be a number.";
+        } else if ($_POST["qty"] < 1) {
+            $errors[] = "Quantity must be at least 1.";
+        } else if ($_POST["qty"] === $_SESSION["cart"][$_POST["item_id"]]) {
+            $errors[] = "Quantity must be different from the current quantity.";
+        }
+
+        if (count($errors) === 0) {
+            $_SESSION["cart"][$_POST["item_id"]] = $_POST["qty"];
+            $success[] = "Quantity updated.";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -57,53 +83,99 @@ $restaurantName = mysqli_fetch_assoc($result)["shop_name"];
             <div id="statusBlock">Your cart is empty.</div>
 
             <div class="inputBlock">
-                <a href="../browseRestaurant/browseRestaurant.php" id="browseBtn">Browse Restaurants</a>
+                <a href="../browseRestaurant/browseRestaurant.php" id="browseLinkBtn">Browse Restaurants</a>
             </div>
         <?php } else { ?>
 
-        <div>
-            <label id="cartInfo"><?php echo $restaurantName . " · A cart can hold items from one restaurant only"; ?></label>
-        </div>
-
-        <div id="tableBlock">
-            <table border="1">
-                <tr>
-                    <th>Item</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th>Action</th>
-                </tr>
-            </table>
-        </div>
-
-        <h1 class="titleName">Delivery Details</h1>
-
-        <form method="post">
-            <div class="inputBlock">
-                <label class="inputLabel">Delivery Address</label>
-                <br>
-                <textarea name="addr" class="inputField textAreaField" placeholder="Enter your delivery address"></textarea>
+            <div>
+                <label id="cartInfo"><?php if (!empty($restaurantName)) echo $restaurantName . " · A cart can hold items from one restaurant only"; ?></label>
             </div>
 
-            <div class="inputBlock">
-                <label class="inputLabel">Phone</label>
-                <br>
-                <input type="text" name="phone" class="inputField" value="" placeholder="Enter your phone">
+            <div id="tableBlock">
+                <table border="1">
+                    <tr>
+                        <th>Item</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
+                    </tr>
+
+                    <?php
+                    foreach ($_SESSION["cart"] as $itemId => $itemQuantity) {
+
+                        // Query the database
+                        $stmt = mysqli_prepare($conn, "SELECT item_name, price FROM menu_items WHERE is_deleted = 0 AND item_id = ?");
+                        mysqli_stmt_bind_param($stmt, "i", $itemId);
+                        mysqli_stmt_execute($stmt);
+                        $result = mysqli_stmt_get_result($stmt);
+                        $row = mysqli_fetch_assoc($result);
+
+                        $totalBill += $row["price"] * $itemQuantity;
+
+                        // Build the HTML table
+                        echo "<tr>";
+                        echo "<td><label class='tableLabel'>" . $row["item_name"] . "</label></td>";
+                        echo "<td><label class='tableLabel'>Tk " . $row["price"] . "</label></td>";
+
+                        echo "<td>";
+                        echo "<form method='post'>";
+                        echo "<input type='hidden' name='item_id' value='$itemId'>";
+                        echo "<input type='text' name='qty' class='inputField qtyField' value='$itemQuantity'> ";
+                        echo "<button type='submit' name='updateQtyBtn' class='updateBtn'>Update</button>";
+                        echo "</form>";
+                        echo "</td>";
+
+                        echo "<td><label class='tableLabel'>Tk " . $row["price"] * $itemQuantity . "</label></td>";
+                        echo "<td><a class='removeItemLink' href='cart.php?item_id=" . $itemId . "'>Remove</a></td>";
+                        echo "</tr>";
+                    }
+                    ?>
+
+                    <tr>
+                        <td colspan="3">Subtotal</td>
+                        <td colspan="2">Tk <?php echo $totalBill; ?></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">Delivery Fee</td>
+                        <td colspan="2">Tk 60</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">Total Payable</td>
+                        <td colspan="2">Tk <?php echo $totalBill += 60; ?></td>
+                    </tr>
+                </table>
             </div>
 
-            <div class="inputBlock">
-                <label class="inputLabel">Payment Method</label>
-                <br>
-                <input type="radio" name="payment" class="radioField" value="cash" checked>
-                <label class="radioText">Cash on Delivery</label>
-            </div>
+            <h1 class="titleName">Delivery Details</h1>
 
-            <div class="inputBlock">
-                <button type="submit" id="placeOrderBtn" name="placeOrderBtn">Place Order</button>
-                <a href="../browseRestaurant/browseRestaurant.php" id="continueShoppingLink">Continue Shopping</a>
-            </div>
-        </form>
+            <form method="post">
+                <div class="inputBlock">
+                    <label class="inputLabel">Delivery Address</label>
+                    <br>
+                    <textarea name="addr" class="inputField textAreaField" placeholder="Enter your delivery address"></textarea>
+                </div>
+
+                <div class="inputBlock">
+                    <label class="inputLabel">Phone</label>
+                    <br>
+                    <input type="text" name="phone" class="inputField" value="" placeholder="Enter your phone">
+                </div>
+
+                <div class="inputBlock">
+                    <label class="inputLabel">Payment Method</label>
+                    <br>
+                    <input type="radio" name="payment" class="radioField" value="cash" checked>
+                    <label class="radioText">Cash on Delivery</label>
+                </div>
+
+                <div class="inputBlock">
+                    <button type="submit" id="placeOrderBtn" name="placeOrderBtn">Place Order</button>
+                    <a href="../browseRestaurant/browseRestaurant.php" id="continueShoppingLink">Continue Shopping</a>
+                </div>
+            </form>
 
         <?php } ?>
     </div>
