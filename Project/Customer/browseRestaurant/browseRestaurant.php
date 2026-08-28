@@ -18,6 +18,46 @@ $allCuisines = mysqli_stmt_get_result($stmt);
 $stmt = mysqli_prepare($conn, "SELECT r.user_id AS restaurant_id, r.shop_name, c.cuisine_name, r.is_open, COALESCE(ROUND(AVG(rev.rating), 1), 0.0) AS rating, COUNT(rev.review_id) AS total_ratings FROM restaurants r INNER JOIN cuisines c ON r.cuisine_id = c.cuisine_id INNER JOIN users u ON r.user_id = u.user_id LEFT JOIN orders o ON r.user_id = o.restaurant_id LEFT JOIN reviews rev ON o.order_id = rev.order_id AND rev.is_removed = 0 WHERE u.account_status = 'active' GROUP BY r.user_id, r.shop_name, c.cuisine_name, r.is_open ORDER BY r.shop_name ASC");
 mysqli_stmt_execute($stmt);
 $allRestaurants = mysqli_stmt_get_result($stmt);
+
+$finalQuery = "SELECT r.user_id AS restaurant_id, r.shop_name, c.cuisine_name, r.is_open, COALESCE(ROUND(AVG(rev.rating), 1), 0.0) AS rating, COUNT(rev.review_id) AS total_ratings FROM restaurants r INNER JOIN cuisines c ON r.cuisine_id = c.cuisine_id INNER JOIN users u ON r.user_id = u.user_id LEFT JOIN orders o ON r.user_id = o.restaurant_id LEFT JOIN reviews rev ON o.order_id = rev.order_id AND rev.is_removed = 0 WHERE u.account_status = 'active' GROUP BY r.user_id, r.shop_name, c.cuisine_name, r.is_open ORDER BY r.shop_name ASC";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
+    $baseQuery = "SELECT r.user_id AS restaurant_id, r.shop_name, c.cuisine_name, r.is_open, COALESCE(ROUND(AVG(rev.rating), 1), 0.0) AS rating, COUNT(rev.review_id) AS total_ratings FROM restaurants r INNER JOIN cuisines c ON r.cuisine_id = c.cuisine_id INNER JOIN users u ON r.user_id = u.user_id LEFT JOIN orders o ON r.user_id = o.restaurant_id LEFT JOIN reviews rev ON o.order_id = rev.order_id AND rev.is_removed = 0";
+    $whereClauses = ["u.account_status = 'active'"];
+    $restQuery = " GROUP BY r.user_id, r.shop_name, c.cuisine_name, r.is_open";
+    $orderBy = "";
+    
+    if (!empty($_POST["search"])) {
+        $searchToken = $_POST["search"];
+        $whereClauses[] = "r.shop_name LIKE '%$searchToken%'";
+    }
+
+    if (!empty($_POST["cuisineType"])) {
+        $cuisineType = $_POST["cuisineType"];
+        $whereClauses[] = "c.cuisine_id = '$cuisineType'";
+    }
+
+    if (isset($_POST["status"]) && $_POST["status"] !== "") {
+        $openStatus = $_POST["status"];
+        $whereClauses[] = "r.is_open = '$openStatus'";
+    }
+
+    if (!empty($_POST["sortBy"])) {
+        if ($_POST["sortBy"] === "sortByName") {
+            $orderBy = " ORDER BY r.shop_name ASC";
+        } else {
+            $orderBy = " ORDER BY rating DESC";
+        }
+    }
+
+    // Build final query
+    $finalQuery = $baseQuery . " WHERE " . implode(" AND ", $whereClauses) . $restQuery . $orderBy;
+}
+
+// Query the database
+$stmt = mysqli_prepare($conn, $finalQuery);
+mysqli_stmt_execute($stmt);
+$allRestaurants = mysqli_stmt_get_result($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +108,7 @@ $allRestaurants = mysqli_stmt_get_result($stmt);
                     </div>
 
                     <div class="filterGroup">
-                        <label class="labelText">Search</label>
+                        <label class="labelText">Status</label>
                         <br>
                         <select name="status" class="inputField">
                             <option value="">All</option>
