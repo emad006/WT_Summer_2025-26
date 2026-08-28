@@ -5,7 +5,7 @@ include "../../Common/lib/dbConfig.php";
 
 // Kick out user if role isn't customer
 if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "customer") {
-    header("Location:../../Common/login/login.php");
+    header("Location:../../Common/logout.php");
     exit();
 }
 
