@@ -9,6 +9,10 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "customer") {
     exit();
 }
 
+if (!isset($_SESSION["cart"])) {
+    $_SESSION["cart"] = [];
+}
+
 $errors = [];
 $success = [];
 
@@ -26,7 +30,34 @@ mysqli_stmt_execute($stmt);
 $allMenuItems = mysqli_stmt_get_result($stmt);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["addToCartBtn"])) {
-    
+    // <-------- Validation Start -------->
+
+    // Item ID validation (redundant, but just for safety)
+    if (empty($_POST["item_id"])) {
+        $errors[] = "Something went wrong.";
+    }
+
+    // Quantity validation
+    if (empty($_POST["qty"])) {
+        $errors[] = "Please specify a quantity.";
+    } else if (!is_numeric($_POST["qty"])) {
+        $errors[] = "Quantity must be a number.";
+    } else if ($_POST["qty"] < 1) {
+        $errors[] = "Quantity must be at least 1.";
+    }
+
+    // <-------- Validation End -------->
+
+    if (count($errors) === 0) { // Proceed to add to cart
+
+        if (!isset($_SESSION["cart"][$_POST["item_id"]])) {
+            $_SESSION["cart"][$_POST["item_id"]] = $_POST["qty"];
+        } else {
+            $_SESSION["cart"][$_POST["item_id"]] += $_POST["qty"];
+        }
+
+        $success[] = "Item added to cart.";
+    }
 }
 ?>
 
@@ -57,8 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["addToCartBtn"])) {
     <div id="mainArea">
         <h1 id="titleName"><?php echo $restaurantDetails["shop_name"]; ?></h1>
 
-        <div id="successBlock"><?php if (!empty($success)) echo implode("<br>", $success) ?></div>
-        <div id="errorBlock"><?php if (!empty($errors)) echo implode("<br>", $errors) ?></div>
+        <div id="successBlock"><?php if (!empty($success)) echo implode("<br>", $success); ?></div>
+        <div id="errorBlock"><?php if (!empty($errors)) echo implode("<br>", $errors); ?></div>
+        <div id="statusBlock"><?php if ($restaurantDetails["is_open"] == 0) echo "This restaurant is currently closed and is not accepting orders. You can still view the menu."; ?></div>
 
         <div>
             <label id="restaurantInfo">
