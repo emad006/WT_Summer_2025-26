@@ -156,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
                         } else {
                             echo "<td><label class='tableLabel' style='color: red;'>Closed</label></td>";
                         }
-                        echo "<td><a class='viewMenuLink' href='viewMenu.php?restaurant_id=" . $row["restaurant_id"] . "'>View Menu</a></td>";
+                        echo "<td><a class='viewMenuLink' href='../menu/menu.php?restaurant_id=" . $row["restaurant_id"] . "'>View Menu</a></td>";
                         echo "</tr>";
                     }
                     ?>
