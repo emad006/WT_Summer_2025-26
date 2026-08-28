@@ -112,8 +112,8 @@ $allRestaurants = mysqli_stmt_get_result($stmt);
                         <br>
                         <select name="status" class="inputField">
                             <option value="">All</option>
-                            <option value="1">Open</option>
-                            <option value="0">Closed</option>
+                            <option value="1" <?php if ($_POST["status"] === "1") echo "selected"; ?>>Open</option>
+                            <option value="0" <?php if ($_POST["status"] === "0") echo "selected"; ?>>Closed</option>
                         </select>
                     </div>
 
@@ -121,8 +121,8 @@ $allRestaurants = mysqli_stmt_get_result($stmt);
                         <label class="labelText">Sort By</label>
                         <br>
                         <select name="sortBy" class="inputField">
-                            <option value="sortByName">Name (A-Z)</option>
-                            <option value="sortByRating">Rating</option>
+                            <option value="sortByName" <?php if ($_POST["sortBy"] === "sortByName") echo "selected"; ?>>Name (A-Z)</option>
+                            <option value="sortByRating" <?php if ($_POST["sortBy"] === "sortByRating") echo "selected"; ?>>Rating</option>
                         </select>
                     </div>
 
@@ -136,7 +136,7 @@ $allRestaurants = mysqli_stmt_get_result($stmt);
                 <label class="labelText">Recently Viewed</label>
             </div>
 
-            <div id="tableBlock">
+            <div id="tableBlock"> <!-- TODO: Hide table and show a info div when there are no results -->
                 <table border="1">
                     <tr>
                         <th>Restaurant</th>
