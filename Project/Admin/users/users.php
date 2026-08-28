@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div id="navigation_bar">
         <div id="left_nav">
-            <a href="#" class="navigation_link">Dashboard</a>
+            <a href="../dashboard/dashboard.php" class="navigation_link">Dashboard</a>
             <a href="#" class="navigation_link active_link">Users</a>
             <a href="#" class="navigation_link">Cusines</a>
             <a href="#" class="navigation_link">Orders</a>
