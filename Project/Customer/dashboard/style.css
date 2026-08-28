@@ -71,6 +71,14 @@ th, td {
     padding-left: 10px;
 }
 
+th {
+    background-color: #e2e8f0;
+}
+
+td {
+    background-color: #f8fafc;
+}
+
 #activeOrdersLabel {
   font-size: 14px;
   font-weight: bold;
