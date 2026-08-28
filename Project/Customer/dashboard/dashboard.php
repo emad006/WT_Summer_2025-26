@@ -47,10 +47,10 @@ $allActiveOrders = mysqli_stmt_get_result($stmt);
     <body>
         <div id="navbar">
         <div id="navLeft">
-            <a href="#" class="navLink navLinkActive">Dashboard</a>
-            <a href="#" class="navLink">Browse</a>
+            <a href="dashboard.php" class="navLink navLinkActive">Dashboard</a>
+            <a href="../browseRestaurant/browseRestaurant.php" class="navLink">Browse</a>
             <a href="#" class="navLink">Cart</a>
-            <a href="#" class="navLink">My Orders</a>
+            <a href="../orders/orders.php" class="navLink">My Orders</a>
             <a href="../profile/profile.php" class="navLink">Profile</a>
             <a href="../../Common/logout.php" class="navLink">Logout</a>
         </div>
