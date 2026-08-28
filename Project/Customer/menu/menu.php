@@ -97,9 +97,9 @@ $allMenuItems = mysqli_stmt_get_result($stmt);
                     echo "</tr>";
                 }
                 ?>
-
-                
             </table>
+
+            <a href="../browseRestaurant/browseRestaurant.php" id="backLink">Back to Restaurants</a>
         </div>
     </div>
 </body>

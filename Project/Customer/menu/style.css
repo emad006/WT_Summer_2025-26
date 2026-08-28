@@ -72,6 +72,7 @@ table {
     text-align: left;
     border-collapse: collapse;
     margin-top: 4px;
+    margin-bottom: 10px;
     width: 100%;
 }
 
@@ -121,12 +122,12 @@ td {
     color: black;
 }
 
-.viewMenuLink {
-    font-weight: bold;
-    text-decoration: none;
+#backLink {
+    font-size: 14px;
     color: #1a73e8;
+    text-decoration: none;
 }
 
-.viewMenuLink:hover {
+#backLink:hover {
     color: #0d47a1;
 }
