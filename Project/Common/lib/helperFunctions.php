@@ -1,20 +1,16 @@
 <?php
 function redirectUser($role) {
     if ($role === "customer") {
-        // header("Location:customerDashboard.php");
-        header("Location:../dummyDashboard.php");
+        header("Location: ../customer/dummyDashboard.php");
         exit();
     } else if ($role === "restaurant") {
-        // header("Location:restaurantDashboard.php");
-        header("Location:../dummyDashboard.php");
+        header("Location: ../restaurant/dashboard.php");
         exit();
     } else if ($role === "rider") {
-        // header("Location:riderDashboard.php");
-        header("Location:../dummyDashboard.php");
+        header("Location: ../rider/dummyDashboard.php");
         exit();
     } else if ($role === "admin") {
-        // header("Location:adminDashboard.php");
-        header("Location:../dummyDashboard.php");
+        header("Location: ../admin/dummyDashboard.php");
         exit();
     }
 }
