@@ -2,7 +2,7 @@
 function redirectUser($role) {
     if ($role === "customer") {
         // header("Location:customerDashboard.php");
-        header("Location:../dummyDashboard.php");
+        header("Location:../../Customer/dashboard/dashboard.php");
         exit();
     } else if ($role === "restaurant") {
         // header("Location:restaurantDashboard.php");
