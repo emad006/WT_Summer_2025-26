@@ -17,6 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    
 }
 
+$sql = "SELECT name, email, phone, address FROM users WHERE user_id = $user_id";
+$result = mysqli_query($conn, $sql);
+$admin = mysqli_fetch_assoc($result);
 ?>
 
 
@@ -46,29 +49,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div id="main_box">
         <h2>My Profile</h2>
 
-        <div id="success_box" class="box"></div>
-        <div id="error_box" class="box"></div>
+        <div id="success_box" class="box"><?php if (!empty($success_message)) echo $success_message; ?></div>
+        <div id="error_box" class="box"><?php if (!empty($error_message)) echo $error_message; ?></div>
 
         <div id="form_box" class="box">
             <form method="post">
                 <div class="input_block">
                     Full Name<br>
-                    <input type="text" name="name" class="input_field">
+                    <input type="text" name="name" class="input_field" value="<?php echo $admin["name"]; ?>">
                 </div>
 
                 <div class="input_block">
                     Email (cannot be changed)<br>
-                    <input type="text" class="input_field"> disabled>
+                    <input type="text" class="input_field" value="<?php echo $admin["email"]; ?>" disabled>
                 </div>
 
                 <div class="input_block">
                     Phone<br>
-                    <input type="text" name="phone" class="input_field">
+                    <input type="text" name="phone" class="input_field" value="<?php echo $admin["phone"]; ?>">
                 </div>
 
                 <div class="input_block">
                     Address<br>
-                    <textarea name="address" class="input_field" id="address_field"></textarea>
+                    <textarea name="address" class="input_field" id="address_field"><?php echo $admin["address"]; ?></textarea>
                 </div>
 
                 <div class="input_block">
