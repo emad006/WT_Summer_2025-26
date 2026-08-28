@@ -42,6 +42,9 @@ $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $open_restaurants = $row["open_restaurants"];
 
+
+$sql = "SELECT o.order_id, o.total, o.order_status, res.shop_name AS restaurant_name FROM orders o LEFT JOIN restaurants res ON o.restaurant_id = res.user_id ORDER BY o.placed_at DESC LIMIT 5";
+$latest_activity_result = mysqli_query($conn, $sql);
 ?>
 
 
@@ -71,7 +74,7 @@ $open_restaurants = $row["open_restaurants"];
     <div id="main_box">
         <h2>Platform Overview</h2>
 
-       
+
         <div id="table_box_stats" class="box">
             <table border="1">
                 <tr>
@@ -102,6 +105,20 @@ $open_restaurants = $row["open_restaurants"];
                     <th>Total</th>
                     <th>Status</th>
                 </tr>
+
+                <?php
+                while ($row = mysqli_fetch_assoc($latest_activity_result)) {
+                    echo "<tr>";
+                    echo "<td>#" . $row["order_id"] . "</td>";
+                    echo "<td>" . $row["restaurant_name"] . "</td>";
+                    echo "<td>Tk " . $row["total"] . "</td>";
+
+                    $order_status = ucfirst(str_replace("_", " ", $row["order_status"]));
+                    echo "<td>" . $order_status . "</td>";
+
+                    echo "</tr>";
+                }
+                ?>
             </table>
         </div>
     </div>
