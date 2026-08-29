@@ -49,6 +49,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    if (isset($_GET["item_id"])) {
+        unset($_SESSION["cart"][$_GET["item_id"]]);
+        $success[] = "Item removed.";
+
+        if (empty($_SESSION["cart"])) {
+            unset($_SESSION["cart_restaurant_id"]);
+            $success[] = "Cart cleared.";
+        }
+    }
+}
+
 // Get customer information
 $stmt = mysqli_prepare($conn, "SELECT address, phone FROM users WHERE user_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
