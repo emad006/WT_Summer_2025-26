@@ -5,7 +5,76 @@ include "../db.php";
 if ($_SESSION["role"] != "admin") {
     header("Location: ../../Common/login/login.php");
 }
+
+$order_id_filter = "";
+$status_filter = "";
+$date_from_filter = "";
+$date_to_filter = "";
+
+$where_clauses = [];
+
+$total_orders = 0;
+$revenue = 0;
+$registered_users = 0;
+$riders_on_duty = 0;
+
+$sql = "SELECT COUNT(*) AS 'total_orders' FROM orders";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$total_orders = $row["total_orders"];
+
+$sql = "SELECT SUM(total) AS 'revenue' FROM orders WHERE order_status = 'delivered'";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$revenue = $row["revenue"];
+
+$sql = "SELECT COUNT(*) AS 'registered_users' FROM users WHERE account_status <> 'deleted'";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$registered_users = $row["registered_users"];
+
+$sql = "SELECT COUNT(*) AS 'riders_on_duty' FROM riders WHERE is_on_duty = 1";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+$riders_on_duty = $row["riders_on_duty"];
+
+$sql = "SELECT o.order_id, o.total, o.placed_at, o.order_status, c.name AS customer_name, res.shop_name AS restaurant_name, r.name AS rider_name FROM orders o LEFT JOIN users c ON o.customer_id = c.user_id LEFT JOIN restaurants res ON o.restaurant_id = res.user_id LEFT JOIN users r ON o.rider_id = r.user_id ORDER BY o.placed_at DESC";
+$orders_result = mysqli_query($conn, $sql);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (isset($_POST["filter_btn"])) {
+
+        if (!empty($_POST["order_id_filter"])) {
+            $order_id_filter = $_POST["order_id_filter"];
+            $where_clauses[] = "o.order_id = $order_id_filter";
+        }
+
+        if (!empty($_POST["status_filter"])) {
+            $status_filter = $_POST["status_filter"];
+            $where_clauses[] = "o.order_status = '$status_filter'";
+        }
+
+        if (!empty($_POST["date_from_filter"])) {
+            $date_from_filter = $_POST["date_from_filter"];
+            $where_clauses[] = "o.placed_at >= '$date_from_filter 00:00:00'";
+        }
+
+        if (!empty($_POST["date_to_filter"])) {
+            $date_to_filter = $_POST["date_to_filter"];
+            $where_clauses[] = "o.placed_at <= '$date_to_filter 23:59:59'";
+        }
+
+        if (count($where_clauses) > 0) {
+            $conditions = implode(" AND ", $where_clauses);
+            $sql = "SELECT o.order_id, o.total, o.placed_at, o.order_status, c.name AS customer_name, res.shop_name AS restaurant_name, r.name AS rider_name FROM orders o LEFT JOIN users c ON o.customer_id = c.user_id LEFT JOIN restaurants res ON o.restaurant_id = res.user_id LEFT JOIN users r ON o.rider_id = r.user_id";
+            $sql .= " WHERE $conditions ORDER BY o.placed_at DESC";
+            $orders_result = mysqli_query($conn, $sql);
+        }
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -43,10 +112,10 @@ if ($_SESSION["role"] != "admin") {
                 </tr>
 
                 <tr>
-                    <td></td>
-                    <td>Tk </td>
-                    <td></td>
-                    <td></td>
+                    <td><?php echo $total_orders; ?></td>
+                    <td>Tk <?php echo $revenue; ?></td>
+                    <td><?php echo $registered_users; ?></td>
+                    <td><?php echo $riders_on_duty; ?></td>
                 </tr>
             </table>
         </div>
