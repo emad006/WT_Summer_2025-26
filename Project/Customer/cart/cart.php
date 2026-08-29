@@ -46,6 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["cart"][$_POST["item_id"]] = $_POST["qty"];
             $success[] = "Quantity updated.";
         }
+    } else if (isset($_POST["placeOrderBtn"])) {
+        // TODO: Add logic for placeOrderBtn (validate address/phone, insert order + order_items, clear cart)
     }
 }
 
