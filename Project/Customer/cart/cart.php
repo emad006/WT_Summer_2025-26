@@ -47,7 +47,83 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $success[] = "Quantity updated.";
         }
     } else if (isset($_POST["placeOrderBtn"])) {
-        // TODO: Add logic for placeOrderBtn (validate address/phone, insert order + order_items, clear cart)
+
+        // <-------- Validation Start -------->
+
+        // Address validation
+        if (empty($_POST["addr"])) { // Check if address is empty
+            $errors[] = "Address is required.";
+        } else if (strlen($_POST["addr"]) < 10) { // Check if the address is at least 10 characters long
+            $errors[] = "Address must be at least 10 characters long.";
+        } else if (strlen($_POST["addr"]) > 255) { // Check if the address is less than 255 characters long
+            $errors[] = "Address cannot exceed 255 characters long.";
+        }
+
+        // Phone validation
+        if (empty($_POST["phone"])) { // Check if phone is empty
+            $errors[] = "Phone is required.";
+        } else if (strlen($_POST["phone"]) < 10) { // Check if the phone is at least 10 characters long
+            $errors[] = "Phone must be at least 10 characters long.";
+        } else if (strlen($_POST["phone"]) > 20) { // Check if the phone is less than 20 characters long
+            $errors[] = "Phone cannot exceed 20 characters long.";
+        }
+
+        // <-------- Validation End -------->
+
+
+        if (count($errors) === 0) {
+            $recompTotalBill = 0;
+
+            // Recompute the total from database
+            foreach($_SESSION["cart"] as $itemId => $itemQuantity) {
+                $stmt = mysqli_prepare($conn, "SELECT price FROM menu_items WHERE is_deleted = 0 AND item_id = ?");
+                mysqli_stmt_bind_param($stmt, "i", $itemId);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+                $recompTotalBill += mysqli_fetch_assoc($result)["price"] * $itemQuantity;
+            }
+
+            $recompTotalBill += 60; // Add delivery fee
+
+
+            // Start transation to enter data into orders and order_items tables
+            mysqli_begin_transaction($conn);
+            try {
+                // Insert into orders
+                $stmt = mysqli_prepare($conn, "INSERT INTO orders (customer_id, restaurant_id, delivery_address, delivery_phone, total, placed_at) VALUES (?, ?, ?, ?, ?, NOW())");
+                mysqli_stmt_bind_param($stmt, "iissd", $_SESSION["user_id"], $_SESSION["cart_restaurant_id"], $_POST["addr"], $_POST["phone"], $recompTotalBill);
+                mysqli_stmt_execute($stmt);
+                $newOrderId = mysqli_insert_id($conn);
+
+                foreach ($_SESSION["cart"] as $itemId => $itemQuantity) {
+
+                    // Get each name, and price
+                    $stmt = mysqli_prepare($conn, "SELECT item_name, price FROM menu_items WHERE is_deleted = 0 AND item_id = ?");
+                    mysqli_stmt_bind_param($stmt, "i", $itemId);
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+                    $row = mysqli_fetch_assoc($result);
+
+                    // Insert each item into order_items
+                    $stmt = mysqli_prepare($conn, "INSERT INTO order_items (order_id, item_id, item_name, unit_price, quantity) VALUES (?, ?, ?, ?, ?)");
+                    mysqli_stmt_bind_param($stmt, "iisdi", $newOrderId, $itemId, $row["item_name"], $row["price"], $itemQuantity);
+                    mysqli_stmt_execute($stmt);
+                }
+
+                mysqli_commit($conn);
+                
+                // Clear cart
+                $_SESSION["cart"] = [];
+                unset($_SESSION["cart_restaurant_id"]);
+
+                // Redirect user to dashboard
+                header("Location:../dashboard/dashboard.php");
+                exit();
+            } catch (Exception $e) {
+                $errors[] = $e->getMessage();
+                mysqli_rollback($conn);
+            }
+        }
     }
 }
 
