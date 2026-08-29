@@ -169,6 +169,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
+
+                <?php
+                while ($row = mysqli_fetch_assoc($orders_result)) {
+                    echo "<tr>";
+                    echo "<td>#" . $row["order_id"] . "</td>";
+                    echo "<td>" . $row["customer_name"] . "</td>";
+                    echo "<td>" . $row["restaurant_name"] . "</td>";
+
+                    if (empty($row["rider_name"])) {
+                        echo "<td>-</td>";
+                    } else {
+                        echo "<td>" . $row["rider_name"] . "</td>";
+                    }
+
+                    echo "<td>Tk " . $row["total"] . "</td>";
+                    echo "<td>" . $row["placed_at"] . "</td>";
+
+                    if($row["order_status"] == "pending"){
+                        echo "<td> <label style ='color: darkOrange;'>Pending</label> </td>";
+                    }
+                    else if($row["order_status"] == "preparing"){
+                        echo "<td> <label style = 'color: green;'>Preparing</label> </td>";
+                    }
+                    else if($row["order_status"] == "on_the_way"){
+                        echo "<td> <label style = 'color: firebrick;'>On the way</label> </td>";
+                    }
+                    else if($row["order_status"] == "ready"){
+                        echo "<td> <label style= 'color: blue;'>Ready</label> </td>";
+                    }
+                    else if($row["order_status"] == "delivered"){
+                        echo "<td> <label style = 'color: darkgreen;'>Delivered</label></td>";
+                    }else if($row["order_status"] == "cancelled"){
+                        echo "<td> <label style = 'color: red;'>Cancelled</label></td>";
+                    }
+
+                    echo "<td>";
+
+                    echo "<form method='get' action='order_details.php' style='display:inline;'>";
+                    echo "<input type='hidden' name='order_id' value='" . $row["order_id"] . "'>";
+                    echo "<input type='submit' class='action_btn' value='View'>";
+                    echo "</form>";
+
+                    echo "</td>";
+                    echo "</tr>";
+                }
+                ?>
             </table>
         </div>
     </div>
