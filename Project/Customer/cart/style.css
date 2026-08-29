@@ -206,12 +206,11 @@ td {
 #browseLinkBtn {
     color: white;
     background-color: #ff9800;
+    text-decoration: none;
     font-weight: bold;
     border: 1px solid #e65100;
     border-radius: 4px;
     padding: 4px;
-    margin-top: 10px;
-    margin-bottom: 10px;
     width: 100%;
 }
 
