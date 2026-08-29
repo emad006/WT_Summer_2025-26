@@ -14,7 +14,27 @@ $user_id = $_SESSION["user_id"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-   
+    if (isset($_POST["action_btn"])) {
+
+        if ($_POST["action_btn"] == "Save Changes") {
+            $name = $_POST["name"];
+            $phone = $_POST["phone"];
+            $address = $_POST["address"];
+
+            if (empty($name)) {
+                $error_message = "Full name is required.";
+            } else if (empty($phone)) {
+                $error_message = "Phone is required.";
+            } else if (empty($address)) {
+                $error_message = "Address is required.";
+            } else {
+                $sql = "UPDATE users SET name = '$name', phone = '$phone', address = '$address' WHERE user_id = $user_id";
+                mysqli_query($conn, $sql);
+                $_SESSION["name"] = $name;
+                $success_message = "Your profile has been updated.";
+            }
+        }
+    }
 }
 
 $sql = "SELECT name, email, phone, address FROM users WHERE user_id = $user_id";
