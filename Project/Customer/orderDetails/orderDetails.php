@@ -246,7 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="inputBlock">
                         <label class="inputLabel">Rating</label>
                         <br>
-                        <select class="inputField" name="rating">
+                        <select class="inputField" name="rating" <?php if ($progressTableData["order_status"] !== 'delivered') echo "disabled"; ?>>
                             <option value="">Select</option>
                             <option value="5">5 - Excellent</option>
                             <option value="4">4 - Good</option>
@@ -259,10 +259,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="inputBlock">
                         <label class="inputLabel">Comment</label>
                         <br>
-                        <textarea name="comment" class="inputField textAreaField" value="<?php if (!empty($_POST['comment'])) echo $_POST['comment']; ?>" placeholder="Write your comment."></textarea>
+                        <textarea name="comment" class="inputField textAreaField" value="<?php if (!empty($_POST['comment'])) echo $_POST['comment']; ?>" placeholder="Write your comment." <?php if ($progressTableData["order_status"] !== 'delivered') echo "disabled"; ?>></textarea>
                     </div>
 
-                    <button type="submit" name="submitReviewBtn" id="submitReviewBtn">Submit Review</button>
+                    <button type="submit" name="submitReviewBtn" id="submitReviewBtn" <?php if ($progressTableData["order_status"] !== 'delivered') echo "disabled"; ?>>Submit Review</button>
                 </form>
             </div>
         <?php } ?>
