@@ -188,6 +188,10 @@ $riderDetails = mysqli_fetch_assoc($result);
             </label>
         </div>
 
+        <div class="inputBlock">
+            <a href="../orders/orders.php" id="backLink">Back to My Orders</a>
+        </div>
+
         <hr>
 
         <div>
@@ -201,6 +205,7 @@ $riderDetails = mysqli_fetch_assoc($result);
                 </div>
             </form>
         </div>
+        
     </div>
 </body>
 
