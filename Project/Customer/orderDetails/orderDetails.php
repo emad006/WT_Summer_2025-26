@@ -93,7 +93,7 @@ $progressTableData = mysqli_fetch_assoc($result);
                     <td><label class="tableLabel"><?php echo empty($progressTableData["placed_at"]) ?  "" : $progressTableData["placed_at"]; ?></label></td>
                 </tr>
 
-                
+                <?php if ($progressTableData["order_status"] !== "cancelled") {?>
                 <tr>
                     <td><label class="tableLabel">Accepted & Preparing</label></td>
                     <td><label class="tableLabel"><?php echo empty($progressTableData["accepted_at"]) ?  "" : $progressTableData["accepted_at"]; ?></label></td>
@@ -108,6 +108,7 @@ $progressTableData = mysqli_fetch_assoc($result);
                     <td><label class="tableLabel">Out for Delivery</label></td>
                     <td><label class="tableLabel"><?php echo empty($progressTableData["picked_up_at"]) ?  "" : $progressTableData["picked_up_at"]; ?></label></td>
                 </tr>
+                <?php }?>
 
                 <tr>
                     <td><label class="tableLabel"><?php echo $progressTableData['order_status'] !== 'cancelled' ? "Delivered" : "Cancelled";?></label></td>
