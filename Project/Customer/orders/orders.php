@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
         <div id="navLeft">
             <a href="../dashboard/dashboard.php" class="navLink">Dashboard</a>
             <a href="../browseRestaurant/browseRestaurant.php" class="navLink">Browse</a>
-            <a href="#" class="navLink">Cart</a>
+            <a href="../cart/cart.php" class="navLink">Cart</a>
             <a href="orders.php" class="navLink navLinkActive">My Orders</a>
             <a href="../profile/profile.php" class="navLink">Profile</a>
             <a href="../../Common/logout.php" class="navLink">Logout</a>
@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
                         echo "<td><label class='tableLabel' style='color: #EF4444;'>" . ucfirst($row["order_status"]) . "</label></td>";
                     }
 
-                    echo "<td><a class='viewMenuLink' href='viewMenu.php?order_id=" . $row["order_id"] . "'>Track</a></td>";
+                    echo "<td><a class='trackOrderLink' href='../orderDetails/orderDetails.php?order_id=" . $row["order_id"] . "'>Track</a></td>";
                     echo "</tr>";
                 }
                 ?>

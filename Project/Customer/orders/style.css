@@ -130,12 +130,12 @@ td {
     color: black;
 }
 
-.viewMenuLink {
+.trackOrderLink {
     font-weight: bold;
     text-decoration: none;
     color: #1a73e8;
 }
 
-.viewMenuLink:hover {
+.trackOrderLink:hover {
     color: #0d47a1;
 }
