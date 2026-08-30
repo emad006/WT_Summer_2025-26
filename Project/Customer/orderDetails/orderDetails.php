@@ -58,8 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         if (count($cancelOrderErrors) === 0) {
-            $stmt = mysqli_prepare($conn, "UPDATE orders SET cancelled_by = 'customer', cancel_reason = 'Hello World' WHERE order_id = ?");
-            mysqli_stmt_bind_param($stmt, "i", $_GET["order_id"]);
+            $stmt = mysqli_prepare($conn, "UPDATE orders SET order_status = 'cancelled', cancelled_by = 'customer', cancel_reason = ?, closed_at = NOW() WHERE order_id = ?");
+            mysqli_stmt_bind_param($stmt, "si", $_POST["cancelReason"], $_GET["order_id"]);
             mysqli_stmt_execute($stmt);
         }
     }
