@@ -15,7 +15,6 @@ if (empty($_GET["order_id"])) {
     exit();
 }
 
-$mainErrors = [];
 $cancelOrderErrors = [];
 $totalBill = 0;
 
@@ -113,8 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <label class="orderPlaceTime">Placed at <?php echo "<label class='orderPlaceTime' style='font-weight: bold;'>" . $progressTableData["placed_at"] . "</label>"; ?></label>
         </div>
-
-        <div id="errorBlock"><?php if (!empty($mainErrors)) echo implode("<br>", $mainErrors); ?></div>
 
         <div id="tableBlock">
             <label class="labelText">Progress</label>
