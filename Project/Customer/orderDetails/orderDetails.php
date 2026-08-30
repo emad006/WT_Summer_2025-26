@@ -15,11 +15,12 @@ if (empty($_GET["order_id"])) {
     exit();
 }
 
+$mainErrors = [];
 $cancelOrderErrors = [];
 $totalBill = 0;
 
 // Get order status and data for "progress" table
-$stmt = mysqli_prepare($conn, "SELECT  order_status, placed_at, accepted_at, ready_at, picked_up_at, closed_at FROM  orders WHERE customer_id = ? AND order_id = ?");
+$stmt = mysqli_prepare($conn, "SELECT  order_status, cancelled_by, cancel_reason, placed_at, accepted_at, ready_at, picked_up_at, closed_at FROM orders WHERE customer_id = ? AND order_id = ?");
 mysqli_stmt_bind_param($stmt, "ii", $_SESSION["user_id"], $_GET["order_id"]);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -107,6 +108,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 echo "<td><label class='labelText' style='color: #10B981;'>" . ucfirst($progressTableData["order_status"]) . "</label></td>";
             } else if ($progressTableData["order_status"] === "cancelled") {
                 echo "<td><label class='labelText' style='color: #EF4444;'>" . ucfirst($progressTableData["order_status"]) . "</label></td>";
+                $mainErrors[] = "This order was cancelled by the <b>" . ucfirst($progressTableData["cancelled_by"]) . "</b>.";
+                $mainErrors[] = "Reason: <b>" . $progressTableData["cancel_reason"] . "</b>"; 
             }
             ?>
 
@@ -114,6 +117,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
         <div id="tableBlock">
+            <div id="errorBlock"><?php if (!empty($mainErrors)) echo implode("<br>", $mainErrors); ?></div>
+
             <label class="labelText">Progress</label>
 
             <table border="1">
