@@ -16,6 +16,19 @@ if (empty($_GET["order_id"])) {
 }
 
 $errors = [];
+
+// Get order status and data for "progress" table
+$stmt = mysqli_prepare($conn, "SELECT  order_status, placed_at, accepted_at, ready_at, picked_up_at, closed_at FROM  orders WHERE customer_id = ? AND order_id = ?");
+mysqli_stmt_bind_param($stmt, "ii", $_SESSION["user_id"], $_GET["order_id"]);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+if (mysqli_num_rows($result) === 0) { // Kick out user cause it isn't their order
+    header("Location:../orders/orders.php");
+    exit();
+}
+
+$progressTableData = mysqli_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
@@ -42,11 +55,26 @@ $errors = [];
 
 
     <div id="mainArea">
-        <h1 class="titleName">Order Number</h1>
+        <h1 class="titleName">Order #<?php echo $_GET["order_id"] ?></h1>
 
         <div>
-            <label class="labelText">Pending</label>
-            <label id="orderPlaceTime">Placed At</label>
+            <?php
+            if ($progressTableData["order_status"] === "pending") {
+                echo "<td><label class='labelText' style='color: #F59E0B;'>" . ucfirst($progressTableData["order_status"]) . "</label></td>";
+            } else if ($progressTableData["order_status"] === "preparing") {
+                echo "<td><label class='labelText' style='color: #3B82F6;'>" . ucfirst($progressTableData["order_status"]) . "</label></td>";
+            } else if ($progressTableData["order_status"] === "ready") {
+                echo "<td><label class='labelText' style='color: #8B5CF6;'>" . ucfirst($progressTableData["order_status"]) . "</label></td>";
+            } else if ($progressTableData["order_status"] === "on_the_way") {
+                echo "<td><label class='labelText' style='color: #06B6D4;'>On The Way</label></td>";
+            } else if ($progressTableData["order_status"] === "delivered") {
+                echo "<td><label class='labelText' style='color: #10B981;'>" . ucfirst($progressTableData["order_status"]) . "</label></td>";
+            } else if ($progressTableData["order_status"] === "cancelled") {
+                echo "<td><label class='labelText' style='color: #EF4444;'>" . ucfirst($progressTableData["order_status"]) . "</label></td>";
+            }
+            ?>
+
+            <label class="orderPlaceTime">Placed at <?php echo "<label class='orderPlaceTime' style='font-weight: bold;'>" . $progressTableData["placed_at"] . "</label>"; ?></label>
         </div>
 
         <div id="errorBlock"><?php if (!empty($errors)) echo implode("<br>", $errors); ?></div>
@@ -57,9 +85,34 @@ $errors = [];
             <table border="1">
                 <tr>
                     <th>Stage</th>
-                    <th>Time</th>
+                    <th>Date & Time</th>
                 </tr>
 
+                <tr>
+                    <td><label class="tableLabel">Order Placed</label></td>
+                    <td><label class="tableLabel"><?php echo empty($progressTableData["placed_at"]) ?  "" : $progressTableData["placed_at"]; ?></label></td>
+                </tr>
+
+                
+                <tr>
+                    <td><label class="tableLabel">Accepted & Preparing</label></td>
+                    <td><label class="tableLabel"><?php echo empty($progressTableData["accepted_at"]) ?  "" : $progressTableData["accepted_at"]; ?></label></td>
+                </tr>
+
+                <tr>
+                    <td><label class="tableLabel">Ready for Pickup</label></td>
+                    <td><label class="tableLabel"><?php echo empty($progressTableData["ready_at"]) ?  "" : $progressTableData["ready_at"]; ?></label></td>
+                </tr>
+
+                <tr>
+                    <td><label class="tableLabel">Out for Delivery</label></td>
+                    <td><label class="tableLabel"><?php echo empty($progressTableData["picked_up_at"]) ?  "" : $progressTableData["picked_up_at"]; ?></label></td>
+                </tr>
+
+                <tr>
+                    <td><label class="tableLabel"><?php echo $progressTableData['order_status'] !== 'cancelled' ? "Delivered" : "Cancelled";?></label></td>
+                    <td><label class="tableLabel"><?php echo empty($progressTableData["closed_at"]) ?  "" : $progressTableData["closed_at"]; ?></label></td>
+                </tr>
             </table>
         </div>
 
