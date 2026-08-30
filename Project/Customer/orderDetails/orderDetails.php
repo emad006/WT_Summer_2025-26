@@ -39,7 +39,7 @@ mysqli_stmt_execute($stmt);
 $allItems = mysqli_stmt_get_result($stmt);
 
 // Get delivery address, rider name and phone number
-$stmt = mysqli_prepare($conn, "SELECT  o.delivery_address, u.name AS rider_name, u.phone AS rider_phone FROM orders o LEFT JOIN users u ON o.rider_id = u.user_id WHERE o.order_id = ?");
+$stmt = mysqli_prepare($conn, "SELECT  o.delivery_address, o.delivery_phone, u.name AS rider_name, u.phone AS rider_phone FROM orders o LEFT JOIN users u ON o.rider_id = u.user_id WHERE o.order_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $_GET["order_id"]);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
         <div>
-            <label class="labelText">Deliver To: <?php echo $riderDetails['delivery_address']; ?></label>
+            <label class="labelText">Deliver To: <?php echo $riderDetails['delivery_address'] . " · " . $riderDetails['delivery_phone']; ?></label>
         </div>
 
         <div>
