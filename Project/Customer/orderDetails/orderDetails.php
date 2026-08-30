@@ -78,6 +78,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             header("Location:orderDetails.php?order_id=" . $_GET["order_id"]);
             exit();
         }
+    } else if (isset($_POST["submitReviewBtn"])) {
+
+        // Validate rating
+        if (empty($_POST["rating"])) {
+            $reviewOrderErrors[] = "Please select a rating.";
+        }
+
+        // Validate comment
+        if (empty($_POST["comment"])) {
+            $reviewOrderErrors[] = "Comment is required.";
+        } else if (strlen($_POST["comment"]) < 10) {
+            $reviewOrderErrors[] = "Comment must be at least 10 characters long.";
+        } else if (strlen($_POST["comment"]) > 500) {
+            $reviewOrderErrors[] = "Comment cannot exceed 500 characters long.";
+        }
+
+        // Insert review into database
+        if (count($reviewOrderErrors) === 0) {
+            $stmt = mysqli_prepare($conn, "INSERT INTO reviews (order_id, customer_id, rating, comment, review_date) VALUES (?, ?, ?, ?, NOW())");
+            mysqli_stmt_bind_param($stmt, "iiis", $_GET["order_id"], $_SESSION["user_id"], $_POST["rating"], $_POST["comment"]);
+            mysqli_stmt_execute($stmt);
+
+            header("Location:orderDetails.php?order_id=" . $_GET["order_id"]);
+            exit();
+        }
     }
 }
 ?>
