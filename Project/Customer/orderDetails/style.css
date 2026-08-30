@@ -72,6 +72,24 @@ body {
     margin: 5px 20px 10px 0px;
 }
 
+#reviewInfoBlock {
+    color: #1e40af;
+    background-color: #eff6ff;
+    border-radius: 8px;
+    border: 2px solid #3b82f6;
+    padding: 12px 16px;
+    margin: 5px 20px 10px 0px;
+}
+
+#reviewDisplayBlock:not(:empty) {
+    color: #2a7025;
+    background-color: #a2d2b3;
+    border-radius: 8px;
+    border: 2px solid #87b496;
+    padding: 12px 16px;
+    margin: 5px 20px 10px 0px;
+}
+
 #orderInfo {
     font-size: 14px;
     color: #3f4a44;
@@ -80,15 +98,6 @@ body {
 .orderPlaceTime {
     font-size: 12px;
     color: #3f4a44;
-}
-
-#cancelledBlock:not(:empty) {
-    color: #9b1c1c;
-    background-color: #fdf2f2;
-    border-radius: 8px;
-    border: 2px solid #e53e3e;
-    padding: 12px 16px;
-    margin: 5px 20px 10px 0px;
 }
 
 #tableBlock {
@@ -138,12 +147,13 @@ td {
 .inputField {
     padding: 4px 8px;
     width: 100%;
-    height: 20px;
+    height: auto;
     border: 1px solid #3f4a44;
     border-radius: 4px;
 }
 
 .textAreaField {
+    width: 98.4%;
     height: 40px;
 }
 

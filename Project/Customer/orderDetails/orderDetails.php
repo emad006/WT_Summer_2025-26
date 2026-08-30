@@ -17,6 +17,7 @@ if (empty($_GET["order_id"])) {
 
 $mainErrors = [];
 $cancelOrderErrors = [];
+$reviewOrderErrors = [];
 $totalBill = 0;
 
 // Get order status and data for "progress" table
@@ -109,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } else if ($progressTableData["order_status"] === "cancelled") {
                 echo "<td><label class='labelText' style='color: #EF4444;'>" . ucfirst($progressTableData["order_status"]) . "</label></td>";
                 $mainErrors[] = "This order was cancelled by the <b>" . ucfirst($progressTableData["cancelled_by"]) . "</b>.";
-                $mainErrors[] = "Reason: <b>" . $progressTableData["cancel_reason"] . "</b>"; 
+                $mainErrors[] = "Reason: <b>" . $progressTableData["cancel_reason"] . "</b>";
             }
             ?>
 
@@ -220,18 +221,50 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <hr>
 
         <?php if ($progressTableData["order_status"] === "pending") { ?>
-        <div>
-            <form method="post">
-                <h1 class="subTitleName">Cancel Order</h1>
-                <div id="errorBlock"><?php if (!empty($cancelOrderErrors)) echo implode("<br>", $cancelOrderErrors); ?></div>
-                <div class="inputBlock">
-                    <label class="inputLabel">Cancellation Reason</label>
-                    <br>
-                    <input type="text" name="cancelReason" class="inputField" value="<?php if (!empty($_POST['cancelReason'])) echo $_POST['cancelReason']; ?>" placeholder="Please mention the reason for cancelling this order">
-                    <button type="submit" name="cancelOrderBtn" id="cancelOrderBtn">Cancel Order</button>
-                </div>
-            </form>
-        </div>
+            <div>
+                <form method="post">
+                    <h1 class="subTitleName">Cancel Order</h1>
+                    <div id="errorBlock"><?php if (!empty($cancelOrderErrors)) echo implode("<br>", $cancelOrderErrors); ?></div>
+                    <div class="inputBlock">
+                        <label class="inputLabel">Cancellation Reason</label>
+                        <br>
+                        <input type="text" name="cancelReason" class="inputField" value="<?php if (!empty($_POST['cancelReason'])) echo $_POST['cancelReason']; ?>" placeholder="Please mention the reason for cancelling this order">
+                        <button type="submit" name="cancelOrderBtn" id="cancelOrderBtn">Cancel Order</button>
+                    </div>
+                </form>
+            </div>
+
+        <?php } else { ?>
+            <div>
+                <form method="post">
+                    <h1 class="subTitleName">Review Order</h1>
+
+                    <div id="reviewDisplayBlock">This is where reviews will be shown</div>
+                    <div id="errorBlock">This is where review validation errors will be shown<?php if (!empty($reviewOrderErrors)) echo implode("<br>", $reviewOrderErrors); ?></div>
+                    <div id="reviewInfoBlock">You can leave a review once the order has been delivered.</div>
+
+                    <div class="inputBlock">
+                        <label class="inputLabel">Rating</label>
+                        <br>
+                        <select class="inputField" name="rating">
+                            <option value="">Select</option>
+                            <option value="5">5 - Excellent</option>
+                            <option value="4">4 - Good</option>
+                            <option value="3">3 - Average</option>
+                            <option value="2">2 - Poor</option>
+                            <option value="1">1 - Very Poor</option>
+                        </select>
+                    </div>
+
+                    <div class="inputBlock">
+                        <label class="inputLabel">Comment</label>
+                        <br>
+                        <textarea name="comment" class="inputField textAreaField" value="<?php if (!empty($_POST['comment'])) echo $_POST['comment']; ?>" placeholder="Write your comment."></textarea>
+                    </div>
+
+                    <button type="submit" name="submitReviewBtn" id="submitReviewBtn">Submit Review</button>
+                </form>
+            </div>
         <?php } ?>
     </div>
 </body>
