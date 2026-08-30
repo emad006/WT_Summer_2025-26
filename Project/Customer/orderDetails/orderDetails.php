@@ -61,6 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = mysqli_prepare($conn, "UPDATE orders SET order_status = 'cancelled', cancelled_by = 'customer', cancel_reason = ?, closed_at = NOW() WHERE order_id = ?");
             mysqli_stmt_bind_param($stmt, "si", $_POST["cancelReason"], $_GET["order_id"]);
             mysqli_stmt_execute($stmt);
+            header("Location:orderDetails.php");
+            exit();
         }
     }
 }
