@@ -15,7 +15,8 @@ if (empty($_GET["order_id"])) {
     exit();
 }
 
-$errors = [];
+$mainErrors = [];
+$cancelOrderErrors = [];
 $totalBill = 0;
 
 // Get order status and data for "progress" table
@@ -43,6 +44,26 @@ mysqli_stmt_bind_param($stmt, "i", $_GET["order_id"]);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $riderDetails = mysqli_fetch_assoc($result);
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST["cancelOrderBtn"])) {
+
+        // Validate cancel reason
+        if (empty($_POST["cancelReason"])) {
+            $cancelOrderErrors[] = "Please specify a reason for cancelling this order.";
+        } else if (strlen($_POST["cancelReason"]) < 10) {
+            $cancelOrderErrors[] = "Cancellation reason must be at least 10 characters long.";
+        } else if (strlen($_POST["cancelReason"]) > 120) {
+            $cancelOrderErrors[] = "Cancellation reason cannot exceed 120 characters long.";
+        }
+
+        if (count($cancelOrderErrors) === 0) {
+            $stmt = mysqli_prepare($conn, "UPDATE orders SET cancelled_by = 'customer', cancel_reason = 'Hello World' WHERE order_id = ?");
+            mysqli_stmt_bind_param($stmt, "i", $_GET["order_id"]);
+            mysqli_stmt_execute($stmt);
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -91,7 +112,7 @@ $riderDetails = mysqli_fetch_assoc($result);
             <label class="orderPlaceTime">Placed at <?php echo "<label class='orderPlaceTime' style='font-weight: bold;'>" . $progressTableData["placed_at"] . "</label>"; ?></label>
         </div>
 
-        <div id="errorBlock"><?php if (!empty($errors)) echo implode("<br>", $errors); ?></div>
+        <div id="errorBlock"><?php if (!empty($mainErrors)) echo implode("<br>", $mainErrors); ?></div>
 
         <div id="tableBlock">
             <label class="labelText">Progress</label>
@@ -198,6 +219,7 @@ $riderDetails = mysqli_fetch_assoc($result);
         <div>
             <form method="post">
                 <h1 class="subTitleName">Cancel Order</h1>
+                <div id="errorBlock"><?php if (!empty($cancelOrderErrors)) echo implode("<br>", $cancelOrderErrors); ?></div>
                 <div class="inputBlock">
                     <label class="inputLabel">Cancellation Reason</label>
                     <br>
