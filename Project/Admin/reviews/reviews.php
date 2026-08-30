@@ -7,7 +7,19 @@ if ($_SESSION["role"] != "admin") {
     header("Location: ../../Common/login/login.php");
 }
 
+$selected_rating = "";
+$selected_visibility = "";
+$selected_restaurant = "";
+
+$where_clauses = [];
+
+$sql = "SELECT user_id, shop_name FROM restaurants ORDER BY shop_name";
+$restaurant_list_result = mysqli_query($conn, $sql);
+
+$sql = "SELECT rv.review_id, rv.order_id, rv.rating, rv.comment, rv.review_date, rv.is_removed, c.name AS customer_name, res.shop_name AS restaurant_name FROM reviews rv LEFT JOIN users c ON rv.customer_id = c.user_id LEFT JOIN orders o ON rv.order_id = o.order_id LEFT JOIN restaurants res ON o.restaurant_id = res.user_id ORDER BY rv.review_date DESC";
+$reviews_result = mysqli_query($conn, $sql);
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -62,6 +74,12 @@ if ($_SESSION["role"] != "admin") {
                     Restaurant<br>
                     <select name="restaurant_filter">
                         <option value="">All restaurants</option>
+                        <?php
+
+                        while ($row = mysqli_fetch_assoc($restaurant_list_result)) {
+                            echo "<option value='" . $row["user_id"] . "'>" . $row["shop_name"] . "</option>";
+                        }
+                        ?>
                     </select>
                 </div>
 
@@ -85,6 +103,42 @@ if ($_SESSION["role"] != "admin") {
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
+
+                <?php
+
+                while ($row = mysqli_fetch_assoc($reviews_result)) {
+                    echo "<tr>";
+                    echo "<td>" . $row["review_id"] . "</td>";
+                    echo "<td>#" . $row["order_id"] . "</td>";
+                    echo "<td>" . $row["customer_name"] . "</td>";
+                    echo "<td>" . $row["restaurant_name"] . "</td>";
+                    echo "<td>" . $row["rating"] . "</td>";
+                    echo "<td>" . $row["comment"] . "</td>";
+                    echo "<td>" . $row["review_date"] . "</td>";
+
+
+                    if ($row["is_removed"] == 0) {
+                        echo "<td class='visible_review'>Visible</td>";
+                    } else {
+                        echo "<td class='removed_review'>Removed</td>";
+                    }
+
+                    echo "<td>";
+                    echo "<form method='post' style='display:inline;'>";
+                    echo "<input type='hidden' name='row_review_id' value='" . $row["review_id"] . "'>";
+
+                    if ($row["is_removed"] == 0) {
+                        echo "<input type='submit' class='action_btn' name='action_btn' value='Remove'>";
+                    } else {
+                        echo "<input type='submit' class='action_btn' name='action_btn' value='Restore'>";
+                    }
+
+                    echo "</form>";
+                    echo "</td>";
+
+                    echo "</tr>";
+                }
+                ?>
             </table>
         </div>
     </div>
