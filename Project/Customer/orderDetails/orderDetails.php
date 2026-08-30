@@ -194,6 +194,7 @@ $riderDetails = mysqli_fetch_assoc($result);
 
         <hr>
 
+        <?php if ($progressTableData["order_status"] === "pending") { ?>
         <div>
             <form method="post">
                 <h1 class="subTitleName">Cancel Order</h1>
@@ -205,7 +206,7 @@ $riderDetails = mysqli_fetch_assoc($result);
                 </div>
             </form>
         </div>
-        
+        <?php } ?>
     </div>
 </body>
 
