@@ -36,6 +36,13 @@ $stmt = mysqli_prepare($conn, "SELECT item_name, unit_price, quantity FROM order
 mysqli_stmt_bind_param($stmt, "i", $_GET["order_id"]);
 mysqli_stmt_execute($stmt);
 $allItems = mysqli_stmt_get_result($stmt);
+
+// Get delivery address, rider name and phone number
+$stmt = mysqli_prepare($conn, "SELECT  o.delivery_address, u.name AS rider_name, u.phone AS rider_phone FROM orders o LEFT JOIN users u ON o.rider_id = u.user_id WHERE o.order_id = ?");
+mysqli_stmt_bind_param($stmt, "i", $_GET["order_id"]);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$riderDetails = mysqli_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
@@ -165,11 +172,18 @@ $allItems = mysqli_stmt_get_result($stmt);
         </div>
 
         <div>
-            <label class="labelText">Deliver To</label>
+            <label class="labelText">Deliver To: <?php echo $riderDetails['delivery_address']; ?></label>
         </div>
 
         <div>
-            <label class="labelText">Rider</label>
+            <label class="labelText">Rider:</label>
+            <label class="labelText"><?php
+            if (!empty($riderDetails["rider_name"])) {
+                echo $riderDetails["rider_name"] . " · " . $riderDetails["rider_phone"];
+            } else {
+                echo "N/A";
+            }
+            ?></label>
         </div>
     </div>
 </body>
