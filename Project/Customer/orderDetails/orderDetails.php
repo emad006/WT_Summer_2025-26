@@ -16,6 +16,7 @@ if (empty($_GET["order_id"])) {
 }
 
 $errors = [];
+$totalBill = 0;
 
 // Get order status and data for "progress" table
 $stmt = mysqli_prepare($conn, "SELECT  order_status, placed_at, accepted_at, ready_at, picked_up_at, closed_at FROM  orders WHERE customer_id = ? AND order_id = ?");
@@ -29,6 +30,12 @@ if (mysqli_num_rows($result) === 0) { // Kick out user cause it isn't their orde
 }
 
 $progressTableData = mysqli_fetch_assoc($result);
+
+// Get all items of this order
+$stmt = mysqli_prepare($conn, "SELECT item_name, unit_price, quantity FROM order_items WHERE order_id = ?");
+mysqli_stmt_bind_param($stmt, "i", $_GET["order_id"]);
+mysqli_stmt_execute($stmt);
+$allItems = mysqli_stmt_get_result($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -126,6 +133,33 @@ $progressTableData = mysqli_fetch_assoc($result);
                     <th>Unit Price</th>
                     <th>Quantity</th>
                     <th>Subtotal</th>
+                </tr>
+
+                <?php
+                while ($row = mysqli_fetch_assoc($allItems)) {
+                    $totalBill += $row["unit_price"] * $row["quantity"];
+                    echo "<tr>";
+                    echo "<td><label class='tableLabel'>" . $row["item_name"] . "</label></td>";
+                    echo "<td><label class='tableLabel'>Tk " . $row["unit_price"] . "</label></td>";
+                    echo "<td><label class='tableLabel'>" . $row["quantity"] . "</label></td>";
+                    echo "<td><label class='tableLabel'>Tk " . $row["unit_price"] * $row["quantity"] . "</label></td>";
+                    echo "</tr>";
+                }
+                ?>
+
+                <tr>
+                    <td colspan="3">Subtotal</td>
+                    <td>Tk <?php echo $totalBill; ?></td>
+                </tr>
+
+                <tr>
+                    <td colspan="3">Delivery Fee</td>
+                    <td>Tk 60</td>
+                </tr>
+
+                <tr>
+                    <td colspan="3">Total</td>
+                    <td>Tk <?php echo $totalBill += 60; ?></td>
                 </tr>
             </table>
         </div>
