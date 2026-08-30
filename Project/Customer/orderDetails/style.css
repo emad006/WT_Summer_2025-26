@@ -55,6 +55,14 @@ body {
     border-bottom: 2px solid orange;
 }
 
+.subTitleName {
+    font-size: 18px;
+    padding: 4px;
+    margin: 0px 20px 0px 0px;
+    display: inline-block;
+    border-bottom: 2px solid orange;
+}
+
 #errorBlock:not(:empty) {
     color: #9b1c1c;
     background-color: #fdf2f2;
@@ -66,12 +74,6 @@ body {
 
 #orderInfo {
     font-size: 14px;
-    color: #3f4a44;
-}
-
-.labelText {
-    font-size: 14px;
-    font-weight: bold;
     color: #3f4a44;
 }
 
@@ -127,7 +129,7 @@ td {
     margin: 10px 20px 10px 0px;
 }
 
-.inputLabel {
+.inputLabel, .labelText {
     font-size: 14px;
     font-weight: bold;
     color: #3f4a44;
@@ -143,11 +145,6 @@ td {
 
 .textAreaField {
     height: 40px;
-}
-
-.noteText {
-    font-size: 14px;
-    color: #3f4a44;
 }
 
 #cancelOrderBtn {

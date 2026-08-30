@@ -107,25 +107,25 @@ $riderDetails = mysqli_fetch_assoc($result);
                     <td><label class="tableLabel"><?php echo empty($progressTableData["placed_at"]) ?  "" : $progressTableData["placed_at"]; ?></label></td>
                 </tr>
 
-                <?php if ($progressTableData["order_status"] !== "cancelled") {?>
-                <tr>
-                    <td><label class="tableLabel">Accepted & Preparing</label></td>
-                    <td><label class="tableLabel"><?php echo empty($progressTableData["accepted_at"]) ?  "" : $progressTableData["accepted_at"]; ?></label></td>
-                </tr>
+                <?php if ($progressTableData["order_status"] !== "cancelled") { ?>
+                    <tr>
+                        <td><label class="tableLabel">Accepted & Preparing</label></td>
+                        <td><label class="tableLabel"><?php echo empty($progressTableData["accepted_at"]) ?  "" : $progressTableData["accepted_at"]; ?></label></td>
+                    </tr>
+
+                    <tr>
+                        <td><label class="tableLabel">Ready for Pickup</label></td>
+                        <td><label class="tableLabel"><?php echo empty($progressTableData["ready_at"]) ?  "" : $progressTableData["ready_at"]; ?></label></td>
+                    </tr>
+
+                    <tr>
+                        <td><label class="tableLabel">Out for Delivery</label></td>
+                        <td><label class="tableLabel"><?php echo empty($progressTableData["picked_up_at"]) ?  "" : $progressTableData["picked_up_at"]; ?></label></td>
+                    </tr>
+                <?php } ?>
 
                 <tr>
-                    <td><label class="tableLabel">Ready for Pickup</label></td>
-                    <td><label class="tableLabel"><?php echo empty($progressTableData["ready_at"]) ?  "" : $progressTableData["ready_at"]; ?></label></td>
-                </tr>
-
-                <tr>
-                    <td><label class="tableLabel">Out for Delivery</label></td>
-                    <td><label class="tableLabel"><?php echo empty($progressTableData["picked_up_at"]) ?  "" : $progressTableData["picked_up_at"]; ?></label></td>
-                </tr>
-                <?php }?>
-
-                <tr>
-                    <td><label class="tableLabel"><?php echo $progressTableData['order_status'] !== 'cancelled' ? "Delivered" : "Cancelled";?></label></td>
+                    <td><label class="tableLabel"><?php echo $progressTableData['order_status'] !== 'cancelled' ? "Delivered" : "Cancelled"; ?></label></td>
                     <td><label class="tableLabel"><?php echo empty($progressTableData["closed_at"]) ?  "" : $progressTableData["closed_at"]; ?></label></td>
                 </tr>
             </table>
@@ -177,13 +177,29 @@ $riderDetails = mysqli_fetch_assoc($result);
 
         <div>
             <label class="labelText">Rider:</label>
-            <label class="labelText"><?php
-            if (!empty($riderDetails["rider_name"])) {
-                echo $riderDetails["rider_name"] . " · " . $riderDetails["rider_phone"];
-            } else {
-                echo "N/A";
-            }
-            ?></label>
+            <label class="labelText">
+                <?php
+                if (!empty($riderDetails["rider_name"])) {
+                    echo $riderDetails["rider_name"] . " · " . $riderDetails["rider_phone"];
+                } else {
+                    echo "N/A";
+                }
+                ?>
+            </label>
+        </div>
+
+        <hr>
+
+        <div>
+            <form method="post">
+                <h1 class="subTitleName">Cancel Order</h1>
+                <div class="inputBlock">
+                    <label class="inputLabel">Cancellation Reason</label>
+                    <br>
+                    <input type="text" name="cancelReason" class="inputField" value="<?php if (!empty($_POST['cancelReason'])) echo $_POST['cancelReason']; ?>" placeholder="Please mention the reason for cancelling this order">
+                    <button type="submit" name="cancelOrderBtn" id="cancelOrderBtn">Cancel Order</button>
+                </div>
+            </form>
         </div>
     </div>
 </body>
