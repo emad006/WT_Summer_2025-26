@@ -46,6 +46,19 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $riderDetails = mysqli_fetch_assoc($result);
 
+// Get review of this order
+$stmt = mysqli_prepare($conn, "SELECT rating, comment, review_date FROM reviews WHERE order_id = ?");
+mysqli_stmt_bind_param($stmt, "i", $_GET["order_id"]);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+if (mysqli_num_rows($result) === 0) {
+    $orderReviewData = NULL;
+} else {
+    $orderReviewData = mysqli_fetch_assoc($result);
+}
+
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["cancelOrderBtn"])) {
 
@@ -234,35 +247,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </form>
             </div>
 
-        <?php } else { ?>
+        <?php } else if ($progressTableData["order_status"] !== "cancelled") { ?>
             <div>
                 <form method="post">
-                    <h1 class="subTitleName">Review Order</h1>
+                    <h1 class="subTitleName"><?php echo empty($orderReviewData) ? "Review Order" : "My Review" ?></h1>
 
-                    <div id="reviewDisplayBlock">This is where reviews will be shown</div>
-                    <div id="errorBlock">This is where review validation errors will be shown<?php if (!empty($reviewOrderErrors)) echo implode("<br>", $reviewOrderErrors); ?></div>
-                    <div id="reviewInfoBlock">You can leave a review once the order has been delivered.</div>
+                    <div id="reviewDisplayBlock"><?php
+                        if (!empty($orderReviewData)) {
+                            echo "You rated this order <b>" . $orderReviewData["rating"] . " out of 5</b> on <b>" . $orderReviewData["review_date"] . "</b>.";
+                            echo "<br>";
+                            echo '<i>"' . $orderReviewData["comment"] . '"</i>';
+                        }
+                    ?></div>
 
-                    <div class="inputBlock">
-                        <label class="inputLabel">Rating</label>
-                        <br>
-                        <select class="inputField" name="rating" <?php if ($progressTableData["order_status"] !== 'delivered') echo "disabled"; ?>>
-                            <option value="">Select</option>
-                            <option value="5">5 - Excellent</option>
-                            <option value="4">4 - Good</option>
-                            <option value="3">3 - Average</option>
-                            <option value="2">2 - Poor</option>
-                            <option value="1">1 - Very Poor</option>
-                        </select>
-                    </div>
+                    <?php if (empty($orderReviewData)) { ?>
+                        <div id="errorBlock"><?php if (!empty($reviewOrderErrors)) echo implode("<br>", $reviewOrderErrors); ?></div>
+                        <div id="reviewInfoBlock" style="display: <?php echo $progressTableData['order_status'] !== 'delivered' ? "block;" : "none;"; ?>">You can leave a review once the order has been delivered.</div>
 
-                    <div class="inputBlock">
-                        <label class="inputLabel">Comment</label>
-                        <br>
-                        <textarea name="comment" class="inputField textAreaField" value="<?php if (!empty($_POST['comment'])) echo $_POST['comment']; ?>" placeholder="Write your comment." <?php if ($progressTableData["order_status"] !== 'delivered') echo "disabled"; ?>></textarea>
-                    </div>
+                        <div class="inputBlock">
+                            <label class="inputLabel">Rating</label>
+                            <br>
+                            <select class="inputField" name="rating" <?php if ($progressTableData["order_status"] !== 'delivered') echo "disabled"; ?>>
+                                <option value="">Select</option>
+                                <option value="5">5 - Excellent</option>
+                                <option value="4">4 - Good</option>
+                                <option value="3">3 - Average</option>
+                                <option value="2">2 - Poor</option>
+                                <option value="1">1 - Very Poor</option>
+                            </select>
+                        </div>
 
-                    <button type="submit" name="submitReviewBtn" id="submitReviewBtn" <?php if ($progressTableData["order_status"] !== 'delivered') echo "disabled"; ?>>Submit Review</button>
+                        <div class="inputBlock">
+                            <label class="inputLabel">Comment</label>
+                            <br>
+                            <textarea name="comment" class="inputField textAreaField" value="<?php if (!empty($_POST['comment'])) echo $_POST['comment']; ?>" placeholder="Write your comment." <?php if ($progressTableData["order_status"] !== 'delivered') echo "disabled"; ?>></textarea>
+                        </div>
+
+                        <button type="submit" name="submitReviewBtn" id="submitReviewBtn" <?php if ($progressTableData["order_status"] !== 'delivered') echo "disabled"; ?>>Submit Review</button>
+                    <?php } ?>
                 </form>
             </div>
         <?php } ?>
