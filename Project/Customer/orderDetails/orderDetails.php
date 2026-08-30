@@ -9,6 +9,12 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "customer") {
     exit();
 }
 
+// Kick out user if order id doesn't exist
+if (empty($_GET["order_id"])) {
+    header("Location:../orders/orders.php");
+    exit();
+}
+
 $errors = [];
 ?>
 
