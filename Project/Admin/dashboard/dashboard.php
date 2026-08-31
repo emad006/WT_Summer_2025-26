@@ -61,11 +61,11 @@ $latest_activity_result = mysqli_query($conn, $sql);
         <div id="left_nav">
             <a href="dashboard.php" class="navigation_link active_link">Dashboard</a>
             <a href="../users/users.php" class="navigation_link">Users</a>
-            <a href="#" class="navigation_link">Cusines</a>
-            <a href="#" class="navigation_link">Orders</a>
-            <a href="#" class="navigation_link">Reviews</a>
+            <a href="../cuisines/cuisines.php" class="navigation_link">Cuisines</a>
+            <a href="../orders/orders.php" class="navigation_link">Orders</a>
+            <a href="../reviews/reviews.php" class="navigation_link">Reviews</a>
             <a href="../profile/profile.php" class="navigation_link">Profile</a>
-            <a href="#" class="navigation_link">Logout</a>
+            <a href="../logout.php" class="navigation_link">Logout</a>
         </div>
 
         <div id="right_nav"><?php echo $_SESSION["name"]; ?> · Admin</div>
@@ -113,8 +113,25 @@ $latest_activity_result = mysqli_query($conn, $sql);
                     echo "<td>" . $row["restaurant_name"] . "</td>";
                     echo "<td>Tk " . $row["total"] . "</td>";
 
-                    $order_status = ucfirst(str_replace("_", " ", $row["order_status"]));
-                    echo "<td>" . $order_status . "</td>";
+
+                    if($row["order_status"] == "pending"){
+                        echo "<td> <label style ='color: darkOrange; font-weight: bold;'>Pending</label> </td>";
+                    }
+                    else if($row["order_status"] == "preparing"){
+                        echo "<td> <label style = 'color: green; font-weight: bold;'>Preparing</label> </td>";
+                    }
+                    else if($row["order_status"] == "on_the_way"){
+                        echo "<td> <label style = 'color: firebrick; font-weight: bold;'>On the way</label> </td>";
+                    }
+                    else if($row["order_status"] == "ready"){
+                        echo "<td> <label style= 'color: blue; font-weight: bold;'>Ready</label> </td>";
+                    }
+                    else if($row["order_status"] == "delivered"){
+                        echo "<td> <label style = 'color: darkgreen; font-weight: bold;'>Delivered</label></td>";
+                    }
+                    else if($row["order_status"] == "cancelled"){
+                        echo "<td> <label style = 'color: red; font-weight: bold;'>Cancelled</label></td>";
+                    }
 
                     echo "</tr>";
                 }
