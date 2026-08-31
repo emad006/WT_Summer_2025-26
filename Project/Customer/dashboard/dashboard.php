@@ -99,7 +99,7 @@ $allActiveOrders = mysqli_stmt_get_result($stmt);
                     echo "<td>" . $row["shop_name"] . "</td>";
                     echo "<td>" . $row["total"] . "</td>";
                     echo "<td>" . ucfirst($row["order_status"]) . "</td>"; // TODO: Add coloring based on status
-                    echo "<td><a class='trackOrderLink' href='order_details.php?order_id=" . $row["order_id"] . "'>Track</a></td>";
+                    echo "<td><a class='trackOrderLink' href='../orderDetails/orderDetails.php?order_id=" . $row["order_id"] . "'>Track</a></td>";
                     
                     echo "</tr>";
                 }
