@@ -97,7 +97,7 @@ $cusine_result = mysqli_query($conn, $sql);
         <div id="left_nav">
             <a href="../dashboard/dashboard.php" class="navigation_link">Dashboard</a>
             <a href="../users/users.php" class="navigation_link">Users</a>
-            <a href="cuisines.php" class="navigation_link active_link">Cusines</a>
+            <a href="cuisines.php" class="navigation_link active_link">Cuisines</a>
             <a href="../orders/orders.php" class="navigation_link">Orders</a>
             <a href="../reviews/reviews.php" class="navigation_link">Reviews</a>
             <a href="../profile/profile.php" class="navigation_link">Profile</a>
