@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div id="left_nav">
             <a href="../dashboard/dashboard.php" class="navigation_link">Dashboard</a>
             <a href="../users/users.php" class="navigation_link">Users</a>
-            <a href="../cusines/cusines.php" class="navigation_link">Cusines</a>
+            <a href="../cuisines/cuisines.php" class="navigation_link">Cuisines</a>
             <a href="orders.php" class="navigation_link active_link">Orders</a>
             <a href="../reviews/reviews.php" class="navigation_link">Reviews</a>
             <a href="../profile/profile.php" class="navigation_link">Profile</a>
@@ -187,21 +187,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<td>" . $row["placed_at"] . "</td>";
 
                     if($row["order_status"] == "pending"){
-                        echo "<td> <label style ='color: darkOrange;'>Pending</label> </td>";
+                        echo "<td> <label style ='color: darkOrange; font-weight: bold; '>Pending</label> </td>";
                     }
                     else if($row["order_status"] == "preparing"){
-                        echo "<td> <label style = 'color: green;'>Preparing</label> </td>";
+                        echo "<td> <label style = 'color: green;  font-weight: bold;'>Preparing</label> </td>";
                     }
                     else if($row["order_status"] == "on_the_way"){
-                        echo "<td> <label style = 'color: firebrick;'>On the way</label> </td>";
+                        echo "<td> <label style = 'color: firebrick;  font-weight: bold;'>On the way</label> </td>";
                     }
                     else if($row["order_status"] == "ready"){
-                        echo "<td> <label style= 'color: blue;'>Ready</label> </td>";
+                        echo "<td> <label style= 'color: blue;  font-weight: bold;'>Ready</label> </td>";
                     }
                     else if($row["order_status"] == "delivered"){
-                        echo "<td> <label style = 'color: darkgreen;'>Delivered</label></td>";
+                        echo "<td> <label style = 'color: darkgreen; font-weight: bold;'>Delivered</label></td>";
                     }else if($row["order_status"] == "cancelled"){
-                        echo "<td> <label style = 'color: red;'>Cancelled</label></td>";
+                        echo "<td> <label style = 'color: red; font-weight: bold;'>Cancelled</label></td>";
                     }
 
                     echo "<td>";

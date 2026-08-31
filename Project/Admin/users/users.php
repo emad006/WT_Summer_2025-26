@@ -105,9 +105,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div id="left_nav">
             <a href="../dashboard/dashboard.php" class="navigation_link">Dashboard</a>
             <a href="#" class="navigation_link active_link">Users</a>
-            <a href="#" class="navigation_link">Cusines</a>
-            <a href="#" class="navigation_link">Orders</a>
-            <a href="#" class="navigation_link">Reviews</a>
+            <a href="../cuisines/cuisines.php" class="navigation_link">Cuisines</a>
+            <a href="../orders/orders.php" class="navigation_link">Orders</a>
+            <a href="../reviews/reviews.php" class="navigation_link">Reviews</a>
             <a href="../profile/profile.php" class="navigation_link">Profile</a>
             <a href="../logout.php" class="navigation_link">Logout</a>
         </div>
@@ -158,8 +158,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<td>";
                     echo "<form method='post' style='display:inline;'>";
                     echo "<input type='hidden' name='row_user_id' value='" . $row['user_id'] . "'>";
-                    echo "<input type='submit' class='action_btn' name='action_btn' value='Approve'> · ";
-                    echo "<input type='submit' class='action_btn' name='action_btn' value='Reject'>";
+                    echo "<input type='submit' class='action_btn approve_btn' name='action_btn' value='Approve'>  ";
+                    echo "<input type='submit' class='action_btn reject_btn' name='action_btn' value='Reject'>";
                     echo "</form>";
                     echo "</td>";
 
@@ -230,12 +230,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<input type='hidden' name='row_user_id' value='" . $row['user_id'] . "'>";
 
                     if ($row["account_status"] != "suspended") {
-                        echo "<input type='submit' class='action_btn' name='action_btn' value='Suspend'> · ";
+                        echo "<input type='submit' class='action_btn suspend_btn' name='action_btn' value='Suspend'>  ";
                     } else {
-                        echo "<input type='submit' class='action_btn' name='action_btn' value='Reactivate'> · ";
+                        echo "<input type='submit' class='action_btn reactivate_btn' name='action_btn' value='Reactivate'> ";
                     }
 
-                    echo "<input type='submit' class='action_btn' name='action_btn' value='Reset Password'>";
+                    echo "<input type='submit' class='action_btn reset_btn' name='action_btn' value='Reset Password'>";
                     echo "</form>";
                     echo "</td>";
 

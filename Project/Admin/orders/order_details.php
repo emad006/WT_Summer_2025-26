@@ -56,7 +56,7 @@ $order_status = $order["order_status"];
         <div id="left_nav">
             <a href="../dashboard/dashboard.php" class="navigation_link">Dashboard</a>
             <a href="../users/users.php" class="navigation_link">Users</a>
-            <a href="../cusines/cusines.php" class="navigation_link">Cusines</a>
+            <a href="../cuisines/cuisines.php" class="navigation_link">Cuisines</a>
             <a href="orders.php" class="navigation_link active_link">Orders</a>
             <a href="../reviews/reviews.php" class="navigation_link">Reviews</a>
             <a href="../profile/profile.php" class="navigation_link">Profile</a>
