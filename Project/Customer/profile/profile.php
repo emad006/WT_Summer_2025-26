@@ -116,10 +116,10 @@ $userRow = mysqli_fetch_assoc($result);
     <div id="navbar">
         <div id="navLeft">
             <a href="../dashboard/dashboard.php" class="navLink">Dashboard</a>
-            <a href="#" class="navLink">Browse</a>
-            <a href="#" class="navLink">Cart</a>
-            <a href="#" class="navLink">My Orders</a>
-            <a href="#" class="navLink navLinkActive">Profile</a>
+            <a href="../browseRestaurant/browseRestaurant.php" class="navLink">Browse</a>
+            <a href="../cart/cart.php" class="navLink">Cart</a>
+            <a href="../orders/orders.php" class="navLink">My Orders</a>
+            <a href="../profile/profile.php" class="navLink navLinkActive">Profile</a>
             <a href="../../Common/logout.php" class="navLink">Logout</a>
         </div>
 
