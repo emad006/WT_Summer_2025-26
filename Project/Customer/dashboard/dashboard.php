@@ -107,10 +107,10 @@ $allActiveOrders = mysqli_stmt_get_result($stmt);
                     }
                     ?>
                 </table>
-            <?php } else { ?>
-                <div id="infoBlock">You have no active orders at the moment.</div>
-            <?php } ?>
             </div>
+        <?php } else { ?>
+            <div id="infoBlock">You have no active orders at the moment.</div>
+        <?php } ?>
 </body>
 
 </html>
