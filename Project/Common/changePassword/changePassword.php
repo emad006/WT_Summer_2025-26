@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <!-- Customer Navigation Bar -->
             <?php if ($_SESSION["role"] === "customer") { ?>
                 <a href="../../Customer/dashboard/dashboard.php" class="navLink">Dashboard</a>
-                <a href="../../Customer/browse/browse.php" class="navLink">Browse</a>
+                <a href="../../Customer/browseRestaurant/browseRestaurant.php" class="navLink">Browse</a>
                 <a href="../../Customer/cart/cart.php" class="navLink">Cart</a>
                 <a href="../../Customer/orders/orders.php" class="navLink">My Orders</a>
                 <a href="../../Customer/profile/profile.php" class="navLink navLinkActive">Profile</a>
