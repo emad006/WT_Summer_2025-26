@@ -19,6 +19,16 @@ $stmt = mysqli_prepare($conn, "SELECT r.user_id AS restaurant_id, r.shop_name, c
 mysqli_stmt_execute($stmt);
 $allRestaurants = mysqli_stmt_get_result($stmt);
 
+$recentlyViewedRestaurants = "";
+// Get recently viewed restaurants
+if (!empty($_COOKIE["recently_viewed"])) {
+    $stmt = mysqli_prepare($conn, "SELECT user_id, shop_name FROM restaurants WHERE user_id = ?");
+    mysqli_stmt_bind_param($stmt, "i", $_COOKIE["recently_viewed"]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $recentlyViewedRestaurants = mysqli_fetch_assoc($result);
+}
+
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
     $baseQuery = "SELECT r.user_id AS restaurant_id, r.shop_name, c.cuisine_name, r.is_open, COALESCE(ROUND(AVG(rev.rating), 1), 0.0) AS rating, COUNT(rev.review_id) AS total_ratings FROM restaurants r INNER JOIN cuisines c ON r.cuisine_id = c.cuisine_id INNER JOIN users u ON r.user_id = u.user_id LEFT JOIN orders o ON r.user_id = o.restaurant_id LEFT JOIN reviews rev ON o.order_id = rev.order_id AND rev.is_removed = 0";
@@ -132,9 +142,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
             </div>
         </form>
 
+        <?php if (!empty($_COOKIE["recently_viewed"])) { ?>
         <div>
-            <label class="labelText">Recently Viewed</label> <!-- TODO: Add logic for recently viewed -->
+            <label class="labelText">Recently Viewed:</label>
+            <?php
+            echo "<a class='viewMenuLink' href='../menu/menu.php?restaurant_id=" . $recentlyViewedRestaurants["user_id"] . "'>" . $recentlyViewedRestaurants["shop_name"] . "</a>";
+            ?>
         </div>
+        <?php } ?>
 
         <?php if (mysqli_num_rows($allRestaurants) > 0) { ?>
             <div id="tableBlock">
