@@ -18,6 +18,55 @@ $restaurant_list_result = mysqli_query($conn, $sql);
 
 $sql = "SELECT rv.review_id, rv.order_id, rv.rating, rv.comment, rv.review_date, rv.is_removed, c.name AS customer_name, res.shop_name AS restaurant_name FROM reviews rv LEFT JOIN users c ON rv.customer_id = c.user_id LEFT JOIN orders o ON rv.order_id = o.order_id LEFT JOIN restaurants res ON o.restaurant_id = res.user_id ORDER BY rv.review_date DESC";
 $reviews_result = mysqli_query($conn, $sql);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (isset($_POST["filter_btn"])) {
+
+        if (!empty($_POST["rating_filter"])) {
+            $selected_rating = $_POST["rating_filter"];
+            $where_clauses[] = "rv.rating = '$selected_rating'";
+        }
+
+        if (!empty($_POST["visibility_filter"])) {
+            $selected_visibility = $_POST["visibility_filter"];
+
+            if ($selected_visibility == "visible") {
+                $where_clauses[] = "rv.is_removed = 0";
+            } else {
+                $where_clauses[] = "rv.is_removed = 1";
+            }
+        }
+
+        if (!empty($_POST["restaurant_filter"])) {
+            $selected_restaurant = $_POST["restaurant_filter"];
+            $where_clauses[] = "o.restaurant_id = '$selected_restaurant'";
+        }
+
+
+        if (count($where_clauses) > 0) {
+            $conditions = implode(" AND ", $where_clauses);
+            $sql = "SELECT rv.review_id, rv.order_id, rv.rating, rv.comment, rv.review_date, rv.is_removed, c.name AS customer_name, res.shop_name AS restaurant_name FROM reviews rv LEFT JOIN users c ON rv.customer_id = c.user_id LEFT JOIN orders o ON rv.order_id = o.order_id LEFT JOIN restaurants res ON o.restaurant_id = res.user_id";
+            $sql .= " WHERE $conditions ORDER BY rv.review_date DESC";
+            $reviews_result = mysqli_query($conn, $sql);
+        }
+    }
+
+    if (isset($_POST["action_btn"])) {
+        $review_id = $_POST["row_review_id"];
+
+        if ($_POST["action_btn"] == "Remove") {
+            $sql = "UPDATE reviews SET is_removed = 1 WHERE review_id = $review_id";
+            mysqli_query($conn, $sql);
+        } else if ($_POST["action_btn"] == "Restore") {
+            $sql = "UPDATE reviews SET is_removed = 0 WHERE review_id = $review_id";
+            mysqli_query($conn, $sql);
+        }
+
+        header("Location:reviews.php");
+        exit();
+    }
+}
 ?>
 
 
@@ -34,7 +83,7 @@ $reviews_result = mysqli_query($conn, $sql);
         <div id="left_nav">
             <a href="../dashboard/dashboard.php" class="navigation_link">Dashboard</a>
             <a href="../users/users.php" class="navigation_link">Users</a>
-            <a href="../cusines/cusines.php" class="navigation_link">Cusines</a>
+            <a href="../cuisines/cuisines.php" class="navigation_link">Cuisines</a>
             <a href="../orders/orders.php" class="navigation_link">Orders</a>
             <a href="reviews.php" class="navigation_link active_link">Reviews</a>
             <a href="../profile/profile.php" class="navigation_link">Profile</a>
