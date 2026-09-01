@@ -1,0 +1,148 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: grid;
+    place-items: center;
+    margin: 0px;
+}
+
+#navbar {
+    background-color: #2c3e50;
+    padding: 10px 24px;
+    color: #ffffff;
+    font-size: 14px;
+    width: 100%;
+}
+
+#navLeft {
+    float: left;
+    padding-left: 10px;
+}
+
+#navRight {
+    float: right;
+    color: #b0bec5;
+    padding-top: 4px;
+    padding-right: 10px;
+}
+
+.navLink {
+    display: inline-block;
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 18px;
+    font-weight: bold;
+    padding-bottom: 4px;
+}
+
+.navLinkActive {
+    border-bottom: 3px solid #e67e22;
+}
+
+#mainArea {
+    background-color: white;
+    border-radius: 8px;
+    margin: 20px;
+    padding: 20px;
+    width: 50%;
+}
+
+#titleName {
+    font-size: 26px;
+    padding: 4px;
+    margin: 0px 20px 0px 20px;
+    display: inline-block;
+    border-bottom: 2px solid orange;
+}
+
+#successBlock:not(:empty) {
+  color: #2a7025;
+  background-color: #a2d2b3;
+  border-radius: 8px;
+  border: 2px solid #87b496;
+  padding: 12px 16px;
+  margin: 5px 20px 10px 20px;
+}
+
+#errorBlock:not(:empty) {
+  color: #9b1c1c;
+  background-color: #fdf2f2;
+  border-radius: 8px;
+  border: 2px solid #e53e3e;
+  padding: 12px 16px;
+  margin: 5px 20px 10px 20px;
+}
+
+.inputBlock {
+    margin: 10px 20px 10px 20px;
+}
+
+.inputLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #3f4a44;
+}
+
+.inputField {
+    width: 100%;
+    height: 20px;
+    border: 1px solid #3f4a44;
+    border-radius: 4px;
+}
+
+.textAreaField {
+    height: 40px;
+}
+
+#submitBtn {
+    font-weight: bold;
+    color: white;
+    background-color: #ff9800;
+    padding: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 20%;
+    border: 1px solid #e65100;
+    border-radius: 4px;
+}
+
+#submitBtn:hover {
+    background-color: #e65100;
+}
+
+#changePassBtn {
+    font-weight: bold;
+    color: #374151;
+    background-color: #e5e7eb;
+    padding: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 20%;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+}
+
+#changePassBtn:hover {
+    background-color: #f3f4f6;
+}
+
+#deleteBtn {
+    font-weight: bold;
+    color: rgb(230, 51, 51);
+    background-color: white;
+    padding: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 20%;
+    border: 1px solid #e65100;
+    border-radius: 4px;
+}
+
+#deleteBtn:hover {
+    background-color: #e4c6c6;
+}
+
+hr {
+    border: 1px solid #e5e7eb;
+    margin: 10px 20px 10px 20px;
+}
