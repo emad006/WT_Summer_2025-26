@@ -139,3 +139,12 @@ td {
 .viewMenuLink:hover {
     color: #0d47a1;
 }
+
+#infoBlock {
+    color: #1e40af;
+    background-color: #eff6ff;
+    border-radius: 8px;
+    border: 2px solid #3b82f6;
+    padding: 12px 16px;
+    margin: 5px 20px 10px 0px;
+}

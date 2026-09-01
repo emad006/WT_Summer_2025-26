@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
     $whereClauses = ["u.account_status = 'active'"];
     $restQuery = " GROUP BY r.user_id, r.shop_name, c.cuisine_name, r.is_open";
     $orderBy = "";
-    
+
     if (!empty($_POST["search"])) {
         $searchToken = $_POST["search"];
         $whereClauses[] = "r.shop_name LIKE '%$searchToken%'";
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
 
     // Build final query
     $finalQuery = $baseQuery . " WHERE " . implode(" AND ", $whereClauses) . $restQuery . $orderBy;
-    
+
     // Query the database
     $stmt = mysqli_prepare($conn, $finalQuery);
     mysqli_stmt_execute($stmt);
@@ -61,81 +61,83 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="style.css">
-        <title>Customer - Dashboard</title>
-    </head>
 
-    <body>
-        <div id="navbar">
-            <div id="navLeft">
-                <a href="../dashboard/dashboard.php" class="navLink">Dashboard</a>
-                <a href="browseRestaurant.php" class="navLink navLinkActive">Browse</a>
-                <a href="../cart/cart.php" class="navLink">Cart</a>
-                <a href="../orders/orders.php" class="navLink">My Orders</a>
-                <a href="../profile/profile.php" class="navLink">Profile</a>
-                <a href="../../Common/logout.php" class="navLink">Logout</a>
-            </div>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Customer - Dashboard</title>
+</head>
 
-            <div id="navRight"><?php echo $_SESSION['name'] . " · Customer"; ?></div>
+<body>
+    <div id="navbar">
+        <div id="navLeft">
+            <a href="../dashboard/dashboard.php" class="navLink">Dashboard</a>
+            <a href="browseRestaurant.php" class="navLink navLinkActive">Browse</a>
+            <a href="../cart/cart.php" class="navLink">Cart</a>
+            <a href="../orders/orders.php" class="navLink">My Orders</a>
+            <a href="../profile/profile.php" class="navLink">Profile</a>
+            <a href="../../Common/logout.php" class="navLink">Logout</a>
         </div>
 
+        <div id="navRight"><?php echo $_SESSION['name'] . " · Customer"; ?></div>
+    </div>
 
 
-        <div id="mainArea">
-            <h1 id="titleName">Browse Restaurants</h1>
 
-            <form method="post">
-                <div id="filterArea">
-                    <div class="filterGroup">
-                        <label class="labelText">Search</label>
-                        <br>
-                        <input type="text" name="search" class="inputField" id="searchBox" value="<?php if (!empty($_POST['search'])) echo $_POST['search']; ?>">
-                    </div>
+    <div id="mainArea">
+        <h1 id="titleName">Browse Restaurants</h1>
 
-                    <div class="filterGroup">
-                        <label class="labelText">Cusine</label>
-                        <br>
-                        <select name="cuisineType" class="inputField">
-                            <option value="">Select Cusine</option>
-                            <?php
-                            while ($row = mysqli_fetch_assoc($allCuisines)) {
-                                echo "<option value='" . $row["cuisine_id"] . "'>" . $row["cuisine_name"] . "</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <div class="filterGroup">
-                        <label class="labelText">Status</label>
-                        <br>
-                        <select name="status" class="inputField">
-                            <option value="">All</option>
-                            <option value="1" <?php if ($_POST["status"] === "1") echo "selected"; ?>>Open</option>
-                            <option value="0" <?php if ($_POST["status"] === "0") echo "selected"; ?>>Closed</option>
-                        </select>
-                    </div>
-
-                    <div class="filterGroup">
-                        <label class="labelText">Sort By</label>
-                        <br>
-                        <select name="sortBy" class="inputField">
-                            <option value="sortByName" <?php if ($_POST["sortBy"] === "sortByName") echo "selected"; ?>>Name (A-Z)</option>
-                            <option value="sortByRating" <?php if ($_POST["sortBy"] === "sortByRating") echo "selected"; ?>>Rating</option>
-                        </select>
-                    </div>
-
-                    <div class="filterGroup">
-                        <button type="submit" name="filterBtn" id="filterBtn">Apply Filter</button>
-                    </div>
+        <form method="post">
+            <div id="filterArea">
+                <div class="filterGroup">
+                    <label class="labelText">Search</label>
+                    <br>
+                    <input type="text" name="search" class="inputField" id="searchBox" value="<?php if (!empty($_POST['search'])) echo $_POST['search']; ?>">
                 </div>
-            </form>
 
-            <div>
-                <label class="labelText">Recently Viewed</label> <!-- TODO: Add logic for recently viewed -->
+                <div class="filterGroup">
+                    <label class="labelText">Cusine</label>
+                    <br>
+                    <select name="cuisineType" class="inputField">
+                        <option value="">Select Cusine</option>
+                        <?php
+                        while ($row = mysqli_fetch_assoc($allCuisines)) {
+                            echo "<option value='" . $row["cuisine_id"] . "'>" . $row["cuisine_name"] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div class="filterGroup">
+                    <label class="labelText">Status</label>
+                    <br>
+                    <select name="status" class="inputField">
+                        <option value="">All</option>
+                        <option value="1" <?php if ($_POST["status"] === "1") echo "selected"; ?>>Open</option>
+                        <option value="0" <?php if ($_POST["status"] === "0") echo "selected"; ?>>Closed</option>
+                    </select>
+                </div>
+
+                <div class="filterGroup">
+                    <label class="labelText">Sort By</label>
+                    <br>
+                    <select name="sortBy" class="inputField">
+                        <option value="sortByName" <?php if ($_POST["sortBy"] === "sortByName") echo "selected"; ?>>Name (A-Z)</option>
+                        <option value="sortByRating" <?php if ($_POST["sortBy"] === "sortByRating") echo "selected"; ?>>Rating</option>
+                    </select>
+                </div>
+
+                <div class="filterGroup">
+                    <button type="submit" name="filterBtn" id="filterBtn">Apply Filter</button>
+                </div>
             </div>
+        </form>
 
-            <div id="tableBlock"> <!-- TODO: Hide table and show a info div when there are no results -->
+        <div>
+            <label class="labelText">Recently Viewed</label> <!-- TODO: Add logic for recently viewed -->
+        </div>
+
+        <?php if (mysqli_num_rows($allRestaurants) > 0) { ?>
+            <div id="tableBlock">
                 <table border="1">
                     <tr>
                         <th>Restaurant</th>
@@ -162,6 +164,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
                     ?>
                 </table>
             </div>
-        </div>
-    </body>
+        <?php } else { ?>
+            <div id="infoBlock">No restaurants found.</div>
+        <?php } ?>
+    </div>
+</body>
+
 </html>
