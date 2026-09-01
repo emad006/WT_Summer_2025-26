@@ -4,8 +4,25 @@ session_start();
 include "../lib/dbConfig.php";
 include "../lib/helperFunctions.php";
 
-if (!empty($_SESSION["user_id"])) {
+if (!empty($_SESSION["user_id"])) { // Session set
     redirectUser($_SESSION["role"]);
+} else {
+    if (!empty($_COOKIE["remember_token"])) { // Cookie set
+        $stmt = mysqli_prepare($conn, "SELECT user_id, name, role FROM users WHERE remember_token = ? AND account_status = 'active'");
+        mysqli_stmt_bind_param($stmt, "s", $_COOKIE["remember_token"]);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $userRow = mysqli_fetch_assoc($result);
+
+        if ($userRow) { // Valid cookie (found in database)
+            $_SESSION["user_id"] = $userRow["user_id"];
+            $_SESSION["name"] = $userRow["name"];
+            $_SESSION["role"] = $userRow["role"];
+            redirectUser($userRow["role"]);
+        } else { // Invalid cookie
+            setcookie("remember_token", "", time() - 3600, "/");
+        }
+    }
 }
 
 $errors = [];
@@ -80,9 +97,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $errors[] = "Your registration was rejected.";
                         break;
                     case "suspended":
-                        $errors[] = "";
+                        $errors[] = "Your account has been suspended.";
                         break;
                     case "deleted":
+                        $errors[] = "Email or password is incorrect.";
                         break;
                 }
             }
