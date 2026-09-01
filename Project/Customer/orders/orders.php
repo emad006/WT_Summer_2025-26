@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "customer") {
 }
 
 // Get all orders for customer
-$stmt = mysqli_prepare($conn, "SELECT o.order_id, r.shop_name AS restaurant_name, SUM(oi.quantity) AS total_items, ROUND((o.total + o.delivery_fee), 0) AS grand_total, o.placed_at AS order_date, o.order_status FROM orders o INNER JOIN restaurants r ON o.restaurant_id = r.user_id INNER JOIN order_items oi ON o.order_id = oi.order_id WHERE o.customer_id = ? GROUP BY o.order_id, r.shop_name, o.total, o.delivery_fee, o.placed_at, o.order_status ORDER BY o.placed_at DESC");
+$stmt = mysqli_prepare($conn, "SELECT o.order_id, r.shop_name AS restaurant_name, SUM(oi.quantity) AS total_items, ROUND(o.total, 0) AS grand_total, o.placed_at AS order_date, o.order_status FROM orders o INNER JOIN restaurants r ON o.restaurant_id = r.user_id INNER JOIN order_items oi ON o.order_id = oi.order_id WHERE o.customer_id = ? GROUP BY o.order_id, r.shop_name, o.total, o.delivery_fee, o.placed_at, o.order_status ORDER BY o.placed_at DESC");
 mysqli_stmt_bind_param($stmt, "i", $_SESSION["user_id"]);
 mysqli_stmt_execute($stmt);
 $allOrders = mysqli_stmt_get_result($stmt);
