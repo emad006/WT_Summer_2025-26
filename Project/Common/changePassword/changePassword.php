@@ -68,6 +68,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Redirect user to dashboard
             redirectUser($_SESSION["role"]);
         }
+    } else if (isset($_POST["cancelBtn"])) {
+        // Redirect user to dashboard
+        redirectUser($_SESSION["role"]);
     }
 }
 
@@ -146,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="inputBlock">
                 <button type="submit" name="submitBtn" class="btn" id="submitBtn">Change Password</button>
-                <button type="submit" name=submitBtn class="btn" id="cancelBtn">Cancel</button>
+                <button type="submit" name="cancelBtn" class="btn" id="cancelBtn">Cancel</button>
             </div>
         </form>
     </div>
