@@ -1,10 +1,11 @@
 <?php
+
 session_start();
 
-include "../Common/lib/dbConfig.php";
-include "../Common/lib/helperFunctions.php";
+include __DIR__ . "/../Common/lib/dbConfig.php";
+include __DIR__ . "/lib/riderLib.php";
 
-requireRole("rider");
+requireRider();
 
 $riderId = (int)$_SESSION["user_id"];
 
@@ -41,12 +42,9 @@ mysqli_stmt_execute($stmt);
 $order = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && $order) {
-
     $orderId = $order["order_id"];
 
-    /* ---------- Mark as picked up :  ready -> on_the_way ---------- */
     if (isset($_POST["pickupBtn"])) {
-
         $stmt = mysqli_prepare($conn,
             "UPDATE orders SET order_status = 'on_the_way', picked_up_at = NOW()
               WHERE order_id = ? AND rider_id = ? AND order_status = 'ready'");
@@ -57,9 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $order) {
         exit();
     }
 
-    /* ---------- Mark as delivered :  on_the_way -> delivered ----------*/
     if (isset($_POST["deliverBtn"])) {
-
         $stmt = mysqli_prepare($conn,
             "UPDATE orders SET order_status = 'delivered', closed_at = NOW()
               WHERE order_id = ? AND rider_id = ? AND order_status = 'on_the_way'");
@@ -70,10 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $order) {
         exit();
     }
 
-    /* ---------- Report a failed delivery :  -> cancelled ---------- */
     if (isset($_POST["reportBtn"])) {
-
-        // Which list of reasons is legal right now?
         if ($order["order_status"] === "ready") {
             $allowedReasons = $reasonsBeforePickup;
         } else {
@@ -82,8 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $order) {
 
         $reason = isset($_POST["reason"]) ? $_POST["reason"] : "";
 
-        // cancel_reason goes straight to the admin's screen, so we only
-        // accept a value that is actually in our own list.
         if (!in_array($reason, $allowedReasons, true)) {
             header("Location:d_active.php?err=reason");
             exit();
@@ -105,11 +96,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $order) {
 }
 
 if (!$order) {
-    $state = 3;                                    // nothing assigned
+    $state = 3;
 } else if ($order["order_status"] === "ready") {
-    $state = 1;                                    // accepted, not collected
+    $state = 1;
 } else {
-    $state = 2;                                    // on the way
+    $state = 2;
 }
 
 $items = [];
@@ -133,13 +124,10 @@ if ($state === 1) {
 </head>
 
 <body>
-    <?php renderNavbar("active"); ?>
+    <?php renderRiderNavbar("active"); ?>
 
     <div id="mainArea">
 
-        <?php // ============== STATE 3 : nothing assigned ==============
-              // Do NOT show an error or a blank page. A rider who just
-              // finished a delivery lands here, and that is normal. ?>
         <?php if ($state === 3) { ?>
 
             <h1 id="titleName">Active Delivery</h1>
@@ -164,7 +152,6 @@ if ($state === 1) {
                 </div>
             <?php } ?>
 
-            <?php // ============ STATE 1 : accepted, not collected ============ ?>
             <?php if ($state === 1) { ?>
 
                 <div class="infoBox">
@@ -223,10 +210,6 @@ if ($state === 1) {
 
             <?php } else { ?>
 
-                <?php // ============ STATE 2 : on the way ============
-                      // The pickup button is GONE, not disabled. The items
-                      // table is dropped. Drop-off moves to the top. ?>
-
                 <div class="infoBox">
                     <span class="tag tagOrange">On the way</span>
                     <?php if ($order["picked_up_at"]) { ?>
@@ -273,8 +256,6 @@ if ($state === 1) {
 
             <?php } ?>
 
-            <?php // ---------- Report a problem : shown in both states,
-                  //            but with a different reason list ---------- ?>
             <h3 class="sectionTitle">Report a problem</h3>
             <div class="inputBlock">
                 <form method="post">

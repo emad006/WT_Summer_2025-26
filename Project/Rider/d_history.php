@@ -1,15 +1,11 @@
 <?php
 
-
 session_start();
 
-include "../Common/lib/dbConfig.php";
-include "../Common/lib/helperFunctions.php";
+include __DIR__ . "/../Common/lib/dbConfig.php";
+include __DIR__ . "/lib/riderLib.php";
 
-/* ---------- role guard ---------- */
-/* requireRole() replaces the hand-written check. The old one built a
-   relative path to the login page that only worked from this folder. */
-requireRole("rider");
+requireRider();
 
 $riderId = (int)$_SESSION["user_id"];
 
@@ -28,7 +24,6 @@ $summary = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 $fromDate = isset($_GET["from"]) ? $_GET["from"] : date("Y-m-d", strtotime("-7 days"));
 $toDate   = isset($_GET["to"])   ? $_GET["to"]   : date("Y-m-d");
 
-// must look exactly like 2026-08-29
 if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fromDate)) {
     $fromDate = date("Y-m-d", strtotime("-7 days"));
 }
@@ -38,8 +33,6 @@ if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $toDate)) {
 
 $dateError = "";
 if ($fromDate > $toDate) {
-    // Without this message an inverted range just shows zero rows and
-    // looks like a broken page.
     $dateError = "From date cannot be after To date.";
 }
 
@@ -54,12 +47,9 @@ if ($resultFilter === "delivered") {
     $resultFilter = "all";
 }
 
-
-/* The list of finished deliveries*/
 $history = [];
 
 if ($dateError === "") {
-
     $sql = "SELECT o.order_id, o.total, o.delivery_address, o.closed_at,
                    o.order_status, o.cancel_reason,
                    r.shop_name
@@ -90,12 +80,11 @@ if ($dateError === "") {
 </head>
 
 <body>
-    <?php renderNavbar("history"); ?>
+    <?php renderRiderNavbar("history"); ?>
 
     <div id="mainArea">
         <h1 id="titleName">My Deliveries</h1>
 
-        <?php // ---------- today's summary ---------- ?>
         <table class="dataTable">
             <tr>
                 <th>Delivered today</th>
@@ -113,7 +102,6 @@ if ($dateError === "") {
             <div class="msgBox msgError"><?php echo e($dateError); ?></div>
         <?php } ?>
 
-        <?php // ---------- filters ---------- ?>
         <form method="get" class="infoBox">
             <span class="filterItem">
                 <label class="inputLabel">From</label><br>
@@ -140,7 +128,6 @@ if ($dateError === "") {
             </span>
         </form>
 
-        <?php // ---------- the list ---------- ?>
         <table class="dataTable">
             <tr>
                 <th>Order</th>
@@ -162,7 +149,6 @@ if ($dateError === "") {
 
                     <td>
                         <?php
-                        
                         if ($wasDelivered) {
                             echo "Tk " . number_format($h["total"]);
                         } else {
