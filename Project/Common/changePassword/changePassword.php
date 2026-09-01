@@ -85,12 +85,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div id="navbar">
         <div id="navLeft">
             <!-- TODO: Add logic for correct nav bar labels + link based on role -->
-            <a href="#" class="navLink">Dashboard</a>
-            <a href="#" class="navLink">Browse</a>
-            <a href="#" class="navLink">Cart</a>
-            <a href="#" class="navLink">My Orders</a>
-            <a href="#" class="navLink navLinkActive">Profile</a>
-            <a href="../logout.php" class="navLink">Logout</a>
+            <!-- Customer Navigation Bar -->
+            <?php if ($_SESSION["role"] === "customer") { ?>
+                <a href="../../Customer/dashboard/dashboard.php" class="navLink">Dashboard</a>
+                <a href="../../Customer/browse/browse.php" class="navLink">Browse</a>
+                <a href="../../Customer/cart/cart.php" class="navLink">Cart</a>
+                <a href="../../Customer/orders/orders.php" class="navLink">My Orders</a>
+                <a href="../../Customer/profile/profile.php" class="navLink navLinkActive">Profile</a>
+                <a href="../logout.php" class="navLink">Logout</a>
+            <?php } else if ($_SESSION["role"] === "restaurant") { ?>
+                <a href="../../Restaurant/Dashboard/dashboard.php" class="navLink">Dashboard</a>
+                <a href="../../Restaurant/Menu/r_menu.php" class="navLink">Manage Menu</a>
+                <a href="../../Restaurant/Order/r_order.php" class="navLink">Order Queue</a>
+                <a href="#" class="navLink navLinkActive">Profile</a>
+                <a href="../logout.php" class="navLink">Logout</a>
+            <?php } else if ($_SESSION["role"] === "admin") { ?>
+                <a href="../../Admin/dashboard/dashboard.php" class="navLink">Dashboard</a>
+                <a href="../../Admin/users/users.php" class="navLink">Users</a>
+                <a href="../../Admin/cuisines/cuisines.php" class="navLink">Cuisines</a>
+                <a href="../../Admin/orders/orders.php" class="navLink">Orders</a>
+                <a href="../../Admin/reviews/reviews.php" class="navLink">Reviews</a>
+                <a href="../../Admin/profile/profile.php" class="navLink navLinkActive">Profile</a>
+                <a href="../logout.php" class="navLink">Logout</a>
+            <?php } else if ($_SESSION["role"] === "rider") { ?>
+                <a href="#" class="navLink">Dashboard</a>
+                <a href="#" class="navLink">Available</a>
+                <a href="#" class="navLink">Active Delivery</a>
+                <a href="#" class="navLink">History</a>
+                <a href="#" class="navLink navLinkActive">Profile</a>
+                <a href="../logout.php" class="navLink">Logout</a></div>
+            <?php } ?>
         </div>
 
         <div id="navRight"><?php echo $_SESSION["name"] . " · " . ucfirst($_SESSION["role"]); ?></div>
