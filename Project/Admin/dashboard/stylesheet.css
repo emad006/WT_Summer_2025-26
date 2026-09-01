@@ -1,0 +1,142 @@
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: black;
+    background-color: #D3D3D3;
+    display: grid;
+    place-items: center;
+    margin: 0px;
+}
+
+#navigation_bar {
+    background-color: rgb(58, 58, 94);
+    color: white;
+    font-weight: bold;
+    width: 98.5%;
+    padding: 10px;
+}
+
+#left_nav {
+    float: left;
+}
+
+#right_nav {
+    float: right;
+    margin-right: 5px;
+}
+
+.navigation_link {
+    color: white;
+    text-decoration: none;
+    padding: 5px;
+}
+
+.active_link {
+    border-bottom: 3px solid orange;
+}
+
+h2 {
+    border-bottom: 3px solid orange;
+    display: inline-block;
+}
+
+#main_box {
+    background-color: white;
+    padding: 40px;
+    width: 1000px;
+    border-radius: 10px;
+}
+
+#reset_pass_box {
+    color: #1d5504;
+    background-color: #dcffcd;
+    padding: 10px;
+    border: 3px solid rgb(200, 255, 200);
+    border-radius: 5px;
+}
+
+#reset_pass_box:empty {
+    display: none;
+}
+
+.box {
+    padding: 10px 0px;
+}
+
+table {
+    width: 100%;
+}
+
+.status_link {
+    text-decoration: none;
+    margin-right: 10px;
+    color: rgb(24, 112, 142);
+}
+
+.status_active_link {
+    border-bottom: 3px solid orange;
+    color: orange;
+}
+
+.hide_box {
+    display: none;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #f7fafc;
+    color: rgb(121, 112, 112);
+    text-align: left;
+    padding-left: 10px;
+}
+
+td {
+    text-align: left;
+    padding-left: 10px;
+}
+
+#filter_box {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    padding: 15px;
+    height: 40px;
+}
+
+
+.filter {
+    float: left;
+    margin-right: 15px;
+    font-weight: bold;
+    color: #4a5568;
+}
+
+#filter_btn {
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 16px;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(24, 112, 142);
+}
+
+.action_btn {
+    background-color: rgb(250, 224, 224);
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+h3 {
+    color: rgb(81, 59, 59);
+    margin-bottom: 0px;
+}
+
