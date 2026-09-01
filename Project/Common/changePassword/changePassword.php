@@ -87,7 +87,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
     <div id="navbar">
         <div id="navLeft">
-            <!-- TODO: Add logic for correct nav bar labels + link based on role -->
             <!-- Customer Navigation Bar -->
             <?php if ($_SESSION["role"] === "customer") { ?>
                 <a href="../../Customer/dashboard/dashboard.php" class="navLink">Dashboard</a>
@@ -111,10 +110,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <a href="../../Admin/profile/profile.php" class="navLink navLinkActive">Profile</a>
                 <a href="../logout.php" class="navLink">Logout</a>
             <?php } else if ($_SESSION["role"] === "rider") { ?>
-                <a href="#" class="navLink">Dashboard</a>
-                <a href="#" class="navLink">Available</a>
-                <a href="#" class="navLink">Active Delivery</a>
-                <a href="#" class="navLink">History</a>
+                <a href="../../Rider/riderDashboard.php" class="navLink">Dashboard</a>
+                <a href="../../Rider/d_available.php" class="navLink">Available</a>
+                <a href="../../Rider/d_active.php" class="navLink">Active Delivery</a>
+                <a href="../../Rider/d_history.php" class="navLink">History</a>
                 <a href="#" class="navLink navLinkActive">Profile</a>
                 <a href="../logout.php" class="navLink">Logout</a></div>
             <?php } ?>
