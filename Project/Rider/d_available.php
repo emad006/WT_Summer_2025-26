@@ -2,10 +2,10 @@
 
 session_start();
 
-include "../Common/lib/dbConfig.php";        // gives us $conn
-include "../Common/lib/helperFunctions.php";  // guards, escaping, navbar
+include __DIR__ . "/../Common/lib/dbConfig.php";
+include __DIR__ . "/lib/riderLib.php";
 
-requireRole("rider");
+requireRider();
 
 $riderId = (int)$_SESSION["user_id"];
 
@@ -18,10 +18,8 @@ mysqli_stmt_execute($stmt);
 $activeOrder = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["dutyBtn"])) {
-
     $wantOnDuty = ($_POST["dutyBtn"] === "1") ? 1 : 0;
 
-    // A rider may not go offline while holding a delivery.
     if ($wantOnDuty === 0 && $activeOrder) {
         header("Location:d_available.php?err=busy");
         exit();
@@ -31,36 +29,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["dutyBtn"])) {
     mysqli_stmt_bind_param($stmt, "ii", $wantOnDuty, $riderId);
     mysqli_stmt_execute($stmt);
 
-    // Reload the page after a POST, so refreshing does not re-submit.
     header("Location:d_available.php");
     exit();
 }
 
-
-/* Read the current duty status */
 $stmt = mysqli_prepare($conn, "SELECT is_on_duty FROM riders WHERE user_id = ?");
 mysqli_stmt_bind_param($stmt, "i", $riderId);
 mysqli_stmt_execute($stmt);
 $dutyRow = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 $isOnDuty = $dutyRow ? (int)$dutyRow["is_on_duty"] : 0;
 
-
-/* Work out the sort order */
 $sortOptions = [
-    "waiting" => "o.ready_at ASC",     // waiting longest = OLDEST ready_at
+    "waiting" => "o.ready_at ASC",
     "cash"    => "o.total DESC",
     "shop"    => "r.shop_name ASC"
 ];
 
 $sort = isset($_GET["sort"]) ? $_GET["sort"] : "waiting";
 if (!array_key_exists($sort, $sortOptions)) {
-    $sort = "waiting";                 // anything unexpected falls back
+    $sort = "waiting";
 }
 
 $shopFilter = isset($_GET["shop"]) ? (int)$_GET["shop"] : 0;
 
-
-/* Fetch the available deliveries */
 $sql = "SELECT o.order_id,
                o.total,
                o.delivery_address,
@@ -73,7 +64,6 @@ $sql = "SELECT o.order_id,
          WHERE o.order_status = 'ready'
            AND o.rider_id IS NULL";
 
-// Any extra WHERE must be added BEFORE the ORDER BY line.
 if ($shopFilter > 0) {
     $sql = $sql . " AND o.restaurant_id = ?";
 }
@@ -91,8 +81,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     $deliveries[] = $row;
 }
 
-
-/*  Restaurants for the filter dropdown */
 $shopList = [];
 $shopResult = mysqli_query($conn,
     "SELECT DISTINCT r.user_id, r.shop_name
@@ -103,19 +91,16 @@ while ($row = mysqli_fetch_assoc($shopResult)) {
     $shopList[] = $row;
 }
 
-
-/*  Which of the four states are we in */
 if ($activeOrder) {
-    $state = 3;                              // busy with another delivery
+    $state = 3;
 } else if (!$isOnDuty) {
-    $state = 2;                              // off duty
+    $state = 2;
 } else if (count($deliveries) === 0) {
-    $state = 4;                              // online but nothing waiting
+    $state = 4;
 } else {
-    $state = 1;                              // the normal state
+    $state = 1;
 }
 
-// Only in state 1 can the rider actually click through to an offer.
 $linksAreLive = ($state === 1);
 ?>
 <!DOCTYPE html>
@@ -127,19 +112,17 @@ $linksAreLive = ($state === 1);
 </head>
 
 <body>
-    <?php renderNavbar("available"); ?>
+    <?php renderRiderNavbar("available"); ?>
 
     <div id="mainArea">
         <h1 id="titleName">Available Deliveries</h1>
 
-        <?php // shown if the rider tried to go offline mid-delivery ?>
         <?php if (isset($_GET["err"]) && $_GET["err"] === "busy") { ?>
             <div class="msgBox msgError">
                 You cannot go offline while a delivery is in progress.
             </div>
         <?php } ?>
 
-        <?php // ---------- STATE 3 : already carrying a delivery ---------- ?>
         <?php if ($state === 3) { ?>
             <div class="msgBox msgWarn">
                 <b>You already have an active delivery (#<?php echo (int)$activeOrder["order_id"]; ?>).</b>
@@ -148,14 +131,12 @@ $linksAreLive = ($state === 1);
             </div>
         <?php } ?>
 
-        <?php // off duty  ?>
         <?php if ($state === 2) { ?>
             <div class="msgBox msgWarn">
                 <b>You are off duty.</b> Go online to accept deliveries.
             </div>
         <?php } ?>
 
-        <?php // duty status strip, shown in every state  ?>
         <div class="infoBox">
             <b>Duty status:</b>
 
@@ -178,11 +159,6 @@ $linksAreLive = ($state === 1);
             <?php } ?>
         </div>
 
-        <?php /* ---------- nothing to list ----------
-                 The test used to be "$state === 4", but state 4 is only
-                 reachable when the rider is online AND free. An off-duty
-                 rider with an empty queue fell into the else branch and
-                 got a table with a header row and no rows under it. */ ?>
         <?php if (count($deliveries) === 0) { ?>
 
             <div class="msgBox">
@@ -191,7 +167,6 @@ $linksAreLive = ($state === 1);
 
         <?php } else { ?>
 
-            <?php // sort + filter bar, only useful when the rider can act ?>
             <?php if ($state === 1) { ?>
                 <form method="get" class="infoBox">
                     <span class="filterItem">
@@ -248,7 +223,6 @@ $linksAreLive = ($state === 1);
 
                         <td>
                             <?php
-                            // waiting_min is NULL if the restaurant never set ready_at
                             if ($d["waiting_min"] === null) {
                                 echo "&mdash;";
                             } else {
