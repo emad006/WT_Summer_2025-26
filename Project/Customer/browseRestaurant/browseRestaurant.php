@@ -19,6 +19,7 @@ $stmt = mysqli_prepare($conn, "SELECT r.user_id AS restaurant_id, r.shop_name, c
 mysqli_stmt_execute($stmt);
 $allRestaurants = mysqli_stmt_get_result($stmt);
 
+// TODO: Add logic to see last 5 recently viewed restaurants rather than just the last one.
 $recentlyViewedRestaurants = "";
 // Get recently viewed restaurants
 if (!empty($_COOKIE["recently_viewed"])) {
@@ -143,12 +144,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
         </form>
 
         <?php if (!empty($_COOKIE["recently_viewed"])) { ?>
-        <div>
-            <label class="labelText">Recently Viewed:</label>
-            <?php
-            echo "<a class='viewMenuLink' href='../menu/menu.php?restaurant_id=" . $recentlyViewedRestaurants["user_id"] . "'>" . $recentlyViewedRestaurants["shop_name"] . "</a>";
-            ?>
-        </div>
+            <div>
+                <label class="labelText">Recently Viewed:</label>
+                <?php
+                echo "<a class='viewMenuLink' href='../menu/menu.php?restaurant_id=" . $recentlyViewedRestaurants["user_id"] . "'>" . $recentlyViewedRestaurants["shop_name"] . "</a>";
+                ?>
+            </div>
         <?php } ?>
 
         <?php if (mysqli_num_rows($allRestaurants) > 0) { ?>

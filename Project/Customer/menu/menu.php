@@ -16,7 +16,7 @@ if (empty($_GET["restaurant_id"])) {
 }
 
 // Set the cookie for recently viewed
-if (!empty($_COOKIE["recently_viewed"])) {    
+if (!empty($_COOKIE["recently_viewed"])) {
     setcookie("recently_viewed", $_GET["restaurant_id"], time() + (86400 * 30), "/");
 }
 
