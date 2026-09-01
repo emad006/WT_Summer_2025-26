@@ -6,15 +6,15 @@ function redirectUser($role) {
         exit();
     } else if ($role === "restaurant") {
         // header("Location:restaurantDashboard.php");
-        header("Location:../dummyDashboard.php");
+        header("Location:../../Restaurant/dashboard/dashboard.php");
         exit();
     } else if ($role === "rider") {
         // header("Location:riderDashboard.php");
-        header("Location:../dummyDashboard.php");
+        header("Location:../../Rider/dashboard/dashboard.php");
         exit();
     } else if ($role === "admin") {
         // header("Location:adminDashboard.php");
-        header("Location:../dummyDashboard.php");
+        header("Location:../../Admin/dashboard/dashboard.php");
         exit();
     }
 }
