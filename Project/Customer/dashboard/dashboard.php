@@ -39,13 +39,14 @@ $allActiveOrders = mysqli_stmt_get_result($stmt);
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="style.css">
-        <title>Customer - Dashboard</title>
-    </head>
 
-    <body>
-        <div id="navbar">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Customer - Dashboard</title>
+</head>
+
+<body>
+    <div id="navbar">
         <div id="navLeft">
             <a href="dashboard.php" class="navLink navLinkActive">Dashboard</a>
             <a href="../browseRestaurant/browseRestaurant.php" class="navLink">Browse</a>
@@ -56,11 +57,11 @@ $allActiveOrders = mysqli_stmt_get_result($stmt);
         </div>
 
         <div id="navRight"><?php echo $_SESSION['name'] . " · Customer"; ?></div>
-        </div>
+    </div>
 
 
 
-        <div id="mainArea">
+    <div id="mainArea">
         <h1 id="titleName">Welcome <?php echo $_SESSION["name"]; ?></h1>
 
         <div class="tableBlock">
@@ -74,37 +75,42 @@ $allActiveOrders = mysqli_stmt_get_result($stmt);
                 <tr>
                     <td><?php echo $activeOrders; ?></td>
                     <td><?php echo $ordersPlacedThisMonth; ?></td>
-                    <td><?php echo $totalSpent; ?></td>
+                    <td>Tk <?php echo $totalSpent; ?></td>
                 </tr>
 
             </table>
         </div>
 
-        <div class="tableBlock">
-            <label id="activeOrdersLabel">Your Active Orders</label>
-            <table border="1">
-                <tr>
-                    <th>Order</th>
-                    <th>Restaurant</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-                
-                <?php
-                while ($row = mysqli_fetch_assoc($allActiveOrders)) {
-                    echo "<tr>";
+        <?php if (mysqli_num_rows($allActiveOrders) > 0) { ?>
+            <div class="tableBlock">
+                <label id="activeOrdersLabel">Your Active Orders</label>
+                <table border="1">
+                    <tr>
+                        <th>Order</th>
+                        <th>Restaurant</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
 
-                    echo "<td>#" . $row["order_id"] . "</td>";
-                    echo "<td>" . $row["shop_name"] . "</td>";
-                    echo "<td>" . $row["total"] . "</td>";
-                    echo "<td>" . ucfirst($row["order_status"]) . "</td>"; // TODO: Add coloring based on status
-                    echo "<td><a class='trackOrderLink' href='../orderDetails/orderDetails.php?order_id=" . $row["order_id"] . "'>Track</a></td>";
-                    
-                    echo "</tr>";
-                }
-                ?>
-            </table>
-        </div>
-    </body>
+                    <?php
+                    while ($row = mysqli_fetch_assoc($allActiveOrders)) {
+                        echo "<tr>";
+
+                        echo "<td>#" . $row["order_id"] . "</td>";
+                        echo "<td>" . $row["shop_name"] . "</td>";
+                        echo "<td>" . $row["total"] . "</td>";
+                        echo "<td>" . ucfirst($row["order_status"]) . "</td>"; // TODO: Add coloring based on status
+                        echo "<td><a class='trackOrderLink' href='../orderDetails/orderDetails.php?order_id=" . $row["order_id"] . "'>Track</a></td>";
+
+                        echo "</tr>";
+                    }
+                    ?>
+                </table>
+            <?php } else { ?>
+                <div id="infoBlock">You have no active orders at the moment.</div>
+            <?php } ?>
+            </div>
+</body>
+
 </html>
