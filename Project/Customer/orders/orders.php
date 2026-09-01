@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
 
     if (!empty($_POST["toDate"])) {
         $toDate = $_POST["toDate"];
-        $whereClauses[] = "o.placed_at <= '$toDate 00:00:00'";
+        $whereClauses[] = "o.placed_at <= '$toDate 23:59:59'";
     }
 
     // Build final query
