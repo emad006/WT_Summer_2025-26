@@ -10,7 +10,7 @@ function redirectUser($role) {
         exit();
     } else if ($role === "rider") {
         // header("Location:riderDashboard.php");
-        header("Location:../../Rider/Dashboard/dashboard.php");
+        header("Location:../../Rider/riderDashboard.php");
         exit();
     } else if ($role === "admin") {
         // header("Location:adminDashboard.php");
