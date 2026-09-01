@@ -18,6 +18,7 @@ if (!empty($_SESSION["user_id"])) { // Session set
             $_SESSION["user_id"] = $userRow["user_id"];
             $_SESSION["name"] = $userRow["name"];
             $_SESSION["role"] = $userRow["role"];
+            redirectUser($userRow["role"]);
         } else { // Invalid cookie
             setcookie("remember_token", "", time() - 3600, "/");
         }
