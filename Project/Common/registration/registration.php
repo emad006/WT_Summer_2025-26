@@ -5,6 +5,7 @@ include "../lib/dbConfig.php";
 include "../lib/helperFunctions.php";
 
 $errors = [];
+$success = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -132,8 +133,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             mysqli_stmt_execute($stmt);
             mysqli_commit($conn);
 
+            $success[] = "Account created successfully.";
+            $success[] = "Redirecting in 3 seconds.";
+
             // Redirect user to login page
             header("Location:../login/login.php");
+            exit();
         } catch (Exception $e) {
             $errors[] = $e->getMessage();
             mysqli_rollback($conn);
@@ -156,12 +161,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div id="mainArea">
         <h1 id="titleName">Create your Account</h1>
 
+        <div id="successBlock"><?php if (!empty($success)) echo implode("<br>", $success) ?></div>
         <div id="errorBlock"><?php if (!empty($errors)) echo implode("<br>", $errors) ?></div>
 
         <form method="post">
             <div class="inputBlock">
                 <label class="inputLabel">I am registering as</label>
-                <div id="radioGroup"> <!-- FIXME: Fix fields defaulting to "Customer" on form submit. -->
+                <div id="radioGroup">
                     <input type="radio" name="role" class="radioField" id="customerRoleSelector" value="customer" onchange="toggleRoleFields()" <?php if (!isset($_POST["role"]) || $_POST["role"] === "customer") echo "checked"; ?>>
                     <label class="radioText">Customer</label>
 
@@ -212,10 +218,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <br>
                 <select name="vehicleType" class="inputField">
                     <option value="">Select Vehicle</option>
-                    <option value="Car">Car</option>
-                    <option value="Motorcycle">Motorcycle</option>
-                    <option value="Cycle">Cycle</option>
-                    <option value="On Foot">On Foot</option>
+                    <option value="motorcycle">Motorcycle</option>
+                    <option value="bicycle">Bicycle</option>
+                    <option value="on_foot">On Foot</option>
                 </select>
             </div>
 
