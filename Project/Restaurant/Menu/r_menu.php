@@ -203,7 +203,7 @@ if (isset($_GET["edit"])) {
 
     <a href="../../Common/changePassword/changePassword.php">Profile</a>
 
-    <a href="../logout.php">Logout</a>
+    <a href="../../Common/logout.php">Logout</a>
 
     <span>
         <?= htmlspecialchars($shop_name) ?> · Restaurant

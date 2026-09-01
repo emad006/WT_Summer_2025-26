@@ -193,7 +193,7 @@ $items = mysqli_query($conn, $sql);
         Profile
     </a>
 
-    <a href="../logout.php">
+    <a href="../../Common/logout.php">
         Logout
     </a>
 
