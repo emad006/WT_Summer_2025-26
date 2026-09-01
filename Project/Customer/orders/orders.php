@@ -106,47 +106,51 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["filterBtn"])) {
             </div>
         </form>
 
-        <div id="tableBlock"> <!-- TODO: Hide table and show a info div when there are no results -->
-            <table border="1">
-                <tr>
-                    <th>Order</th>
-                    <th>Restaurant</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th>Placed</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
+        <?php if (mysqli_num_rows($allOrders) > 0) { ?>
+            <div id="tableBlock">
+                <table border="1">
+                    <tr>
+                        <th>Order</th>
+                        <th>Restaurant</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Placed</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
 
-                <?php
-                while ($row = mysqli_fetch_assoc($allOrders)) {
-                    echo "<tr>";
-                    echo "<td><label class='tableLabel'>#" . $row["order_id"] . "</label></td>";
-                    echo "<td><label class='tableLabel'>" . $row["restaurant_name"] . "</label></td>";
-                    echo "<td><label class='tableLabel'>" . $row["total_items"] . "</label></td>";
-                    echo "<td><label class='tableLabel'>Tk " . $row["grand_total"] . "</label></td>";
-                    echo "<td><label class='tableLabel'>" . $row["order_date"] . "</label></td>";
+                    <?php
+                    while ($row = mysqli_fetch_assoc($allOrders)) {
+                        echo "<tr>";
+                        echo "<td><label class='tableLabel'>#" . $row["order_id"] . "</label></td>";
+                        echo "<td><label class='tableLabel'>" . $row["restaurant_name"] . "</label></td>";
+                        echo "<td><label class='tableLabel'>" . $row["total_items"] . "</label></td>";
+                        echo "<td><label class='tableLabel'>Tk " . $row["grand_total"] . "</label></td>";
+                        echo "<td><label class='tableLabel'>" . $row["order_date"] . "</label></td>";
 
-                    if ($row["order_status"] === "pending") {
-                        echo "<td><label class='tableLabel' style='color: #F59E0B;'>" . ucfirst($row["order_status"]) . "</label></td>";
-                    } else if ($row["order_status"] === "preparing") {
-                        echo "<td><label class='tableLabel' style='color: #3B82F6;'>" . ucfirst($row["order_status"]) . "</label></td>";
-                    } else if ($row["order_status"] === "ready") {
-                        echo "<td><label class='tableLabel' style='color: #8B5CF6;'>" . ucfirst($row["order_status"]) . "</label></td>";
-                    } else if ($row["order_status"] === "on_the_way") {
-                        echo "<td><label class='tableLabel' style='color: #06B6D4;'>On The Way</label></td>";
-                    } else if ($row["order_status"] === "delivered") {
-                        echo "<td><label class='tableLabel' style='color: #10B981;'>" . ucfirst($row["order_status"]) . "</label></td>";
-                    } else if ($row["order_status"] === "cancelled") {
-                        echo "<td><label class='tableLabel' style='color: #EF4444;'>" . ucfirst($row["order_status"]) . "</label></td>";
+                        if ($row["order_status"] === "pending") {
+                            echo "<td><label class='tableLabel' style='color: #F59E0B;'>" . ucfirst($row["order_status"]) . "</label></td>";
+                        } else if ($row["order_status"] === "preparing") {
+                            echo "<td><label class='tableLabel' style='color: #3B82F6;'>" . ucfirst($row["order_status"]) . "</label></td>";
+                        } else if ($row["order_status"] === "ready") {
+                            echo "<td><label class='tableLabel' style='color: #8B5CF6;'>" . ucfirst($row["order_status"]) . "</label></td>";
+                        } else if ($row["order_status"] === "on_the_way") {
+                            echo "<td><label class='tableLabel' style='color: #06B6D4;'>On The Way</label></td>";
+                        } else if ($row["order_status"] === "delivered") {
+                            echo "<td><label class='tableLabel' style='color: #10B981;'>" . ucfirst($row["order_status"]) . "</label></td>";
+                        } else if ($row["order_status"] === "cancelled") {
+                            echo "<td><label class='tableLabel' style='color: #EF4444;'>" . ucfirst($row["order_status"]) . "</label></td>";
+                        }
+
+                        echo "<td><a class='trackOrderLink' href='../orderDetails/orderDetails.php?order_id=" . $row["order_id"] . "'>Track</a></td>";
+                        echo "</tr>";
                     }
-
-                    echo "<td><a class='trackOrderLink' href='../orderDetails/orderDetails.php?order_id=" . $row["order_id"] . "'>Track</a></td>";
-                    echo "</tr>";
-                }
-                ?>
-            </table>
-        </div>
+                    ?>
+                </table>
+            </div>
+        <?php } else { ?>
+            <div id="infoBlock">No orders found.</div>
+        <?php } ?>
     </div>
 </body>
 
